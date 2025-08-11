@@ -1,0 +1,282 @@
+import {
+  User,
+  GraduationCap,
+  Briefcase,
+  FolderOpen,
+  Award,
+  Code,
+  Heart,
+  Star,
+  Target,
+  BookOpen,
+  Trophy,
+  Zap,
+  Coffee,
+  Palette,
+  Camera,
+  Music,
+  Gamepad2,
+  Plane,
+  Globe,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Clock,
+  // 技术相关
+  Laptop,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Database,
+  Server,
+  Cloud,
+  Wifi,
+  Shield,
+  Lock,
+  Key,
+  Settings,
+  Wrench,
+  Hammer,
+  // 建筑教育
+  Building,
+  Home,
+  School,
+  Library,
+  Bookmark,
+  FileText,
+  Folder,
+  Image,
+  Video,
+  // 音乐
+  Headphones,
+  Mic,
+  Speaker,
+  Volume2,
+  Play,
+  // 设计
+  Brush,
+  PaintBucket,
+  PenTool,
+  Pencil,
+  Edit,
+  Edit2,
+  Edit3,
+  Sparkles,
+  // 自然
+  Lightbulb,
+  Flame,
+  Sun,
+  Moon,
+  Stars,
+  Mountain,
+  Trees,
+  Flower,
+  Leaf,
+  // 食物生活
+  Utensils,
+  ChefHat,
+  Gift,
+  // 交通
+  Car,
+  Train,
+  Bike,
+  Rocket,
+  Ship,
+  // 导航
+  Navigation,
+  Compass,
+  Flag,
+  // 人员
+  Users,
+  UserPlus,
+  UserCheck,
+  Crown,
+  Medal,
+  // 商业
+  TrendingUp,
+  BarChart,
+  PieChart,
+  DollarSign,
+  CreditCard,
+  ShoppingCart,
+  // 通讯
+  MessageCircle,
+  MessageSquare,
+  Send,
+  Bell,
+  // 状态
+  Activity,
+  Battery,
+  Signal,
+  // 操作
+  Search,
+  Filter,
+  Grid,
+  List,
+  Layout,
+  Menu,
+  Plus,
+  Minus,
+  Check,
+  CheckCircle,
+  AlertCircle,
+  Info,
+  HelpCircle,
+  Eye,
+  ThumbsUp,
+  type LucideIcon,
+} from "lucide-react"
+import type { IconOption } from "@/types/resume"
+
+export const availableIcons: IconOption[] = [
+  // 职业相关
+  { name: "briefcase", icon: Briefcase },
+  { name: "graduation-cap", icon: GraduationCap },
+  { name: "building", icon: Building },
+  { name: "users", icon: Users },
+  { name: "user-plus", icon: UserPlus },
+  { name: "user-check", icon: UserCheck },
+  { name: "crown", icon: Crown },
+  { name: "medal", icon: Medal },
+  { name: "award", icon: Award },
+  { name: "trophy", icon: Trophy },
+  
+  // 技术相关
+  { name: "code", icon: Code },
+  { name: "laptop", icon: Laptop },
+  { name: "monitor", icon: Monitor },
+  { name: "smartphone", icon: Smartphone },
+  { name: "tablet", icon: Tablet },
+  { name: "database", icon: Database },
+  { name: "server", icon: Server },
+  { name: "cloud", icon: Cloud },
+  { name: "wifi", icon: Wifi },
+  { name: "shield", icon: Shield },
+  { name: "lock", icon: Lock },
+  { name: "key", icon: Key },
+  { name: "settings", icon: Settings },
+  { name: "wrench", icon: Wrench },
+  { name: "hammer", icon: Hammer },
+  
+  // 学习教育
+  { name: "book-open", icon: BookOpen },
+  { name: "library", icon: Library },
+  { name: "school", icon: School },
+  { name: "bookmark", icon: Bookmark },
+  { name: "file-text", icon: FileText },
+  { name: "folder-open", icon: FolderOpen },
+  { name: "folder", icon: Folder },
+  
+  // 创意设计
+  { name: "palette", icon: Palette },
+  { name: "brush", icon: Brush },
+  { name: "paint-bucket", icon: PaintBucket },
+  { name: "pen-tool", icon: PenTool },
+  { name: "pencil", icon: Pencil },
+  { name: "edit", icon: Edit },
+  { name: "edit-2", icon: Edit2 },
+  { name: "edit-3", icon: Edit3 },
+  { name: "camera", icon: Camera },
+  { name: "image", icon: Image },
+  { name: "video", icon: Video },
+  { name: "sparkles", icon: Sparkles },
+  
+  // 音乐娱乐
+  { name: "music", icon: Music },
+  { name: "headphones", icon: Headphones },
+  { name: "mic", icon: Mic },
+  { name: "speaker", icon: Speaker },
+  { name: "volume-2", icon: Volume2 },
+  { name: "play", icon: Play },
+  { name: "gamepad-2", icon: Gamepad2 },
+  
+  // 商业金融
+  { name: "trending-up", icon: TrendingUp },
+  { name: "bar-chart", icon: BarChart },
+  { name: "pie-chart", icon: PieChart },
+  { name: "dollar-sign", icon: DollarSign },
+  { name: "credit-card", icon: CreditCard },
+  { name: "shopping-cart", icon: ShoppingCart },
+  
+  // 沟通交流
+  { name: "message-circle", icon: MessageCircle },
+  { name: "message-square", icon: MessageSquare },
+  { name: "send", icon: Send },
+  { name: "mail", icon: Mail },
+  { name: "phone", icon: Phone },
+  { name: "bell", icon: Bell },
+  
+  // 位置导航
+  { name: "map-pin", icon: MapPin },
+  { name: "navigation", icon: Navigation },
+  { name: "compass", icon: Compass },
+  { name: "globe", icon: Globe },
+  { name: "flag", icon: Flag },
+  
+  // 交通出行
+  { name: "car", icon: Car },
+  { name: "plane", icon: Plane },
+  { name: "train", icon: Train },
+  { name: "bike", icon: Bike },
+  { name: "rocket", icon: Rocket },
+  { name: "ship", icon: Ship },
+  
+  // 自然环境
+  { name: "sun", icon: Sun },
+  { name: "moon", icon: Moon },
+  { name: "stars", icon: Stars },
+  { name: "mountain", icon: Mountain },
+  { name: "trees", icon: Trees },
+  { name: "flower", icon: Flower },
+  { name: "leaf", icon: Leaf },
+  
+  // 生活日常
+  { name: "home", icon: Home },
+  { name: "coffee", icon: Coffee },
+  { name: "utensils", icon: Utensils },
+  { name: "chef-hat", icon: ChefHat },
+  { name: "gift", icon: Gift },
+  { name: "heart", icon: Heart },
+  
+  // 目标成就
+  { name: "target", icon: Target },
+  { name: "star", icon: Star },
+  { name: "lightbulb", icon: Lightbulb },
+  { name: "flame", icon: Flame },
+  { name: "zap", icon: Zap },
+  { name: "activity", icon: Activity },
+  
+  // 时间管理
+  { name: "calendar", icon: Calendar },
+  { name: "clock", icon: Clock },
+  
+  // 状态指示
+  { name: "check-circle", icon: CheckCircle },
+  { name: "alert-circle", icon: AlertCircle },
+  { name: "info", icon: Info },
+  { name: "thumbs-up", icon: ThumbsUp },
+  { name: "battery", icon: Battery },
+  { name: "signal", icon: Signal },
+  
+  // 界面操作
+  { name: "search", icon: Search },
+  { name: "filter", icon: Filter },
+  { name: "grid", icon: Grid },
+  { name: "list", icon: List },
+  { name: "layout", icon: Layout },
+  { name: "menu", icon: Menu },
+  { name: "plus", icon: Plus },
+  { name: "minus", icon: Minus },
+  { name: "check", icon: Check },
+  { name: "eye", icon: Eye },
+  { name: "help-circle", icon: HelpCircle },
+  
+  // 基础
+  { name: "user", icon: User },
+]
+
+export const getIconByName = (name: string): LucideIcon | undefined => {
+  const iconOption = availableIcons.find(icon => icon.name === name)
+  return iconOption?.icon
+} 
