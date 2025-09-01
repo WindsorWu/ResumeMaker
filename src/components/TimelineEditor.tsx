@@ -9,11 +9,17 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
+  DialogDescription,
 } from '@/components/ui/dialog'
 import { IconSelector } from './IconSelector'
 import { getIconByName } from '@/config/icons'
+import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog'
 import type { TimelineItem } from '@/types/resume'
+
+interface TimelineEditorData {
+  items: TimelineItem[]
+  selectedIcon: string
+}
 
 interface TimelineEditorProps {
   isOpen: boolean
@@ -32,9 +38,26 @@ export const TimelineEditor = ({
   title,
   currentIcon = 'briefcase'
 }: TimelineEditorProps) => {
-  const [items, setItems] = useState<TimelineItem[]>(initialData)
-  const [selectedIcon, setSelectedIcon] = useState(currentIcon)
   const [isIconSelectorOpen, setIsIconSelectorOpen] = useState(false)
+
+  // 使用通用的自动保存对话框 Hook
+  const { data, setData, handleClose, saveStatusText } = useAutoSaveDialog<TimelineEditorData>({
+    isOpen,
+    initialData: { items: initialData, selectedIcon: currentIcon },
+    onSave: (data) => onSave(data.items, data.selectedIcon),
+    onClose,
+    debounceDelay: 500
+  })
+
+  const { items, selectedIcon } = data
+
+  const setItems = (newItems: TimelineItem[]) => {
+    setData({ ...data, items: newItems })
+  }
+
+  const setSelectedIcon = (newIcon: string) => {
+    setData({ ...data, selectedIcon: newIcon })
+  }
 
   const addItem = () => {
     const newItem: TimelineItem = {
@@ -59,15 +82,10 @@ export const TimelineEditor = ({
     ))
   }
 
-  const handleSave = () => {
-    onSave(items, selectedIcon)
-    onClose()
-  }
-
   const IconComponent = getIconByName(selectedIcon)
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
@@ -75,7 +93,13 @@ export const TimelineEditor = ({
               {IconComponent && <IconComponent className="h-5 w-5 text-white" />}
             </div>
             <span>编辑{title}</span>
+            <span className="text-sm font-normal text-gray-500 ml-auto">
+              {saveStatusText}
+            </span>
           </DialogTitle>
+          <DialogDescription>
+            在此处编辑您的{title}信息，所有更改将自动保存。
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-6">
@@ -127,9 +151,7 @@ export const TimelineEditor = ({
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    标题 <span className="text-red-500">*</span>
-                  </Label>
+                  <Label className="text-sm font-medium text-gray-700">标题</Label>
                   <Input
                     value={item.title}
                     onChange={(e) => updateItem(item.id, 'title', e.target.value)}
@@ -197,15 +219,6 @@ export const TimelineEditor = ({
             添加一项
           </Button>
         </div>
-        
-        <DialogFooter className="flex space-x-2 pt-6">
-          <Button variant="outline" onClick={onClose} className="min-w-[80px]">
-            取消
-          </Button>
-          <Button onClick={handleSave} className="min-w-[80px] bg-blue-600 hover:bg-blue-700">
-            保存
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   )

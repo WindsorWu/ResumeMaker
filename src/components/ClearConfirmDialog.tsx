@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog'
 
@@ -23,6 +24,9 @@ export const ClearConfirmDialog = ({ isOpen, onClose, onConfirm }: ClearConfirmD
             <Trash2 className="h-5 w-5 text-red-600" />
             <span>确认清空简历</span>
           </DialogTitle>
+          <DialogDescription>
+            此操作将永久删除所有简历内容，请谨慎操作。
+          </DialogDescription>
         </DialogHeader>
         
         <div className="py-4">

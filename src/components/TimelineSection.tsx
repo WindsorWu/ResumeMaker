@@ -89,7 +89,6 @@ export const TimelineSection = ({
           initialData={data}
           onSave={(newData, iconName) => {
             onUpdate(newData, iconName)
-            setIsEditing(false)
           }}
           title={section.title}
           currentIcon={section.iconName}

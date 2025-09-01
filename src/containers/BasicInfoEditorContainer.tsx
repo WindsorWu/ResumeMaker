@@ -1,12 +1,13 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { AvatarUpload } from "@/components/AvatarUpload";
 import { FormField } from "@/components/FormField";
 import { CustomFieldItem } from "@/components/CustomFieldItem";
-import { useBasicInfoEditor } from "@/hooks/useBasicInfoEditor";
-import type { BasicInfo } from "@/types/resume";
+import { useAutoSaveDialog } from "@/hooks/useAutoSaveDialog";
+import { useState } from "react";
+import type { BasicInfo, CustomField } from "@/types/resume";
 
 interface BasicInfoEditorContainerProps {
   isOpen: boolean;
@@ -21,16 +22,68 @@ export const BasicInfoEditorContainer = ({
   initialData,
   onSave,
 }: BasicInfoEditorContainerProps) => {
-  const {
-    formData,
-    expandedCustomField,
-    handleChange,
-    handleAvatarChange,
-    addCustomField,
-    updateCustomField,
-    removeCustomField,
-    toggleCustomFieldExpansion,
-  } = useBasicInfoEditor(initialData, onSave);
+  // 使用通用的自动保存对话框 Hook
+  const { data: formData, setData: setFormData, handleClose, saveStatusText } = useAutoSaveDialog<BasicInfo>({
+    isOpen,
+    initialData: { ...initialData, customFields: initialData.customFields || [] },
+    onSave,
+    onClose,
+    debounceDelay: 300
+  })
+
+  const [expandedCustomField, setExpandedCustomField] = useState<string | null>(null)
+
+  const handleChange = (field: keyof BasicInfo, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  const handleAvatarChange = (avatar: string) => {
+    setFormData(prev => ({
+      ...prev,
+      avatar,
+    }))
+  }
+
+  const addCustomField = () => {
+    const newField: CustomField = {
+      id: Date.now().toString(),
+      label: '',
+      value: '',
+      icon: 'star',
+      iconName: 'star'
+    }
+    setFormData(prev => ({
+      ...prev,
+      customFields: [...(prev.customFields || []), newField]
+    }))
+    setExpandedCustomField(newField.id)
+  }
+
+  const updateCustomField = (id: string, updates: Partial<CustomField>) => {
+    setFormData(prev => ({
+      ...prev,
+      customFields: prev.customFields?.map(field => 
+        field.id === id ? { ...field, ...updates } : field
+      ) || []
+    }))
+  }
+
+  const removeCustomField = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      customFields: prev.customFields?.filter(field => field.id !== id) || []
+    }))
+    if (expandedCustomField === id) {
+      setExpandedCustomField(null)
+    }
+  }
+
+  const toggleCustomFieldExpansion = (id: string) => {
+    setExpandedCustomField(expandedCustomField === id ? null : id)
+  }
 
   const basicFields = [
     { id: "name", label: "姓名", type: "text", placeholder: "请输入姓名" },
@@ -58,9 +111,12 @@ export const BasicInfoEditorContainer = ({
   ] as const;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogTitle className="sr-only">编辑基本信息</DialogTitle>
+        <DialogDescription className="sr-only">
+          编辑个人基本信息，包括姓名、联系方式等，所有更改将自动保存。状态：{saveStatusText}
+        </DialogDescription>
         <div className="space-y-6">
           {/* 头像上传 */}
           <div className="space-y-2">
@@ -74,21 +130,19 @@ export const BasicInfoEditorContainer = ({
           {/* 基本信息表单 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {basicFields.map((field) => (
-              <>
-                <FormField
-                  key={field.id}
-                  id={field.id}
-                  label={field.label}
-                  type={field.type}
-                  value={
-                    (formData[field.id as keyof BasicInfo] as string) || ""
-                  }
-                  placeholder={field.placeholder}
-                  onChange={(value) =>
-                    handleChange(field.id as keyof BasicInfo, value)
-                  }
-                />
-              </>
+              <FormField
+                key={field.id}
+                id={field.id}
+                label={field.label}
+                type={field.type}
+                value={
+                  (formData[field.id as keyof BasicInfo] as string) || ""
+                }
+                placeholder={field.placeholder}
+                onChange={(value) =>
+                  handleChange(field.id as keyof BasicInfo, value)
+                }
+              />
             ))}
           </div>
 
