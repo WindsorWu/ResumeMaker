@@ -1,5 +1,5 @@
 /**
- * 左侧基本信息
+ * 基本信息区域 - 简约风格
  */
 
 import { useState } from "react";
@@ -7,155 +7,112 @@ import {
   Edit3,
   Mail,
   Phone,
-  MapPin,
-  Globe,
   User,
-  Calendar,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BasicInfoEditorContainer } from "@/containers/BasicInfoEditorContainer";
-import { AvatarDisplay } from "./AvatarDisplay";
-import { ContactInfoItem } from "./ContactInfoItem";
-import { getIconByName } from "@/config/icons";
 import type { BasicInfo, ResumeSection } from "@/types/resume";
 
 interface BasicInfoSectionProps {
   section: ResumeSection;
-  isTopBottomLayout: boolean;
   isEditable: boolean;
   onUpdate: (data: BasicInfo) => void;
 }
 
 export const BasicInfoSection = ({
   section,
-  isTopBottomLayout,
   isEditable,
   onUpdate,
 }: BasicInfoSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const data = section.data as BasicInfo;
 
-  // 联系信息配置
-  const contactInfos = [
-    { key: "email", icon: Mail, value: data.email, bgColor: "bg-blue-500" },
-    { key: "phone", icon: Phone, value: data.phone, bgColor: "bg-green-500" },
-    {
-      key: "location",
-      icon: MapPin,
-      value: data.location,
-      bgColor: "bg-red-500",
-    },
-    {
-      key: "website",
-      icon: Globe,
-      value: data.website,
-      bgColor: "bg-purple-500",
-    },
-    {
-      key: "gender",
-      label: "性别",
-      value: data.gender,
-      icon: User,
-      bgColor: "bg-pink-500",
-    },
-    {
-      key: "age",
-      label: "年龄",
-      value: data.age,
-      icon: Calendar,
-      bgColor: "bg-orange-500",
-    },
-  ].filter((info) => info.value) as Array<{
-    key: string;
-    icon: typeof Mail;
-    value: string;
-    bgColor: string;
-  }>; // 过滤后确保value不为undefined
-
   return (
     <>
-      <div
-        className={`relative group ${
-          isTopBottomLayout
-            ? "bg-white rounded-lg p-6 shadow-sm print:shadow-none print:p-4 print:border-b print:border-gray-300 print:rounded-none print:pb-6"
-            : "print:border-r print:border-gray-300 print:pr-4"
-        }`}
-      >
+      {/* 简约风格头部区域 */}
+      <div className="relative group px-8 pt-8 pb-6 print:px-6 print:pt-6 print:pb-4">
         {/* 编辑按钮 */}
         {isEditable && (
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-blue-100/50 h-8 w-8 print:hidden z-20"
+            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 h-8 w-8 print:hidden z-20"
             onClick={() => {
               setIsEditing(true);
-              console.log("isEditing", isEditing);
             }}
           >
-            <Edit3 className="h-3 w-3 text-blue-600" />
+            <Edit3 className="h-4 w-4 text-gray-600" />
           </Button>
         )}
 
-        <div
-          className={`${
-            isTopBottomLayout
-              ? "flex items-center space-x-6 print:space-x-4"
-              : "flex flex-col h-full min-h-0"
-          }`}
-        >
-          {/* 头像和姓名区域 */}
-          <AvatarDisplay
-            avatar={data.avatar}
-            name={data.name}
-            isTopBottomLayout={isTopBottomLayout}
-          />
+        {/* 头部布局：左侧信息 + 右侧头像 */}
+        <div className="flex items-start justify-between">
+          {/* 左侧：姓名和基本信息 */}
+          <div className="flex-1 pr-6">
+            {/* 姓名 */}
+            <h1 className="text-4xl font-bold text-gray-900 mb-3 print:text-3xl print:mb-2">
+              {data.name || "姓名"}
+            </h1>
 
-          {/* 基本信息内容 */}
-          <div
-            className={`${
-              isTopBottomLayout
-                ? "flex-1 min-w-0"
-                : "flex-1 flex flex-col min-h-0"
-            }`}
-          >
-            {isTopBottomLayout && (
-              <h1 className="text-3xl font-bold text-gray-800 mb-2 print:text-2xl print:mb-1">
-                {data.name || "姓名"}
-              </h1>
-            )}
+            {/* 基本信息行 */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 print:text-xs print:gap-x-4">
+              {/* 性别和年龄 */}
+              {(data.gender || data.age) && (
+                <div className="flex items-center space-x-1">
+                  <User className="h-4 w-4 print:h-3 print:w-3" />
+                  <span>
+                    {data.gender && data.age ? `${data.gender} | ${data.age}岁` : data.gender || `${data.age}岁`}
+                  </span>
+                </div>
+              )}
 
-            {/* 联系信息 + 自定义字段 */}
-            <div
-              className={`${
-                isTopBottomLayout
-                  ? "grid grid-cols-1 md:grid-cols-2 gap-3 print:gap-2 print:grid-cols-2"
-                  : "space-y-3 print:space-y-2 flex-1"
-              }`}
-            >
-              {/* 基本联系信息 */}
-              {contactInfos.map((info) => (
-                <ContactInfoItem
-                  key={info.key}
-                  icon={info.icon}
-                  value={info.value}
-                  bgColor={info.bgColor}
-                  isTopBottomLayout={isTopBottomLayout}
+              {/* 电话 */}
+              {data.phone && (
+                <div className="flex items-center space-x-1">
+                  <Phone className="h-4 w-4 print:h-3 print:w-3" />
+                  <span>{data.phone}</span>
+                </div>
+              )}
+
+              {/* 邮箱 */}
+              {data.email && (
+                <div className="flex items-center space-x-1">
+                  <Mail className="h-4 w-4 print:h-3 print:w-3" />
+                  <span>{data.email}</span>
+                </div>
+              )}
+            </div>
+
+            {/* 第二行：工作经验、求职意向、期望城市 */}
+            <div className="text-sm text-gray-600 mt-2 print:text-xs print:mt-1">
+              {/* 工作经验和求职意向信息 */}
+              {data.customFields && data.customFields.length > 0 && (
+                <span>
+                  {data.customFields.map((field, index) => (
+                    <span key={field.id}>
+                      {field.label} | {field.value}
+                      {index < data.customFields!.length - 1 && ' | '}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* 右侧：头像 */}
+          <div className="shrink-0">
+            <div className="w-24 h-32 print:w-20 print:h-28 rounded-lg overflow-hidden bg-gray-200 border border-gray-300">
+              {data.avatar ? (
+                <img
+                  src={data.avatar}
+                  alt={data.name || "头像"}
+                  className="w-full h-full object-cover"
                 />
-              ))}
-
-              {data.customFields &&
-                data.customFields.map((field) => {
-                  const IconComponent = getIconByName(field.iconName);
-                  return (
-                    <ContactInfoItem
-                      key={field.id}
-                      icon={IconComponent || User}
-                      value={`${field.label} ${field.value}`}
-                      bgColor="bg-indigo-500"
-                      isTopBottomLayout={isTopBottomLayout}
-                    />
-                  );
-                })}
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <User className="h-8 w-8 text-gray-400 print:h-6 print:w-6" />
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -6,12 +6,15 @@ import { LayoutSelector } from '@/components/LayoutSelector'
 import { ActionButtons } from '@/components/ActionButtons'
 import { AppFooter } from '@/components/AppFooter'
 import { ClearConfirmDialog } from '@/components/ClearConfirmDialog'
+import { SectionManager } from '@/components/TimelineManager'
 import { resumeAtom, resetResumeAtom } from '@/store/resumeStore'
+import type { ResumeSection } from '@/types/resume'
 
 export const MainPageContainer = () => {
   const [resume, setResume] = useAtom(resumeAtom)
   const resetResume = useSetAtom(resetResumeAtom)
   const [showClearDialog, setShowClearDialog] = useState(false)
+  const [showTimelineManager, setShowTimelineManager] = useState(false)
 
   const handlePreview = () => {
     window.open('/preview', '_blank')
@@ -26,16 +29,24 @@ export const MainPageContainer = () => {
     setResume({ ...resume, layout })
   }
 
+  const handleManageTimeline = () => {
+    setShowTimelineManager(true)
+  }
+
+  const handleUpdateSections = (sections: ResumeSection[]) => {
+    setResume({ ...resume, sections })
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <AppHeader>
         <LayoutSelector 
-          currentLayout={resume.layout}
           onLayoutChange={handleLayoutChange}
         />
         <ActionButtons 
           onPreview={handlePreview}
           onClear={() => setShowClearDialog(true)}
+          onManageTimeline={handleManageTimeline}
         />
       </AppHeader>
       
@@ -52,6 +63,13 @@ export const MainPageContainer = () => {
         isOpen={showClearDialog}
         onClose={() => setShowClearDialog(false)}
         onConfirm={handleClear}
+      />
+
+              <SectionManager
+          isOpen={showTimelineManager}
+          onClose={() => setShowTimelineManager(false)}
+        sections={resume.sections}
+        onUpdateSections={handleUpdateSections}
       />
       
       <AppFooter />

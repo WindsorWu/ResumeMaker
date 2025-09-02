@@ -4,7 +4,7 @@ export interface CustomField {
   id: string
   label: string
   value: string
-  icon: string
+  icon?: string
   iconName: string
 }
 
@@ -30,15 +30,27 @@ export interface TimelineItem {
   description: string
 }
 
+// 新增：列表项类型
+export interface ListItem {
+  id: string
+  content: string
+}
+
+// 新增：纯文本内容类型
+export interface TextContent {
+  content: string
+}
+
 export interface ResumeSection {
   id: string
   title: string
   icon: string
   iconName: string
-  type: 'basic' | 'timeline' | 'custom'
+  type: 'basic' | 'timeline' | 'list' | 'text' | 'custom'
+  editorType?: 'timeline' | 'list' | 'text' // 新增：编辑器类型
   visible: boolean
   order: number
-  data: BasicInfo | TimelineItem[] | Record<string, unknown>
+  data: BasicInfo | TimelineItem[] | ListItem[] | TextContent | Record<string, unknown>
 }
 
 export interface Resume {

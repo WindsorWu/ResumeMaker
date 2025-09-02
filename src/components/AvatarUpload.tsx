@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
-import { Camera, User } from 'lucide-react'
+import { Camera, User, Crop } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { AvatarCropper } from './AvatarCropper'
 
 interface AvatarUploadProps {
   currentAvatar?: string
@@ -9,6 +10,8 @@ interface AvatarUploadProps {
 
 export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(currentAvatar)
+  const [originalImageUrl, setOriginalImageUrl] = useState<string>('')
+  const [showCropper, setShowCropper] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,15 +32,28 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
       const reader = new FileReader()
       reader.onload = (e) => {
         const result = e.target?.result as string
-        setPreviewUrl(result)
-        onAvatarChange(result)
+        setOriginalImageUrl(result)
+        setShowCropper(true)
       }
       reader.readAsDataURL(file)
     }
   }
 
+  const handleCropSave = (croppedImageUrl: string) => {
+    setPreviewUrl(croppedImageUrl)
+    onAvatarChange(croppedImageUrl)
+    setShowCropper(false)
+  }
+
   const handleClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleCropExisting = () => {
+    if (previewUrl) {
+      setOriginalImageUrl(previewUrl)
+      setShowCropper(true)
+    }
   }
 
   const handleRemove = () => {
@@ -75,9 +91,15 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
           {previewUrl ? '更换头像' : '上传头像'}
         </Button>
         {previewUrl && (
-          <Button onClick={handleRemove} size="sm" variant="outline">
-            移除头像
-          </Button>
+          <>
+            <Button onClick={handleCropExisting} size="sm" variant="outline">
+              <Crop className="h-3 w-3 mr-1" />
+              裁剪
+            </Button>
+            <Button onClick={handleRemove} size="sm" variant="outline">
+              移除头像
+            </Button>
+          </>
         )}
       </div>
       
@@ -91,8 +113,19 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
       
       <p className="text-xs text-gray-500 text-center">
         支持 JPG、PNG 格式<br />
-        文件大小不超过 5MB
+        文件大小不超过 5MB<br />
+        上传后可裁剪调整
       </p>
+
+      {/* 裁剪器 */}
+      {showCropper && originalImageUrl && (
+        <AvatarCropper
+          isOpen={showCropper}
+          onClose={() => setShowCropper(false)}
+          onSave={handleCropSave}
+          imageUrl={originalImageUrl}
+        />
+      )}
     </div>
   )
 } 
