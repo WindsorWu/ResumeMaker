@@ -1,0 +1,97 @@
+/**
+ * 可复用的时间线项目组件
+ */
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import type { TimelineItem as TimelineItemType } from '@/types/resume';
+import { Trash2 } from 'lucide-react';
+
+interface TimelineItemProps {
+  item: TimelineItemType;
+  index: number;
+  onUpdate: (id: string, field: keyof TimelineItemType, value: string) => void;
+  onRemove: (id: string) => void;
+}
+
+export const TimelineItem = ({ item, index, onUpdate, onRemove }: TimelineItemProps) => {
+  return (
+    <div className="border rounded-lg p-4 space-y-4 bg-white shadow-sm">
+      <div className="flex justify-between items-center">
+        <h4 className="font-medium text-gray-800">第 {index + 1} 项</h4>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onRemove(item.id)}
+          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+        >
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700">标题</Label>
+          <Input
+            value={item.title}
+            onChange={(e) => onUpdate(item.id, 'title', e.target.value)}
+            placeholder="例：软件工程师"
+            className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700">副标题</Label>
+          <Input
+            value={item.subtitle || ''}
+            onChange={(e) => onUpdate(item.id, 'subtitle', e.target.value)}
+            placeholder="例：职位、专业"
+            className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700">开始时间</Label>
+          <Input
+            value={item.startDate || ''}
+            onChange={(e) => onUpdate(item.id, 'startDate', e.target.value)}
+            placeholder="例：2020年9月"
+            className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium text-gray-700">结束时间</Label>
+          <Input
+            value={item.endDate || ''}
+            onChange={(e) => onUpdate(item.id, 'endDate', e.target.value)}
+            placeholder="例：2024年6月"
+            className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="md:col-span-2 space-y-2">
+          <Label className="text-sm font-medium text-gray-700">次要副标题</Label>
+          <Input
+            value={item.secondarySubtitle || ''}
+            onChange={(e) => onUpdate(item.id, 'secondarySubtitle', e.target.value)}
+            placeholder="例：公司名称、学校名称"
+            className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-gray-700">详细描述</Label>
+        <Textarea
+          value={item.description}
+          onChange={(e) => onUpdate(item.id, 'description', e.target.value)}
+          placeholder="详细描述工作内容、学习经历或项目经验..."
+          rows={4}
+          className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+    </div>
+  );
+};

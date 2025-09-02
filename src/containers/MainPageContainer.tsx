@@ -1,13 +1,13 @@
+import { AppHeader } from '@/components/AppHeader';
+import { ResumeDisplay } from '@/components/ResumeDisplay';
 import { useAtom, useSetAtom } from 'jotai';
 import { useState } from 'react';
-import { ResumeDisplay } from '@/components/ResumeDisplay';
-import { AppHeader } from '@/components/AppHeader';
 // import { LayoutSelector } from '@/components/LayoutSelector'
 import { ActionButtons } from '@/components/ActionButtons';
 import { AppFooter } from '@/components/AppFooter';
 import { ClearConfirmDialog } from '@/components/ClearConfirmDialog';
-import { SectionManager } from '@/components/TimelineManager';
-import { resumeAtom, resetResumeAtom } from '@/store/resumeStore';
+import { SectionManager } from '@/components/TimelineManagerDialog';
+import { resetResumeAtom, resumeAtom } from '@/store/resumeStore';
 import type { ResumeSection } from '@/types/resume';
 
 export const MainPageContainer = () => {
@@ -40,7 +40,7 @@ export const MainPageContainer = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <AppHeader>
-        {/* <LayoutSelector 
+        {/* <LayoutSelector
           onLayoutChange={handleLayoutChange}
         /> */}
         <ActionButtons

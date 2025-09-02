@@ -1,10 +1,15 @@
-import { useState } from 'react';
-import { Edit3 } from 'lucide-react';
+/**
+ * 时间线展示区域 - 简洁版本
+ */
 import { Button } from '@/components/ui/button';
-import { TimelineEditor } from './TimelineEditor';
+import { getIconByName } from '@/config/icons';
+import { useTimelineSection } from '@/hooks/components/useTimelineSection';
+import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
+import { Edit3 } from 'lucide-react';
+import { ListContent, TextContentRenderer, TimelineContent } from './ContentRenderer';
 import { ListEditor } from './ListEditor';
 import { TextEditor } from './TextEditor';
-import type { TimelineItem, ListItem, TextContent, ResumeSection } from '@/types/resume';
+import { TimelineEditor } from './TimelineEditor';
 
 interface TimelineSectionProps {
   section: ResumeSection;
@@ -13,144 +18,65 @@ interface TimelineSectionProps {
 }
 
 export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSectionProps) => {
-  const [isEditing, setIsEditing] = useState(false);
-
-  // 根据编辑器类型获取对应的数据
-  const getEditorType = () => section.editorType || 'timeline';
-  const editorType = getEditorType();
-
-  // 渲染列表内容
-  const renderListContent = (data: ListItem[]) => (
-    <div className="space-y-3 print:space-y-2">
-      {data.map((item, index) => (
-        <div key={item.id} className="flex items-start space-x-3">
-          <span className="text-sm font-medium text-blue-600 print:text-xs mt-0.5 shrink-0">
-            {index + 1}.
-          </span>
-          <div className="text-sm text-gray-700 leading-relaxed print:text-xs">{item.content}</div>
-        </div>
-      ))}
-    </div>
-  );
-
-  // 渲染时间线内容
-  const renderTimelineContent = (data: TimelineItem[]) => (
-    <div className="space-y-4 print:space-y-3">
-      {data.map((item) => (
-        <div key={item.id} className="relative">
-          <div className="flex justify-between items-start mb-2 print:mb-1">
-            <div className="flex-1">
-              <div className="flex items-center space-x-3 mb-1 print:mb-0.5">
-                <h3 className="text-base font-semibold text-gray-900 print:text-sm">
-                  {item.secondarySubtitle}
-                </h3>
-                <span className="text-sm text-gray-600 print:text-xs">{item.subtitle}</span>
-              </div>
-              {item.title && (
-                <div className="text-sm text-gray-700 print:text-xs font-medium">{item.title}</div>
-              )}
-            </div>
-            {(item.startDate || item.endDate) && (
-              <div className="text-sm text-gray-600 print:text-xs ml-4 shrink-0">
-                {item.startDate} {item.startDate && item.endDate && '-'} {item.endDate}
-              </div>
-            )}
-          </div>
-
-          {item.description && (
-            <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line pl-0 print:text-xs mt-2 print:mt-1">
-              {item.description}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-
-  // 渲染纯文本内容
-  const renderTextContent = (data: TextContent) => (
-    <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line print:text-xs">
-      {data.content}
-    </div>
+  const { isEditing, editorType, startEditing, getEditorProps } = useTimelineSection(
+    section,
+    onUpdate
   );
 
   // 渲染内容
   const renderContent = () => {
     if (editorType === 'list') {
-      return renderListContent(section.data as ListItem[]);
+      return <ListContent data={section.data as ListItem[]} />;
     } else if (editorType === 'text') {
-      return renderTextContent(section.data as TextContent);
+      return <TextContentRenderer data={section.data as TextContent} />;
     } else {
-      return renderTimelineContent(section.data as TimelineItem[]);
+      return <TimelineContent data={section.data as TimelineItem[]} />;
     }
   };
 
-  // 渲染对应的编辑器
+  // 渲染编辑器
   const renderEditor = () => {
+    const editorProps = getEditorProps();
+
     if (editorType === 'list') {
-      return (
-        <ListEditor
-          isOpen={isEditing}
-          onClose={() => setIsEditing(false)}
-          initialData={section.data as ListItem[]}
-          onSave={(newData, iconName) => {
-            onUpdate(newData, iconName);
-          }}
-          title={section.title}
-          currentIcon={section.iconName}
-        />
-      );
+      return <ListEditor {...editorProps} initialData={editorProps.initialData as ListItem[]} />;
     } else if (editorType === 'text') {
-      return (
-        <TextEditor
-          isOpen={isEditing}
-          onClose={() => setIsEditing(false)}
-          initialData={section.data as TextContent}
-          onSave={(newData, iconName) => {
-            onUpdate(newData, iconName);
-          }}
-          title={section.title}
-          currentIcon={section.iconName}
-        />
-      );
+      return <TextEditor {...editorProps} initialData={editorProps.initialData as TextContent} />;
     } else {
       return (
-        <TimelineEditor
-          isOpen={isEditing}
-          onClose={() => setIsEditing(false)}
-          initialData={section.data as TimelineItem[]}
-          onSave={(newData, iconName) => {
-            onUpdate(newData, iconName);
-          }}
-          title={section.title}
-          currentIcon={section.iconName}
-        />
+        <TimelineEditor {...editorProps} initialData={editorProps.initialData as TimelineItem[]} />
       );
     }
   };
+
+  const IconComponent = getIconByName(section.iconName);
 
   return (
     <>
-      {/* 简约风格模块 */}
+      {/* 模块内容 */}
       <div className="relative group">
+        {/* 编辑按钮 */}
         {isEditable && (
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 h-7 w-7 print:hidden z-10"
-            onClick={() => setIsEditing(true)}
+            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 h-8 w-8 print:hidden z-10"
+            onClick={startEditing}
           >
-            <Edit3 className="h-3 w-3 text-gray-600" />
+            <Edit3 className="h-4 w-4 text-gray-600" />
           </Button>
         )}
 
         {/* 模块标题 */}
-        <h2 className="text-lg font-bold text-gray-900 mb-4 print:text-base print:mb-3 border-b border-gray-200 pb-2 print:pb-1">
-          {section.title}
-        </h2>
+        <div className="flex items-center space-x-3 mb-4 print:mb-3">
+          <h2 className="text-xl font-bold text-gray-900 print:text-lg">{section.title}</h2>
+          <div className="p-1">
+            {IconComponent && <IconComponent className="h-4 w-4 print:h-3 print:w-3" />}
+          </div>
+        </div>
 
-        {/* 内容渲染 */}
-        {renderContent()}
+        {/* 内容区域 */}
+        <div>{renderContent()}</div>
       </div>
 
       {/* 编辑器 */}

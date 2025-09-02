@@ -1,49 +1,43 @@
-import { User } from 'lucide-react';
+/**
+ * 头像显示组件 - 简洁版本
+ */
 
 interface AvatarDisplayProps {
-  avatar?: string;
-  name: string;
-  isTopBottomLayout: boolean;
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
 }
 
-export const AvatarDisplay = ({ avatar, name, isTopBottomLayout }: AvatarDisplayProps) => {
+const sizeClasses = {
+  sm: 'w-16 h-20 print:w-14 print:h-18',
+  md: 'w-24 h-32 print:w-20 print:h-28',
+  lg: 'w-32 h-40 print:w-28 print:h-36',
+};
+
+// const iconSizes = {
+//   sm: 'h-6 w-6 print:h-5 print:w-5',
+//   md: 'h-8 w-8 print:h-6 print:w-6',
+//   lg: 'h-10 w-10 print:h-8 print:w-8',
+// };
+
+export const AvatarDisplay = ({
+  src,
+  alt = '头像',
+  size = 'md',
+  className = '',
+}: AvatarDisplayProps) => {
   return (
-    <div className={`${isTopBottomLayout ? 'flex-shrink-0' : 'mb-6 print:mb-4 text-center'}`}>
-      {avatar ? (
+    <>
+      {src ? (
         <div
-          className={`rounded-full overflow-hidden ${
-            isTopBottomLayout
-              ? 'w-20 h-20 border-3 border-gray-200 print:w-16 print:h-16 print:border-2'
-              : 'w-24 h-24 mx-auto mb-3 border-3 border-gray-200 print:w-16 print:h-16 print:mb-2 print:border-2'
-          }`}
+          className={`${sizeClasses[size]} rounded-lg overflow-hidden bg-gray-200 border border-gray-300 ${className}`}
         >
-          <img src={avatar} alt="头像" className="w-full h-full object-cover" />
+          <img src={src} alt={alt} className="w-full h-full object-cover" />
         </div>
       ) : (
-        <div
-          className={`rounded-full bg-gray-100 border-3 border-gray-200 flex items-center justify-center ${
-            isTopBottomLayout
-              ? 'w-20 h-20 print:w-16 print:h-16 print:border-2'
-              : 'w-24 h-24 mx-auto mb-3 print:w-16 print:h-16 print:mb-2 print:border-2'
-          }`}
-        >
-          <User
-            className={`text-gray-400 ${
-              isTopBottomLayout ? 'h-10 w-10 print:h-8 print:w-8' : 'h-12 w-12 print:h-8 print:w-8'
-            }`}
-          />
-        </div>
+        <></>
       )}
-
-      {/* 姓名显示 - 只在左右布局显示 */}
-      {!isTopBottomLayout && (
-        <>
-          <h1 className="text-2xl font-bold text-gray-800 mb-3 print:text-lg print:mb-2">
-            {name || '姓名'}
-          </h1>
-          <div className="w-16 h-0.5 bg-gray-400 mx-auto rounded-full print:w-12"></div>
-        </>
-      )}
-    </div>
+    </>
   );
 };

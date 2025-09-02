@@ -1,10 +1,13 @@
-import { Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+/**
+ * 自定义字段项组件 - 简洁版本
+ */
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { useCustomFieldItem } from '@/hooks/components/useCustomFieldItem';
+import type { CustomField } from '@/types/resume';
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { FormField } from './FormField';
 import { IconSelector } from './IconSelector';
-import { getIconByName } from '@/config/icons';
-import type { CustomField } from '@/types/resume';
 
 interface CustomFieldItemProps {
   field: CustomField;
@@ -21,7 +24,13 @@ export const CustomFieldItem = ({
   onUpdate,
   onRemove,
 }: CustomFieldItemProps) => {
-  const IconComponent = getIconByName(field.iconName);
+  const {
+    iconComponent: IconComponent,
+    displayName,
+    updateLabel,
+    updateValue,
+    updateIcon,
+  } = useCustomFieldItem(field, onUpdate);
 
   return (
     <div className="border border-gray-200 rounded-lg p-3 space-y-3">
@@ -30,7 +39,7 @@ export const CustomFieldItem = ({
           <div className="p-1 bg-indigo-100 rounded">
             {IconComponent && <IconComponent className="h-4 w-4 text-indigo-600" />}
           </div>
-          <span className="text-sm font-medium">{field.label || '未命名字段'}</span>
+          <span className="text-sm font-medium">{displayName}</span>
         </div>
         <div className="flex items-center space-x-1">
           <Button variant="ghost" size="icon" onClick={onToggleExpansion} className="h-6 w-6">
@@ -55,27 +64,19 @@ export const CustomFieldItem = ({
               label="字段名称"
               value={field.label}
               placeholder="例如：GitHub、LinkedIn"
-              onChange={(value) => onUpdate({ label: value })}
+              onChange={updateLabel}
             />
             <FormField
               id={`${field.id}-value`}
               label="字段值"
               value={field.value}
               placeholder="请输入对应的值"
-              onChange={(value) => onUpdate({ value })}
+              onChange={updateValue}
             />
           </div>
           <div className="space-y-2">
             <Label>图标</Label>
-            <IconSelector
-              selectedIcon={field.iconName}
-              onIconSelect={(iconName) =>
-                onUpdate({
-                  iconName,
-                  icon: iconName,
-                })
-              }
-            />
+            <IconSelector selectedIcon={field.iconName} onIconSelect={updateIcon} />
           </div>
         </div>
       )}

@@ -1,12 +1,13 @@
 /**
- * 基本信息区域 - 简约风格
+ * 基本信息区域 - 简洁版本
  */
-
-import { useState } from 'react';
-import { Edit3, Mail, Phone, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BasicInfoEditorContainer } from '@/containers/BasicInfoEditorContainer';
+import { useBasicInfoSection } from '@/hooks/components/useBasicInfoSection';
 import type { BasicInfo, ResumeSection } from '@/types/resume';
+import { Edit3, Mail, Phone, User } from 'lucide-react';
+import { AvatarDisplay } from './AvatarDisplay';
+import { InfoItem } from './InfoItem';
 
 interface BasicInfoSectionProps {
   section: ResumeSection;
@@ -15,8 +16,17 @@ interface BasicInfoSectionProps {
 }
 
 export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSectionProps) => {
-  const [isEditing, setIsEditing] = useState(false);
   const data = section.data as BasicInfo;
+
+  const {
+    isEditing,
+    startEditing,
+    closeEditing,
+    handleSave,
+    formatGenderAge,
+    formatCustomFields,
+    hasValue,
+  } = useBasicInfoSection(data, onUpdate);
 
   return (
     <>
@@ -28,9 +38,7 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
             variant="ghost"
             size="icon"
             className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 h-8 w-8 print:hidden z-20"
-            onClick={() => {
-              setIsEditing(true);
-            }}
+            onClick={startEditing}
           >
             <Edit3 className="h-4 w-4 text-gray-600" />
           </Button>
@@ -49,64 +57,27 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 print:text-xs print:gap-x-4">
               {/* 性别和年龄 */}
               {(data.gender || data.age) && (
-                <div className="flex items-center space-x-1">
-                  <User className="h-4 w-4 print:h-3 print:w-3" />
-                  <span>
-                    {data.gender && data.age
-                      ? `${data.gender} | ${data.age}岁`
-                      : data.gender || `${data.age}岁`}
-                  </span>
-                </div>
+                <InfoItem icon={User}>{formatGenderAge(data.gender, data.age)}</InfoItem>
               )}
 
               {/* 电话 */}
-              {data.phone && (
-                <div className="flex items-center space-x-1">
-                  <Phone className="h-4 w-4 print:h-3 print:w-3" />
-                  <span>{data.phone}</span>
-                </div>
-              )}
+              {hasValue(data.phone) && <InfoItem icon={Phone}>{data.phone}</InfoItem>}
 
               {/* 邮箱 */}
-              {data.email && (
-                <div className="flex items-center space-x-1">
-                  <Mail className="h-4 w-4 print:h-3 print:w-3" />
-                  <span>{data.email}</span>
-                </div>
-              )}
+              {hasValue(data.email) && <InfoItem icon={Mail}>{data.email}</InfoItem>}
             </div>
 
-            {/* 第二行：工作经验、求职意向、期望城市 */}
-            <div className="text-sm text-gray-600 mt-2 print:text-xs print:mt-1">
-              {/* 工作经验和求职意向信息 */}
-              {data.customFields && data.customFields.length > 0 && (
-                <span>
-                  {data.customFields.map((field, index) => (
-                    <span key={field.id}>
-                      {field.label} | {field.value}
-                      {index < data.customFields!.length - 1 && ' | '}
-                    </span>
-                  ))}
-                </span>
-              )}
-            </div>
+            {/* 第二行：自定义字段 */}
+            {data.customFields && data.customFields.length > 0 && (
+              <div className="text-sm text-gray-600 mt-2 print:text-xs print:mt-1">
+                {formatCustomFields(data.customFields)}
+              </div>
+            )}
           </div>
 
           {/* 右侧：头像 */}
           <div className="shrink-0">
-            <div className="w-24 h-32 print:w-20 print:h-28 rounded-lg overflow-hidden bg-gray-200 border border-gray-300">
-              {data.avatar ? (
-                <img
-                  src={data.avatar}
-                  alt={data.name || '头像'}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <User className="h-8 w-8 text-gray-400 print:h-6 print:w-6" />
-                </div>
-              )}
-            </div>
+            <AvatarDisplay src={data.avatar} alt={data.name || '头像'} size="md" />
           </div>
         </div>
       </div>
@@ -115,11 +86,9 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
       {isEditing && (
         <BasicInfoEditorContainer
           isOpen={true}
-          onClose={() => setIsEditing(false)}
+          onClose={closeEditing}
           initialData={data}
-          onSave={(newData) => {
-            onUpdate(newData);
-          }}
+          onSave={handleSave}
         />
       )}
     </>

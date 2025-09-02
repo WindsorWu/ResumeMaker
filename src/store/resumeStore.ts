@@ -1,6 +1,6 @@
+import type { Resume } from '@/types/resume';
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
-import type { Resume } from '@/types/resume';
 
 // 默认简历数据
 const initialResume: Resume = {

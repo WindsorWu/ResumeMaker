@@ -1,6 +1,8 @@
-import { useState } from 'react';
+/**
+ * 图标选择器组件 - 简洁版本
+ */
 import { Button } from '@/components/ui/button';
-import { availableIcons } from '@/config/icons';
+import { useIconSelector } from '@/hooks/components/useIconSelector';
 
 interface IconSelectorProps {
   selectedIcon: string;
@@ -8,11 +10,7 @@ interface IconSelectorProps {
 }
 
 export const IconSelector = ({ selectedIcon, onIconSelect }: IconSelectorProps) => {
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const filteredIcons = availableIcons.filter((icon) =>
-    icon.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const { searchTerm, filteredIcons, hasResults, setSearchTerm } = useIconSelector();
 
   return (
     <div className="space-y-4">
@@ -41,9 +39,7 @@ export const IconSelector = ({ selectedIcon, onIconSelect }: IconSelectorProps) 
         })}
       </div>
 
-      {filteredIcons.length === 0 && (
-        <p className="text-center text-gray-500 py-4">没有找到匹配的图标</p>
-      )}
+      {!hasResults && <p className="text-center text-gray-500 py-4">没有找到匹配的图标</p>}
     </div>
   );
 };
