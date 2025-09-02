@@ -1,6 +1,8 @@
 /**
- * 文本编辑器 - 自动保存版本
+ * 文本编辑器组件
  */
+import { SimpleIconInput } from '@/components/SimpleIconInput';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,52 +11,55 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { DynamicIcon } from "@/components/DynamicIcon";
 import { useTextEditor } from '@/hooks/components/useTextEditor';
 import type { TextContent } from '@/types/resume';
-import { IconSelectorWithToggle } from '../IconSelectorWithToggle';
+import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 
 interface TextEditorProps {
   isOpen: boolean;
   onClose: () => void;
+  title: string;
   initialData: TextContent;
   onSave: (data: TextContent, iconName?: string) => void;
-  title: string;
-  currentIcon: string;
+  selectedIcon: string;
+  iconEnabled: boolean;
 }
 
 export const TextEditor = ({
   isOpen,
   onClose,
+  title,
   initialData,
   onSave,
-  title,
-  currentIcon,
+  selectedIcon: initialIcon,
 }: TextEditorProps) => {
   const {
     content,
     selectedIcon,
     iconEnabled,
+    saveStatusText,
     wordCount,
     lineCount,
-    saveStatusText,
     setContent,
     setSelectedIcon,
     setIconEnabled,
     handleClose,
-  } = useTextEditor(isOpen, initialData, currentIcon, onSave, onClose);
+  } = useTextEditor(isOpen, initialData, initialIcon, onSave, onClose);
 
-  // 直接使用 DynamicIcon
+  const handleSave = () => {
+    onSave({ content }, iconEnabled ? selectedIcon : '');
+    onClose();
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
-              {iconEnabled && selectedIcon && <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />}
-            </div>
-            <span>编辑{title}</span>
+          <DialogTitle className="flex items-center">
+            {iconEnabled && selectedIcon && (
+              <DynamicIcon name={selectedIcon as IconName} className="h-5 w-5 text-white" />
+            )}
+            编辑 {title}
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
           </DialogTitle>
           <DialogDescription>在此处编辑您的{title}信息，所有更改将自动保存。</DialogDescription>
@@ -62,12 +67,33 @@ export const TextEditor = ({
 
         <div className="space-y-6">
           {/* 模块图标选择 */}
-          <IconSelectorWithToggle
-            selectedIcon={selectedIcon}
-            onIconSelect={setSelectedIcon}
-            onIconToggle={setIconEnabled}
-            initialEnabled={iconEnabled}
-          />
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="icon-toggle"
+                checked={iconEnabled}
+                onChange={(e) => setIconEnabled(e.target.checked)}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+              />
+              <label
+                htmlFor="icon-toggle"
+                className="text-sm font-medium text-gray-700 cursor-pointer"
+              >
+                显示模块图标
+              </label>
+            </div>
+
+            {iconEnabled && (
+              <div className="pl-6 border-l-2 border-blue-100">
+                <SimpleIconInput
+                  value={selectedIcon}
+                  onChange={setSelectedIcon}
+                  placeholder="输入图标名称，如 file-text, edit, document..."
+                />
+              </div>
+            )}
+          </div>
 
           {/* 内容编辑 */}
           <div>
@@ -81,33 +107,17 @@ export const TextEditor = ({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="请输入内容..."
-              className="min-h-[300px] resize-none font-mono text-sm leading-relaxed"
-              rows={15}
+              className="min-h-[200px] resize-y"
             />
           </div>
 
-          {/* 使用提示 */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <h4 className="text-sm font-medium text-green-800 mb-2">💡 使用提示</h4>
-            <ul className="text-xs text-green-700 space-y-1">
-              <li>• 适用于个人介绍、自我评价等大段文本内容</li>
-              <li>• 支持多行文本，换行会在简历中保留</li>
-              <li>• 可以编写详细的个人描述或专业总结</li>
-              <li>• 文本将在简历中按原格式显示</li>
-            </ul>
+          {/* 操作按钮 */}
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <Button variant="outline" onClick={handleClose}>
+              取消
+            </Button>
+            <Button onClick={handleSave}>保存</Button>
           </div>
-
-          {/* 预览区域 */}
-          {content.trim() && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">预览</label>
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">
-                  {content}
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </DialogContent>
     </Dialog>

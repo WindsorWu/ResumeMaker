@@ -1,83 +1,111 @@
 /**
- * 自定义字段项组件 - 简洁版本
+ * 自定义字段项组件
  */
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useCustomFieldItem } from '@/hooks/components/useCustomFieldItem';
 import type { CustomField } from '@/types/resume';
-import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
-import { FormField } from './FormField';
-import { IconSelector } from './IconSelector';
+import { Trash2 } from 'lucide-react';
+import { DynamicIcon } from 'lucide-react/dynamic';
+import { useState } from 'react';
+import { SimpleIconInput } from './SimpleIconInput';
 
 interface CustomFieldItemProps {
   field: CustomField;
-  isExpanded: boolean;
-  onToggleExpansion: () => void;
-  onUpdate: (updates: Partial<CustomField>) => void;
-  onRemove: () => void;
+  onUpdate: (fieldId: string, updates: Partial<CustomField>) => void;
+  onDelete: (fieldId: string) => void;
 }
 
-export const CustomFieldItem = ({
-  field,
-  isExpanded,
-  onToggleExpansion,
-  onUpdate,
-  onRemove,
-}: CustomFieldItemProps) => {
-  const {
-    iconComponent: IconComponent,
-    displayName,
-    updateLabel,
-    updateValue,
-    updateIcon,
-  } = useCustomFieldItem(field, onUpdate);
+export const CustomFieldItem = ({ field, onUpdate, onDelete }: CustomFieldItemProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingLabel, setEditingLabel] = useState(field.label);
+  const [editingValue, setEditingValue] = useState(field.value);
+  const [editingIcon, setEditingIcon] = useState(field.iconName);
 
-  return (
-    <div className="border border-gray-200 rounded-lg p-3 space-y-3">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="p-1 bg-indigo-100 rounded">{IconComponent && IconComponent}</div>
-          <span className="text-sm font-medium">{displayName}</span>
+  const handleSave = () => {
+    onUpdate(field.id, {
+      label: editingLabel,
+      value: editingValue,
+      iconName: editingIcon,
+    });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditingLabel(field.label);
+    setEditingValue(field.value);
+    setEditingIcon(field.iconName);
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor={`label-${field.id}`}>字段名称</Label>
+            <Input
+              id={`label-${field.id}`}
+              value={editingLabel}
+              onChange={(e) => setEditingLabel(e.target.value)}
+              placeholder="如：个人网站、GitHub等"
+            />
+          </div>
+          <div>
+            <Label htmlFor={`value-${field.id}`}>字段值</Label>
+            <Input
+              id={`value-${field.id}`}
+              value={editingValue}
+              onChange={(e) => setEditingValue(e.target.value)}
+              placeholder="如：https://example.com"
+            />
+          </div>
         </div>
-        <div className="flex items-center space-x-1">
-          <Button variant="ghost" size="icon" onClick={onToggleExpansion} className="h-6 w-6">
-            {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+
+        {/* 图标选择 */}
+        <div>
+          <SimpleIconInput
+            value={editingIcon}
+            onChange={setEditingIcon}
+            label="图标"
+            placeholder="输入图标名称，如 globe, link, github..."
+          />
+        </div>
+
+        <div className="flex justify-end space-x-2">
+          <Button variant="outline" size="sm" onClick={handleCancel}>
+            取消
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onRemove}
-            className="h-6 w-6 text-red-600 hover:text-red-700"
-          >
-            <Trash2 className="h-3 w-3" />
+          <Button size="sm" onClick={handleSave}>
+            保存
           </Button>
         </div>
       </div>
+    );
+  }
 
-      {isExpanded && (
-        <div className="space-y-3 pt-3 border-t border-gray-100">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <FormField
-              id={`${field.id}-label`}
-              label="字段名称"
-              value={field.label}
-              placeholder="例如：GitHub、LinkedIn"
-              onChange={updateLabel}
-            />
-            <FormField
-              id={`${field.id}-value`}
-              label="字段值"
-              value={field.value}
-              placeholder="请输入对应的值"
-              onChange={updateValue}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>图标</Label>
-            <IconSelector selectedIcon={field.iconName} onIconSelect={updateIcon} />
-          </div>
+  return (
+    <div className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+      <div className="flex items-center space-x-3">
+        {field.iconName && (
+          <DynamicIcon
+            name={field.iconName as 'heart' | 'star' | 'user'}
+            className="h-4 w-4 text-indigo-600"
+          />
+        )}
+        <div>
+          <span className="text-sm font-medium text-gray-900">{field.label}</span>
+          <span className="text-sm text-gray-600 ml-2">{field.value}</span>
         </div>
-      )}
+      </div>
+      <div className="flex items-center space-x-2">
+        <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)}>
+          编辑
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => onDelete(field.id)}>
+          <Trash2 className="h-4 w-4 text-red-500" />
+        </Button>
+      </div>
     </div>
   );
 };

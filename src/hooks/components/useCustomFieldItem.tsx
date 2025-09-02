@@ -2,8 +2,8 @@
  * 自定义字段项业务逻辑 Hook
  */
 // import { getIconByName } from '@/config/icons';
-import { DynamicIcon } from '@/components/DynamicIcon';
 import type { CustomField } from '@/types/resume';
+import { DynamicIcon } from 'lucide-react/dynamic';
 
 export const useCustomFieldItem = (
   field: CustomField,
