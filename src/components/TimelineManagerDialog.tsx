@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useSectionManager } from '@/hooks/components/useSectionManager';
 import type { ResumeSection } from '@/types/resume';
@@ -30,24 +31,16 @@ export const SectionManager = ({
 }: SectionManagerProps) => {
   const {
     managedSections,
-    draggedIndex,
     editingId,
     editingTitle,
     showIconSelector,
     setEditingTitle,
     setShowIconSelector,
-    getEditorType,
-    updateEditorType,
-    handleDragStart,
-    handleDragOver,
-    handleDrop,
-    toggleVisibility,
     deleteSection,
     addCustomSection,
     startEditing,
     saveEditing,
     cancelEditing,
-    updateSectionIcon,
   } = useSectionManager(sections, onUpdateSections);
 
   return (
@@ -76,27 +69,42 @@ export const SectionManager = ({
               <SectionItem
                 key={section.id}
                 section={section}
-                index={index}
-                isDragging={draggedIndex === index}
-                isEditing={editingId === section.id}
-                editingTitle={editingTitle}
-                showIconSelector={showIconSelector === section.id}
-                onDragStart={handleDragStart}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onStartEditing={startEditing}
-                onSaveEditing={saveEditing}
-                onCancelEditing={cancelEditing}
-                onTitleChange={setEditingTitle}
-                onToggleIconSelector={(sectionId) =>
-                  setShowIconSelector(showIconSelector === sectionId ? null : sectionId)
+                isExpanded={showIconSelector === section.id}
+                onToggleExpanded={() =>
+                  setShowIconSelector(showIconSelector === section.id ? null : section.id)
                 }
-                onIconSelect={updateSectionIcon}
-                onEditorTypeChange={updateEditorType}
-                onToggleVisibility={toggleVisibility}
-                onDelete={deleteSection}
-                getEditorType={getEditorType}
-              />
+                onEdit={() => startEditing(section)}
+                onDelete={() => deleteSection(section.id)}
+                canMoveUp={index > 0}
+                canMoveDown={index < managedSections.length - 1}
+                onMoveUp={() => {
+                  // TODO: 实现移动逻辑
+                  console.log('Move up:', section.id);
+                }}
+                onMoveDown={() => {
+                  // TODO: 实现移动逻辑
+                  console.log('Move down:', section.id);
+                }}
+              >
+                {/* 编辑内容 */}
+                {editingId === section.id && (
+                  <div className="space-y-3">
+                    <Input
+                      value={editingTitle}
+                      onChange={(e) => setEditingTitle(e.target.value)}
+                      placeholder="模块标题"
+                    />
+                    <div className="flex justify-end space-x-2">
+                      <Button variant="outline" size="sm" onClick={cancelEditing}>
+                        取消
+                      </Button>
+                      <Button size="sm" onClick={saveEditing}>
+                        保存
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </SectionItem>
             ))}
           </div>
 

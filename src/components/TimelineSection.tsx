@@ -1,12 +1,12 @@
 /**
  * 时间线展示区域 - 简洁版本
  */
-import { DynamicIcon } from '@/components/DynamicIcon';
 import { ListEditor, TextEditor, TimelineEditor } from '@/components/editors';
 import { Button } from '@/components/ui/button';
 import { useTimelineSection } from '@/hooks/components/useTimelineSection';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
 import { Edit3 } from 'lucide-react';
+import { DynamicIcon } from 'lucide-react/dynamic';
 import { ListContent, TextContentRenderer, TimelineContent } from './ContentRenderer';
 
 interface TimelineSectionProps {

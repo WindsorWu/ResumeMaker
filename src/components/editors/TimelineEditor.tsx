@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { DynamicIcon } from "@/components/DynamicIcon";
 import { useTimelineEditor } from '@/hooks/components/useTimelineEditor';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { IconSelectorWithToggle } from '../IconSelectorWithToggle';
+import { DynamicIcon } from 'lucide-react/dynamic';
+import { SimpleIconInput } from '../SimpleIconInput';
 import { TimelineItem } from '../TimelineItem';
 
 interface TimelineEditorProps {
@@ -54,7 +54,9 @@ export const TimelineEditor = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
             <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-              {iconEnabled && selectedIcon && <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />}
+              {iconEnabled && selectedIcon && (
+                <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />
+              )}
             </div>
             <span>编辑{title}</span>
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
@@ -64,7 +66,7 @@ export const TimelineEditor = ({
 
         <div className="space-y-6">
           {/* 图标选择区域 */}
-          <IconSelectorWithToggle
+          <SimpleIconInput
             selectedIcon={selectedIcon}
             onIconSelect={setSelectedIcon}
             onIconToggle={setIconEnabled}

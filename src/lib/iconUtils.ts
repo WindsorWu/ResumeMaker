@@ -16,7 +16,7 @@ export const isValidIconName = (name: string): boolean => {
   if (!name) return false;
   const componentName = iconNameToComponentName(name);
   const iconRecord = LucideIcons as Record<string, unknown>;
-  return !!iconRecord[componentName] && typeof iconRecord[componentName] === 'function';
+  return !!iconRecord[componentName];
 };
 
 // 获取所有可用图标名称（用于搜索和提示）

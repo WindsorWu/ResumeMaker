@@ -2,9 +2,9 @@
  * 简化的图标输入组件
  * 只提供输入框和图标验证功能
  */
-import { DynamicIcon } from '@/components/DynamicIcon';
 import { Input } from '@/components/ui/input';
 import { isValidIconName } from '@/lib/iconUtils';
+import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
 
 interface SimpleIconInputProps {
@@ -13,6 +13,23 @@ interface SimpleIconInputProps {
   placeholder?: string;
   label?: string;
 }
+
+const ErrorInfo = () => {
+  return (
+    <p className="text-xs text-gray-500">
+      访问{' '}
+      <a
+        href="https://lucide.dev/icons/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:underline"
+      >
+        Lucide 官网
+      </a>{' '}
+      查看所有可用图标
+    </p>
+  );
+};
 
 export const SimpleIconInput = ({
   value,
@@ -49,8 +66,11 @@ export const SimpleIconInput = ({
               isValid ? 'bg-gray-50 border-gray-200' : 'bg-red-50 border-red-200'
             }`}
           >
-            {isValid ? (
-              <DynamicIcon name={inputValue} className="h-5 w-5 text-gray-600" />
+            {isValid && inputValue ? (
+              <DynamicIcon
+                name={inputValue as 'heart' | 'star' | 'user'}
+                className="h-5 w-5 text-gray-600"
+              />
             ) : (
               <span className="text-red-500 text-xs">!</span>
             )}
@@ -60,24 +80,14 @@ export const SimpleIconInput = ({
 
       {/* 错误提示 */}
       {inputValue && !isValid && (
-        <p className="text-sm text-red-500">图标 "{inputValue}" 不存在，请检查名称是否正确</p>
+        <>
+          <p className="text-sm text-red-500">图标 "{inputValue}" 不存在，请检查名称是否正确</p>
+          <ErrorInfo />
+        </>
       )}
 
       {/* 帮助提示 */}
-      {!inputValue && (
-        <p className="text-xs text-gray-500">
-          访问{' '}
-          <a
-            href="https://lucide.dev/icons/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline"
-          >
-            Lucide 官网
-          </a>{' '}
-          查看所有可用图标
-        </p>
-      )}
+      {!inputValue && <ErrorInfo />}
     </div>
   );
 };

@@ -1,10 +1,10 @@
 /**
  * 简历模块项组件 - 简化版本
  */
-import { DynamicIcon } from '@/components/DynamicIcon';
 import { Button } from '@/components/ui/button';
 import type { ResumeSection } from '@/types/resume';
 import { ChevronDown, ChevronUp, Edit, Plus, Trash2 } from 'lucide-react';
+import { DynamicIcon } from 'lucide-react/dynamic';
 import React, { memo } from 'react';
 
 interface SectionItemProps {

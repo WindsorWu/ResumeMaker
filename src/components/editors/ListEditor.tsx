@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { DynamicIcon } from "@/components/DynamicIcon";
 import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { IconSelectorWithToggle } from '../IconSelectorWithToggle';
+import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 import { ListItem } from '../ListItem';
+import { SimpleIconInput } from '../SimpleIconInput';
 
 interface ListEditorProps {
   isOpen: boolean;
@@ -42,7 +42,6 @@ export const ListEditor = ({
     removeItem,
     updateItem,
     setSelectedIcon,
-    setIconEnabled,
     handleClose,
   } = useListEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
@@ -54,7 +53,9 @@ export const ListEditor = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
             <div className="p-2 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg">
-              {iconEnabled && selectedIcon && <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />}
+              {iconEnabled && selectedIcon && (
+                <DynamicIcon name={selectedIcon as IconName} className="h-5 w-5 text-white" />
+              )}
             </div>
             <span>编辑{title}</span>
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
@@ -64,11 +65,11 @@ export const ListEditor = ({
 
         <div className="space-y-6">
           {/* 模块图标选择 */}
-          <IconSelectorWithToggle
-            selectedIcon={selectedIcon}
-            onIconSelect={setSelectedIcon}
-            onIconToggle={setIconEnabled}
-            initialEnabled={iconEnabled}
+          <SimpleIconInput
+            value={selectedIcon as IconName}
+            onChange={setSelectedIcon}
+            label="图标"
+            placeholder="输入图标名称，如 globe, link, github..."
           />
 
           {/* 列表内容 */}
