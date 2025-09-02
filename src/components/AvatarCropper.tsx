@@ -1,38 +1,48 @@
 /**
  * 头像裁剪组件
  */
-import { useState, useRef, useCallback } from 'react'
-import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
-import 'react-image-crop/dist/ReactCrop.css'
+import { useState, useRef, useCallback } from 'react';
+import ReactCrop, { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import 'react-image-crop/dist/ReactCrop.css';
 
 interface AvatarCropperProps {
-  isOpen: boolean
-  onClose: () => void
-  onSave: (croppedImageUrl: string) => void
-  imageUrl: string
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (croppedImageUrl: string) => void;
+  imageUrl: string;
 }
 
 // 辅助函数：将canvas转换为blob
 function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
   return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      resolve(blob!)
-    }, 'image/jpeg', 0.9)
-  })
+    canvas.toBlob(
+      (blob) => {
+        resolve(blob!);
+      },
+      'image/jpeg',
+      0.9
+    );
+  });
 }
 
 // 辅助函数：获取裁剪后的图片
 async function getCroppedImg(image: HTMLImageElement, crop: Crop): Promise<string> {
-  const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')!
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d')!;
 
-  const scaleX = image.naturalWidth / image.width
-  const scaleY = image.naturalHeight / image.height
+  const scaleX = image.naturalWidth / image.width;
+  const scaleY = image.naturalHeight / image.height;
 
-  canvas.width = crop.width * scaleX
-  canvas.height = crop.height * scaleY
+  canvas.width = crop.width * scaleX;
+  canvas.height = crop.height * scaleY;
 
   ctx.drawImage(
     image,
@@ -44,20 +54,20 @@ async function getCroppedImg(image: HTMLImageElement, crop: Crop): Promise<strin
     0,
     crop.width * scaleX,
     crop.height * scaleY
-  )
+  );
 
-  const blob = await canvasToBlob(canvas)
-  return URL.createObjectURL(blob)
+  const blob = await canvasToBlob(canvas);
+  return URL.createObjectURL(blob);
 }
 
 export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropperProps) => {
-  const [crop, setCrop] = useState<Crop>()
-  const [completedCrop, setCompletedCrop] = useState<Crop>()
-  const imgRef = useRef<HTMLImageElement>(null)
+  const [crop, setCrop] = useState<Crop>();
+  const [completedCrop, setCompletedCrop] = useState<Crop>();
+  const imgRef = useRef<HTMLImageElement>(null);
 
   const onImageLoad = useCallback((e: React.SyntheticEvent<HTMLImageElement>) => {
-    const { width, height } = e.currentTarget
-    
+    const { width, height } = e.currentTarget;
+
     // 创建一个居中的正方形裁剪区域
     const crop = centerCrop(
       makeAspectCrop(
@@ -71,23 +81,23 @@ export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropp
       ),
       width,
       height
-    )
-    
-    setCrop(crop)
-    setCompletedCrop(crop)
-  }, [])
+    );
+
+    setCrop(crop);
+    setCompletedCrop(crop);
+  }, []);
 
   const handleSave = async () => {
     if (completedCrop && imgRef.current) {
       try {
-        const croppedImageUrl = await getCroppedImg(imgRef.current, completedCrop)
-        onSave(croppedImageUrl)
-        onClose()
+        const croppedImageUrl = await getCroppedImg(imgRef.current, completedCrop);
+        onSave(croppedImageUrl);
+        onClose();
       } catch (error) {
-        console.error('Failed to crop image:', error)
+        console.error('Failed to crop image:', error);
       }
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -95,7 +105,7 @@ export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropp
         <DialogHeader>
           <DialogTitle>裁剪头像</DialogTitle>
         </DialogHeader>
-        
+
         <div className="flex justify-center p-4">
           <ReactCrop
             crop={crop}
@@ -124,5 +134,5 @@ export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropp
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+};

@@ -1,45 +1,53 @@
-import { BasicInfoSection } from './BasicInfoSection'
-import { TimelineSection } from './TimelineSection'
-import type { Resume, BasicInfo, TimelineItem, ListItem, TextContent } from '@/types/resume'
+import { BasicInfoSection } from './BasicInfoSection';
+import { TimelineSection } from './TimelineSection';
+import type { Resume, BasicInfo, TimelineItem, ListItem, TextContent } from '@/types/resume';
 
 interface ResumeDisplayProps {
-  resume: Resume
-  onUpdateResume?: (resume: Resume) => void
-  isEditable?: boolean
-  className?: string
+  resume: Resume;
+  onUpdateResume?: (resume: Resume) => void;
+  isEditable?: boolean;
+  className?: string;
 }
 
-export const ResumeDisplay = ({ 
-  resume, 
-  onUpdateResume, 
+export const ResumeDisplay = ({
+  resume,
+  onUpdateResume,
   isEditable = false,
-  className = ""
+  className = '',
 }: ResumeDisplayProps) => {
-  const updateSection = (sectionId: string, data: BasicInfo | TimelineItem[] | ListItem[] | TextContent, iconName?: string) => {
-    if (!onUpdateResume) return
-    const updatedSections = resume.sections.map(section => {
+  const updateSection = (
+    sectionId: string,
+    data: BasicInfo | TimelineItem[] | ListItem[] | TextContent,
+    iconName?: string
+  ) => {
+    if (!onUpdateResume) return;
+    const updatedSections = resume.sections.map((section) => {
       if (section.id === sectionId) {
-        const updatedSection = { ...section, data }
+        const updatedSection = { ...section, data };
         if (iconName) {
-          updatedSection.iconName = iconName
+          updatedSection.iconName = iconName;
         }
-        return updatedSection
+        return updatedSection;
       }
-      return section
-    })
-    onUpdateResume({ ...resume, sections: updatedSections })
-  }
+      return section;
+    });
+    onUpdateResume({ ...resume, sections: updatedSections });
+  };
 
   const getBasicInfoSection = () => {
-    return resume.sections.find(section => section.type === 'basic')
-  }
+    return resume.sections.find((section) => section.type === 'basic');
+  };
 
   const getTimelineSections = () => {
-    return resume.sections.filter(section => section.type === 'timeline' || section.type === 'list' || section.type === 'text')
-  }
+    return resume.sections.filter(
+      (section) => section.type === 'timeline' || section.type === 'list' || section.type === 'text'
+    );
+  };
 
-  const basicInfoSection = getBasicInfoSection()
-  const timelineSections = getTimelineSections().filter(section => section.visible).sort((a, b) => a.order - b.order)
+  const basicInfoSection = getBasicInfoSection();
+  const timelineSections = getTimelineSections()
+    .filter((section) => section.visible)
+    .sort((a, b) => a.order - b.order);
 
   return (
     <div className={`print-container ${className}`}>
@@ -57,7 +65,7 @@ export const ResumeDisplay = ({
         {/* 时间线模块区域 - 主体内容 */}
         <div className="px-8 pb-8 print:px-6 print:pb-6">
           <div className="space-y-6 print:space-y-4">
-            {timelineSections.map(section => (
+            {timelineSections.map((section) => (
               <TimelineSection
                 key={section.id}
                 section={section}
@@ -69,5 +77,5 @@ export const ResumeDisplay = ({
         </div>
       </div>
     </div>
-  )
-} 
+  );
+};

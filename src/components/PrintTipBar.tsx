@@ -1,14 +1,14 @@
-import { Printer } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { useBrowserDetection } from '@/hooks/useBrowserDetection'
+import { Printer } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useBrowserDetection } from '@/hooks/useBrowserDetection';
 
 interface PrintTipBarProps {
-  onPrint: () => void
+  onPrint: () => void;
 }
 
 export const PrintTipBar = ({ onPrint }: PrintTipBarProps) => {
-  const { getPrintTip } = useBrowserDetection()
-  const { tip, shortcut } = getPrintTip()
+  const { getPrintTip } = useBrowserDetection();
+  const { tip, shortcut } = getPrintTip();
 
   return (
     <div className="bg-blue-600 text-white p-3 text-center print:hidden">
@@ -17,7 +17,7 @@ export const PrintTipBar = ({ onPrint }: PrintTipBarProps) => {
           {tip}
           {shortcut && <span className="ml-2 text-blue-200">({shortcut})</span>}
         </span>
-        <Button 
+        <Button
           onClick={onPrint}
           variant="outline"
           size="sm"
@@ -28,5 +28,5 @@ export const PrintTipBar = ({ onPrint }: PrintTipBarProps) => {
         </Button>
       </div>
     </div>
-  )
-} 
+  );
+};

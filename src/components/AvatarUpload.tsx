@@ -1,80 +1,80 @@
-import { useState, useRef } from 'react'
-import { Camera, User, Crop } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { AvatarCropper } from './AvatarCropper'
+import { useState, useRef } from 'react';
+import { Camera, User, Crop } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { AvatarCropper } from './AvatarCropper';
 
 interface AvatarUploadProps {
-  currentAvatar?: string
-  onAvatarChange: (avatar: string) => void
+  currentAvatar?: string;
+  onAvatarChange: (avatar: string) => void;
 }
 
 export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProps) => {
-  const [previewUrl, setPreviewUrl] = useState<string | undefined>(currentAvatar)
-  const [originalImageUrl, setOriginalImageUrl] = useState<string>('')
-  const [showCropper, setShowCropper] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | undefined>(currentAvatar);
+  const [originalImageUrl, setOriginalImageUrl] = useState<string>('');
+  const [showCropper, setShowCropper] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
       // 检查文件类型
       if (!file.type.startsWith('image/')) {
-        alert('请选择图片文件')
-        return
+        alert('请选择图片文件');
+        return;
       }
-      
+
       // 检查文件大小 (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        alert('图片大小不能超过 5MB')
-        return
+        alert('图片大小不能超过 5MB');
+        return;
       }
 
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (e) => {
-        const result = e.target?.result as string
-        setOriginalImageUrl(result)
-        setShowCropper(true)
-      }
-      reader.readAsDataURL(file)
+        const result = e.target?.result as string;
+        setOriginalImageUrl(result);
+        setShowCropper(true);
+      };
+      reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleCropSave = (croppedImageUrl: string) => {
-    setPreviewUrl(croppedImageUrl)
-    onAvatarChange(croppedImageUrl)
-    setShowCropper(false)
-  }
+    setPreviewUrl(croppedImageUrl);
+    onAvatarChange(croppedImageUrl);
+    setShowCropper(false);
+  };
 
   const handleClick = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   const handleCropExisting = () => {
     if (previewUrl) {
-      setOriginalImageUrl(previewUrl)
-      setShowCropper(true)
+      setOriginalImageUrl(previewUrl);
+      setShowCropper(true);
     }
-  }
+  };
 
   const handleRemove = () => {
-    setPreviewUrl(undefined)
-    onAvatarChange('')
+    setPreviewUrl(undefined);
+    onAvatarChange('');
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = '';
     }
-  }
+  };
 
   return (
     <div className="flex flex-col items-center space-y-4">
       <div className="relative">
-        <div 
+        <div
           className="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center cursor-pointer hover:shadow-xl transition-all duration-200 group"
           onClick={handleClick}
         >
           {previewUrl ? (
-            <img 
-              src={previewUrl} 
-              alt="头像预览" 
+            <img
+              src={previewUrl}
+              alt="头像预览"
               className="w-full h-full rounded-full object-cover"
             />
           ) : (
@@ -85,7 +85,7 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
           </div>
         </div>
       </div>
-      
+
       <div className="flex space-x-2">
         <Button onClick={handleClick} size="sm" variant="outline">
           {previewUrl ? '更换头像' : '上传头像'}
@@ -102,7 +102,7 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
           </>
         )}
       </div>
-      
+
       <input
         ref={fileInputRef}
         type="file"
@@ -110,10 +110,12 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
         onChange={handleFileSelect}
         className="hidden"
       />
-      
+
       <p className="text-xs text-gray-500 text-center">
-        支持 JPG、PNG 格式<br />
-        文件大小不超过 5MB<br />
+        支持 JPG、PNG 格式
+        <br />
+        文件大小不超过 5MB
+        <br />
         上传后可裁剪调整
       </p>
 
@@ -127,5 +129,5 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
         />
       )}
     </div>
-  )
-} 
+  );
+};

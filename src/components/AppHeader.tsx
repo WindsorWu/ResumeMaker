@@ -1,7 +1,7 @@
-import { FileText, Sparkles } from 'lucide-react'
+import { FileText, Sparkles } from 'lucide-react';
 
 interface AppHeaderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const AppHeader = ({ children }: AppHeaderProps) => {
@@ -24,13 +24,11 @@ export const AppHeader = ({ children }: AppHeaderProps) => {
               <p className="text-xs text-gray-600">创建专业的个人简历，展示最好的自己</p>
             </div>
           </div>
-          
+
           {/* 右侧操作区域 */}
-          <div className="flex items-center space-x-3">
-            {children}
-          </div>
+          <div className="flex items-center space-x-3">{children}</div>
         </div>
       </div>
     </header>
-  )
-} 
+  );
+};

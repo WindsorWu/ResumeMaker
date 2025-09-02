@@ -1,22 +1,22 @@
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface FormFieldProps {
-  id: string
-  label: string
-  type?: string
-  value: string
-  placeholder: string
-  onChange: (value: string) => void
+  id: string;
+  label: string;
+  type?: string;
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
 }
 
-export const FormField = ({ 
-  id, 
-  label, 
-  type = 'text', 
-  value, 
-  placeholder, 
-  onChange 
+export const FormField = ({
+  id,
+  label,
+  type = 'text',
+  value,
+  placeholder,
+  onChange,
 }: FormFieldProps) => {
   return (
     <div className="space-y-2">
@@ -29,5 +29,5 @@ export const FormField = ({
         placeholder={placeholder}
       />
     </div>
-  )
-} 
+  );
+};

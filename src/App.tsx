@@ -1,7 +1,7 @@
-import { Provider } from 'jotai'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { MainPage } from './pages/MainPage'
-import { PreviewPage } from './pages/PreviewPage'
+import { Provider } from 'jotai';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { MainPage } from './pages/MainPage';
+import { PreviewPage } from './pages/PreviewPage';
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
         </Routes>
       </Router>
     </Provider>
-  )
+  );
 }
 
-export default App
+export default App;

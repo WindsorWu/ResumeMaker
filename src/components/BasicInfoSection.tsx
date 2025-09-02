@@ -2,16 +2,11 @@
  * 基本信息区域 - 简约风格
  */
 
-import { useState } from "react";
-import {
-  Edit3,
-  Mail,
-  Phone,
-  User,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { BasicInfoEditorContainer } from "@/containers/BasicInfoEditorContainer";
-import type { BasicInfo, ResumeSection } from "@/types/resume";
+import { useState } from 'react';
+import { Edit3, Mail, Phone, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { BasicInfoEditorContainer } from '@/containers/BasicInfoEditorContainer';
+import type { BasicInfo, ResumeSection } from '@/types/resume';
 
 interface BasicInfoSectionProps {
   section: ResumeSection;
@@ -19,11 +14,7 @@ interface BasicInfoSectionProps {
   onUpdate: (data: BasicInfo) => void;
 }
 
-export const BasicInfoSection = ({
-  section,
-  isEditable,
-  onUpdate,
-}: BasicInfoSectionProps) => {
+export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSectionProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const data = section.data as BasicInfo;
 
@@ -51,7 +42,7 @@ export const BasicInfoSection = ({
           <div className="flex-1 pr-6">
             {/* 姓名 */}
             <h1 className="text-4xl font-bold text-gray-900 mb-3 print:text-3xl print:mb-2">
-              {data.name || "姓名"}
+              {data.name || '姓名'}
             </h1>
 
             {/* 基本信息行 */}
@@ -61,7 +52,9 @@ export const BasicInfoSection = ({
                 <div className="flex items-center space-x-1">
                   <User className="h-4 w-4 print:h-3 print:w-3" />
                   <span>
-                    {data.gender && data.age ? `${data.gender} | ${data.age}岁` : data.gender || `${data.age}岁`}
+                    {data.gender && data.age
+                      ? `${data.gender} | ${data.age}岁`
+                      : data.gender || `${data.age}岁`}
                   </span>
                 </div>
               )}
@@ -105,7 +98,7 @@ export const BasicInfoSection = ({
               {data.avatar ? (
                 <img
                   src={data.avatar}
-                  alt={data.name || "头像"}
+                  alt={data.name || '头像'}
                   className="w-full h-full object-cover"
                 />
               ) : (

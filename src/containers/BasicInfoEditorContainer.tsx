@@ -1,13 +1,13 @@
-import { Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { AvatarUpload } from "@/components/AvatarUpload";
-import { FormField } from "@/components/FormField";
-import { CustomFieldItem } from "@/components/CustomFieldItem";
-import { useAutoSaveDialog } from "@/hooks/useAutoSaveDialog";
-import { useState } from "react";
-import type { BasicInfo, CustomField } from "@/types/resume";
+import { Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { AvatarUpload } from '@/components/AvatarUpload';
+import { FormField } from '@/components/FormField';
+import { CustomFieldItem } from '@/components/CustomFieldItem';
+import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
+import { useState } from 'react';
+import type { BasicInfo, CustomField } from '@/types/resume';
 
 interface BasicInfoEditorContainerProps {
   isOpen: boolean;
@@ -23,29 +23,34 @@ export const BasicInfoEditorContainer = ({
   onSave,
 }: BasicInfoEditorContainerProps) => {
   // 使用通用的自动保存对话框 Hook
-  const { data: formData, setData: setFormData, handleClose, saveStatusText } = useAutoSaveDialog<BasicInfo>({
+  const {
+    data: formData,
+    setData: setFormData,
+    handleClose,
+    saveStatusText,
+  } = useAutoSaveDialog<BasicInfo>({
     isOpen,
     initialData: { ...initialData, customFields: initialData.customFields || [] },
     onSave,
     onClose,
-    debounceDelay: 300
-  })
+    debounceDelay: 300,
+  });
 
-  const [expandedCustomField, setExpandedCustomField] = useState<string | null>(null)
+  const [expandedCustomField, setExpandedCustomField] = useState<string | null>(null);
 
   const handleChange = (field: keyof BasicInfo, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
-    }))
-  }
+    }));
+  };
 
   const handleAvatarChange = (avatar: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       avatar,
-    }))
-  }
+    }));
+  };
 
   const addCustomField = () => {
     const newField: CustomField = {
@@ -53,61 +58,61 @@ export const BasicInfoEditorContainer = ({
       label: '',
       value: '',
       icon: 'star',
-      iconName: 'star'
-    }
-    setFormData(prev => ({
+      iconName: 'star',
+    };
+    setFormData((prev) => ({
       ...prev,
-      customFields: [...(prev.customFields || []), newField]
-    }))
-    setExpandedCustomField(newField.id)
-  }
+      customFields: [...(prev.customFields || []), newField],
+    }));
+    setExpandedCustomField(newField.id);
+  };
 
   const updateCustomField = (id: string, updates: Partial<CustomField>) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      customFields: prev.customFields?.map(field => 
-        field.id === id ? { ...field, ...updates } : field
-      ) || []
-    }))
-  }
+      customFields:
+        prev.customFields?.map((field) => (field.id === id ? { ...field, ...updates } : field)) ||
+        [],
+    }));
+  };
 
   const removeCustomField = (id: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      customFields: prev.customFields?.filter(field => field.id !== id) || []
-    }))
+      customFields: prev.customFields?.filter((field) => field.id !== id) || [],
+    }));
     if (expandedCustomField === id) {
-      setExpandedCustomField(null)
+      setExpandedCustomField(null);
     }
-  }
+  };
 
   const toggleCustomFieldExpansion = (id: string) => {
-    setExpandedCustomField(expandedCustomField === id ? null : id)
-  }
+    setExpandedCustomField(expandedCustomField === id ? null : id);
+  };
 
   const basicFields = [
-    { id: "name", label: "姓名", type: "text", placeholder: "请输入姓名" },
+    { id: 'name', label: '姓名', type: 'text', placeholder: '请输入姓名' },
     {
-      id: "email",
-      label: "邮箱",
-      type: "email",
-      placeholder: "请输入邮箱地址",
+      id: 'email',
+      label: '邮箱',
+      type: 'email',
+      placeholder: '请输入邮箱地址',
     },
-    { id: "phone", label: "电话", type: "tel", placeholder: "请输入电话号码" },
+    { id: 'phone', label: '电话', type: 'tel', placeholder: '请输入电话号码' },
     {
-      id: "location",
-      label: "地址",
-      type: "text",
-      placeholder: "请输入所在地址",
+      id: 'location',
+      label: '地址',
+      type: 'text',
+      placeholder: '请输入所在地址',
     },
     {
-      id: "website",
-      label: "网站",
-      type: "url",
-      placeholder: "请输入个人网站或社交媒体链接",
+      id: 'website',
+      label: '网站',
+      type: 'url',
+      placeholder: '请输入个人网站或社交媒体链接',
     },
-    { id: "gender", label: "性别", type: "text", placeholder: "请输入性别" },
-    { id: "age", label: "年龄", type: "text", placeholder: "请输入年龄" },
+    { id: 'gender', label: '性别', type: 'text', placeholder: '请输入性别' },
+    { id: 'age', label: '年龄', type: 'text', placeholder: '请输入年龄' },
   ] as const;
 
   return (
@@ -121,10 +126,7 @@ export const BasicInfoEditorContainer = ({
           {/* 头像上传 */}
           <div className="space-y-2">
             <Label>头像</Label>
-            <AvatarUpload
-              currentAvatar={formData.avatar}
-              onAvatarChange={handleAvatarChange}
-            />
+            <AvatarUpload currentAvatar={formData.avatar} onAvatarChange={handleAvatarChange} />
           </div>
 
           {/* 基本信息表单 */}
@@ -135,13 +137,9 @@ export const BasicInfoEditorContainer = ({
                 id={field.id}
                 label={field.label}
                 type={field.type}
-                value={
-                  (formData[field.id as keyof BasicInfo] as string) || ""
-                }
+                value={(formData[field.id as keyof BasicInfo] as string) || ''}
                 placeholder={field.placeholder}
-                onChange={(value) =>
-                  handleChange(field.id as keyof BasicInfo, value)
-                }
+                onChange={(value) => handleChange(field.id as keyof BasicInfo, value)}
               />
             ))}
           </div>
@@ -150,11 +148,7 @@ export const BasicInfoEditorContainer = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <Label className="text-base font-medium">自定义字段</Label>
-              <Button
-                onClick={addCustomField}
-                size="sm"
-                className="flex items-center space-x-2"
-              >
+              <Button onClick={addCustomField} size="sm" className="flex items-center space-x-2">
                 <Plus className="h-4 w-4" />
                 <span>添加字段</span>
               </Button>
@@ -167,9 +161,7 @@ export const BasicInfoEditorContainer = ({
                     key={field.id}
                     field={field}
                     isExpanded={expandedCustomField === field.id}
-                    onToggleExpansion={() =>
-                      toggleCustomFieldExpansion(field.id)
-                    }
+                    onToggleExpansion={() => toggleCustomFieldExpansion(field.id)}
                     onUpdate={(updates) => updateCustomField(field.id, updates)}
                     onRemove={() => removeCustomField(field.id)}
                   />

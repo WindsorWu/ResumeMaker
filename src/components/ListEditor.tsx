@@ -1,63 +1,67 @@
 /**
  * 列表编辑器组件 - 用于编辑个人优势等列表内容
  */
-import { useState } from 'react'
-import { Plus, Trash2, GripVertical } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
-import { Textarea } from '@/components/ui/textarea'
-import { IconSelector } from './IconSelector'
-import type { ListItem } from '@/types/resume'
+import { useState } from 'react';
+import { Plus, Trash2, GripVertical } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { IconSelector } from './IconSelector';
+import type { ListItem } from '@/types/resume';
 
 interface ListEditorProps {
-  isOpen: boolean
-  onClose: () => void
-  initialData: ListItem[]
-  onSave: (data: ListItem[], iconName?: string) => void
-  title: string
-  currentIcon: string
+  isOpen: boolean;
+  onClose: () => void;
+  initialData: ListItem[];
+  onSave: (data: ListItem[], iconName?: string) => void;
+  title: string;
+  currentIcon: string;
 }
 
-export const ListEditor = ({ 
-  isOpen, 
-  onClose, 
-  initialData, 
-  onSave, 
-  title, 
-  currentIcon 
+export const ListEditor = ({
+  isOpen,
+  onClose,
+  initialData,
+  onSave,
+  title,
+  currentIcon,
 }: ListEditorProps) => {
-  const [items, setItems] = useState<ListItem[]>(initialData)
-  const [selectedIcon, setSelectedIcon] = useState(currentIcon)
+  const [items, setItems] = useState<ListItem[]>(initialData);
+  const [selectedIcon, setSelectedIcon] = useState(currentIcon);
 
   const addItem = () => {
     const newItem: ListItem = {
       id: Date.now().toString(),
-      content: ''
-    }
-    setItems([...items, newItem])
-  }
+      content: '',
+    };
+    setItems([...items, newItem]);
+  };
 
   const updateItem = (id: string, content: string) => {
-    setItems(items.map(item => 
-      item.id === id ? { ...item, content } : item
-    ))
-  }
+    setItems(items.map((item) => (item.id === id ? { ...item, content } : item)));
+  };
 
   const removeItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id))
-  }
+    setItems(items.filter((item) => item.id !== id));
+  };
 
   const handleSave = () => {
-    const validItems = items.filter(item => item.content.trim() !== '')
-    onSave(validItems, selectedIcon)
-    onClose()
-  }
+    const validItems = items.filter((item) => item.content.trim() !== '');
+    onSave(validItems, selectedIcon);
+    onClose();
+  };
 
   const handleCancel = () => {
-    setItems(initialData)
-    setSelectedIcon(currentIcon)
-    onClose()
-  }
+    setItems(initialData);
+    setSelectedIcon(currentIcon);
+    onClose();
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>
@@ -70,10 +74,7 @@ export const ListEditor = ({
           {/* 图标选择 */}
           <div>
             <label className="block text-sm font-medium mb-2">模块图标</label>
-            <IconSelector 
-              selectedIcon={selectedIcon}
-              onIconSelect={setSelectedIcon}
-            />
+            <IconSelector selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
           </div>
 
           {/* 列表项编辑 */}
@@ -141,11 +142,9 @@ export const ListEditor = ({
           <Button variant="outline" onClick={handleCancel}>
             取消
           </Button>
-          <Button onClick={handleSave}>
-            保存
-          </Button>
+          <Button onClick={handleSave}>保存</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+};

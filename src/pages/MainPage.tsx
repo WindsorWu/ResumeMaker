@@ -1,6 +1,5 @@
-import { MainPageContainer } from '@/containers/MainPageContainer'
+import { MainPageContainer } from '@/containers/MainPageContainer';
 
 export const MainPage = () => {
-  
-  return <MainPageContainer />
-} 
+  return <MainPageContainer />;
+};

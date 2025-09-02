@@ -1,5 +1,5 @@
-import { PreviewPageContainer } from '@/containers/PreviewPageContainer'
+import { PreviewPageContainer } from '@/containers/PreviewPageContainer';
 
 export const PreviewPage = () => {
-  return <PreviewPageContainer />
-} 
+  return <PreviewPageContainer />;
+};

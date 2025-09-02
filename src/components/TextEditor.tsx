@@ -1,46 +1,52 @@
 /**
  * 纯文本编辑器组件 - 用于编辑大段文本内容
  */
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
-import { Textarea } from '@/components/ui/textarea'
-import { IconSelector } from './IconSelector'
-import type { TextContent } from '@/types/resume'
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { IconSelector } from './IconSelector';
+import type { TextContent } from '@/types/resume';
 
 interface TextEditorProps {
-  isOpen: boolean
-  onClose: () => void
-  initialData: TextContent
-  onSave: (data: TextContent, iconName?: string) => void
-  title: string
-  currentIcon: string
+  isOpen: boolean;
+  onClose: () => void;
+  initialData: TextContent;
+  onSave: (data: TextContent, iconName?: string) => void;
+  title: string;
+  currentIcon: string;
 }
 
-export const TextEditor = ({ 
-  isOpen, 
-  onClose, 
-  initialData, 
-  onSave, 
-  title, 
-  currentIcon 
+export const TextEditor = ({
+  isOpen,
+  onClose,
+  initialData,
+  onSave,
+  title,
+  currentIcon,
 }: TextEditorProps) => {
-  const [content, setContent] = useState(initialData.content)
-  const [selectedIcon, setSelectedIcon] = useState(currentIcon)
+  const [content, setContent] = useState(initialData.content);
+  const [selectedIcon, setSelectedIcon] = useState(currentIcon);
 
   const handleSave = () => {
-    onSave({ content: content.trim() }, selectedIcon)
-    onClose()
-  }
+    onSave({ content: content.trim() }, selectedIcon);
+    onClose();
+  };
 
   const handleCancel = () => {
-    setContent(initialData.content)
-    setSelectedIcon(currentIcon)
-    onClose()
-  }
+    setContent(initialData.content);
+    setSelectedIcon(currentIcon);
+    onClose();
+  };
 
-  const wordCount = content.trim().length
-  const lineCount = content.split('\n').length
+  const wordCount = content.trim().length;
+  const lineCount = content.split('\n').length;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>
@@ -53,10 +59,7 @@ export const TextEditor = ({
           {/* 图标选择 */}
           <div>
             <label className="block text-sm font-medium mb-2">模块图标</label>
-            <IconSelector 
-              selectedIcon={selectedIcon}
-              onIconSelect={setSelectedIcon}
-            />
+            <IconSelector selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
           </div>
 
           {/* 文本编辑区域 */}
@@ -67,7 +70,7 @@ export const TextEditor = ({
                 {wordCount} 字符 · {lineCount} 行
               </div>
             </div>
-            
+
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -104,11 +107,9 @@ export const TextEditor = ({
           <Button variant="outline" onClick={handleCancel}>
             取消
           </Button>
-          <Button onClick={handleSave}>
-            保存
-          </Button>
+          <Button onClick={handleSave}>保存</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+};

@@ -1,10 +1,10 @@
-import { Eye, Trash2, Settings } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Eye, Trash2, Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ActionButtonsProps {
-  onPreview: () => void
-  onClear: () => void
-  onManageTimeline: () => void
+  onPreview: () => void;
+  onClear: () => void;
+  onManageTimeline: () => void;
 }
 
 export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionButtonsProps) => {
@@ -19,7 +19,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionBu
         <Settings className="h-4 w-4" />
         <span className="hidden sm:inline">管理模块</span>
       </Button>
-      
+
       <Button
         onClick={onPreview}
         variant="outline"
@@ -29,7 +29,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionBu
         <Eye className="h-4 w-4" />
         <span className="hidden sm:inline">预览 & 导出</span>
       </Button>
-      
+
       <Button
         onClick={onClear}
         variant="outline"
@@ -39,10 +39,8 @@ export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionBu
         <Trash2 className="h-4 w-4" />
         <span className="hidden sm:inline">清空</span>
       </Button>
-      
-      <div className="hidden lg:block text-xs text-gray-500">
-        💡 点击模块右上角编辑按钮修改内容
-      </div>
+
+      <div className="hidden lg:block text-xs text-gray-500">💡 点击模块右上角编辑按钮修改内容</div>
     </>
-  )
-} 
+  );
+};

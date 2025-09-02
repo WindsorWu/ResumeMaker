@@ -1,8 +1,8 @@
-import { LayoutGrid } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { LayoutGrid } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface LayoutSelectorProps {
-  onLayoutChange: (layout: 'side-by-side' | 'top-bottom') => void
+  onLayoutChange: (layout: 'side-by-side' | 'top-bottom') => void;
 }
 
 export const LayoutSelector = ({ onLayoutChange }: LayoutSelectorProps) => {
@@ -17,5 +17,5 @@ export const LayoutSelector = ({ onLayoutChange }: LayoutSelectorProps) => {
         <span className="hidden sm:inline">简约布局</span>
       </Button>
     </div>
-  )
-} 
+  );
+};

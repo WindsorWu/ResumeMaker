@@ -1,33 +1,33 @@
-import { useState } from 'react'
-import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { useState } from 'react';
+import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/dialog'
-import { IconSelector } from './IconSelector'
-import { getIconByName } from '@/config/icons'
-import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog'
-import type { TimelineItem } from '@/types/resume'
+} from '@/components/ui/dialog';
+import { IconSelector } from './IconSelector';
+import { getIconByName } from '@/config/icons';
+import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
+import type { TimelineItem } from '@/types/resume';
 
 interface TimelineEditorData {
-  items: TimelineItem[]
-  selectedIcon: string
+  items: TimelineItem[];
+  selectedIcon: string;
 }
 
 interface TimelineEditorProps {
-  isOpen: boolean
-  onClose: () => void
-  initialData: TimelineItem[]
-  onSave: (data: TimelineItem[], iconName?: string) => void
-  title: string
-  currentIcon?: string
+  isOpen: boolean;
+  onClose: () => void;
+  initialData: TimelineItem[];
+  onSave: (data: TimelineItem[], iconName?: string) => void;
+  title: string;
+  currentIcon?: string;
 }
 
 export const TimelineEditor = ({
@@ -36,9 +36,9 @@ export const TimelineEditor = ({
   initialData,
   onSave,
   title,
-  currentIcon = 'briefcase'
+  currentIcon = 'briefcase',
 }: TimelineEditorProps) => {
-  const [isIconSelectorOpen, setIsIconSelectorOpen] = useState(false)
+  const [isIconSelectorOpen, setIsIconSelectorOpen] = useState(false);
 
   // 使用通用的自动保存对话框 Hook
   const { data, setData, handleClose, saveStatusText } = useAutoSaveDialog<TimelineEditorData>({
@@ -46,18 +46,18 @@ export const TimelineEditor = ({
     initialData: { items: initialData, selectedIcon: currentIcon },
     onSave: (data) => onSave(data.items, data.selectedIcon),
     onClose,
-    debounceDelay: 500
-  })
+    debounceDelay: 500,
+  });
 
-  const { items, selectedIcon } = data
+  const { items, selectedIcon } = data;
 
   const setItems = (newItems: TimelineItem[]) => {
-    setData({ ...data, items: newItems })
-  }
+    setData({ ...data, items: newItems });
+  };
 
   const setSelectedIcon = (newIcon: string) => {
-    setData({ ...data, selectedIcon: newIcon })
-  }
+    setData({ ...data, selectedIcon: newIcon });
+  };
 
   const addItem = () => {
     const newItem: TimelineItem = {
@@ -68,21 +68,19 @@ export const TimelineEditor = ({
       startDate: '',
       endDate: '',
       description: '',
-    }
-    setItems([...items, newItem])
-  }
+    };
+    setItems([...items, newItem]);
+  };
 
   const removeItem = (id: string) => {
-    setItems(items.filter(item => item.id !== id))
-  }
+    setItems(items.filter((item) => item.id !== id));
+  };
 
   const updateItem = (id: string, field: keyof TimelineItem, value: string) => {
-    setItems(items.map(item =>
-      item.id === id ? { ...item, [field]: value } : item
-    ))
-  }
+    setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
+  };
 
-  const IconComponent = getIconByName(selectedIcon)
+  const IconComponent = getIconByName(selectedIcon);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -93,19 +91,15 @@ export const TimelineEditor = ({
               {IconComponent && <IconComponent className="h-5 w-5 text-white" />}
             </div>
             <span>编辑{title}</span>
-            <span className="text-sm font-normal text-gray-500 ml-auto">
-              {saveStatusText}
-            </span>
+            <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
           </DialogTitle>
-          <DialogDescription>
-            在此处编辑您的{title}信息，所有更改将自动保存。
-          </DialogDescription>
+          <DialogDescription>在此处编辑您的{title}信息，所有更改将自动保存。</DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-6">
           {/* 图标选择区域 - 可折叠 */}
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
-            <div 
+            <div
               className="p-4 cursor-pointer flex items-center justify-between hover:bg-blue-100/50 transition-colors rounded-lg"
               onClick={() => setIsIconSelectorOpen(!isIconSelectorOpen)}
             >
@@ -123,13 +117,10 @@ export const TimelineEditor = ({
                 <ChevronDown className="h-4 w-4 text-gray-500" />
               )}
             </div>
-            
+
             {isIconSelectorOpen && (
               <div className="px-4 pb-4 border-t border-blue-200/50 mt-2 pt-4">
-                <IconSelector
-                  selectedIcon={selectedIcon}
-                  onIconSelect={setSelectedIcon}
-                />
+                <IconSelector selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
               </div>
             )}
           </div>
@@ -148,7 +139,7 @@ export const TimelineEditor = ({
                   <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">标题</Label>
@@ -159,7 +150,7 @@ export const TimelineEditor = ({
                     className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">副标题</Label>
                   <Input
@@ -169,7 +160,7 @@ export const TimelineEditor = ({
                     className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">开始时间</Label>
                   <Input
@@ -179,7 +170,7 @@ export const TimelineEditor = ({
                     className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label className="text-sm font-medium text-gray-700">结束时间</Label>
                   <Input
@@ -189,7 +180,7 @@ export const TimelineEditor = ({
                     className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                
+
                 <div className="md:col-span-2 space-y-2">
                   <Label className="text-sm font-medium text-gray-700">次要副标题</Label>
                   <Input
@@ -200,7 +191,7 @@ export const TimelineEditor = ({
                   />
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label className="text-sm font-medium text-gray-700">详细描述</Label>
                 <Textarea
@@ -213,13 +204,17 @@ export const TimelineEditor = ({
               </div>
             </div>
           ))}
-          
-          <Button onClick={addItem} variant="outline" className="w-full border-dashed border-2 hover:bg-blue-50">
+
+          <Button
+            onClick={addItem}
+            variant="outline"
+            className="w-full border-dashed border-2 hover:bg-blue-50"
+          >
             <Plus className="h-4 w-4 mr-2" />
             添加一项
           </Button>
         </div>
       </DialogContent>
     </Dialog>
-  )
-} 
+  );
+};
