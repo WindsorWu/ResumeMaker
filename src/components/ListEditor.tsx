@@ -12,7 +12,7 @@ import {
 import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { IconSelector } from './IconSelector';
+import { IconSelectorWithToggle } from './IconSelectorWithToggle';
 import { ListItem } from './ListItem';
 
 interface ListEditorProps {
@@ -35,10 +35,12 @@ export const ListEditor = ({
   const {
     items,
     selectedIcon,
+    iconEnabled,
     addItem,
     removeItem,
     updateItem,
     setSelectedIcon,
+    toggleIcon,
     handleSave,
     handleCancel,
   } = useListEditor(isOpen, initialData, currentIcon, onSave, onClose);
@@ -52,10 +54,12 @@ export const ListEditor = ({
 
         <div className="space-y-6">
           {/* 模块图标选择 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">模块图标</label>
-            <IconSelector selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
-          </div>
+          <IconSelectorWithToggle
+            selectedIcon={selectedIcon}
+            onIconSelect={setSelectedIcon}
+            onIconToggle={toggleIcon}
+            initialEnabled={iconEnabled}
+          />
 
           {/* 列表内容 */}
           <div>

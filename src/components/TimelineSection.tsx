@@ -68,15 +68,20 @@ export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSecti
         )}
 
         {/* 模块标题 */}
-        <div className="flex items-center space-x-3 mb-4 print:mb-3">
+        <div className="flex items-center mb-4 print:mb-3">
           <h2 className="text-xl font-bold text-gray-900 print:text-lg">{section.title}</h2>
-          <div className="p-1">
-            {IconComponent && <IconComponent className="h-4 w-4 print:h-3 print:w-3" />}
-          </div>
+          {/* 图标 */}
+          {section.iconName && IconComponent && (
+            <div className="p-2 ">
+              <IconComponent className="h-4 w-4 print:h-3 print:w-3" />
+            </div>
+          )}
         </div>
 
         {/* 内容区域 */}
-        <div>{renderContent()}</div>
+        <div className={section.iconName && IconComponent ? 'ml-6 print:ml-3' : ''}>
+          {renderContent()}
+        </div>
       </div>
 
       {/* 编辑器 */}

@@ -13,11 +13,13 @@ export const useListEditor = (
 ) => {
   const [items, setItems] = useState<ListItem[]>(initialData);
   const [selectedIcon, setSelectedIcon] = useState(currentIcon);
+  const [iconEnabled, setIconEnabled] = useState(!!currentIcon && currentIcon !== '');
 
   // 重置编辑器状态
   const resetEditor = () => {
     setItems(initialData);
     setSelectedIcon(currentIcon);
+    setIconEnabled(!!currentIcon && currentIcon !== '');
   };
 
   // 监听打开状态，重置编辑器
@@ -54,15 +56,22 @@ export const useListEditor = (
     setItems(newItems);
   };
 
+  // 图标开关切换
+  const toggleIcon = (enabled: boolean) => {
+    setIconEnabled(enabled);
+  };
+
   // 保存
   const handleSave = () => {
-    onSave(items, selectedIcon);
+    onSave(items, iconEnabled ? selectedIcon : '');
   };
 
   // 取消
   const handleCancel = () => {
     const hasChanges =
-      JSON.stringify(items) !== JSON.stringify(initialData) || selectedIcon !== currentIcon;
+      JSON.stringify(items) !== JSON.stringify(initialData) ||
+      selectedIcon !== currentIcon ||
+      iconEnabled !== (!!currentIcon && currentIcon !== '');
 
     if (hasChanges) {
       const confirmed = window.confirm('有未保存的更改，确定要取消吗？');
@@ -76,6 +85,7 @@ export const useListEditor = (
     // 状态
     items,
     selectedIcon,
+    iconEnabled,
 
     // 操作方法
     addItem,
@@ -83,6 +93,7 @@ export const useListEditor = (
     updateItem,
     moveItem,
     setSelectedIcon,
+    toggleIcon,
     handleSave,
     handleCancel,
     resetEditor,

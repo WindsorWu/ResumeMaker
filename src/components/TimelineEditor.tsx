@@ -1,5 +1,5 @@
 /**
- * 多样式编辑器 - 简洁版本
+ * 时间线编辑器 - 简洁版本
  */
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +13,7 @@ import { getIconByName } from '@/config/icons';
 import { useTimelineEditor } from '@/hooks/components/useTimelineEditor';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { IconSelectorSection } from './IconSelectorSection';
+import { IconSelectorWithToggle } from './IconSelectorWithToggle';
 import { TimelineItem } from './TimelineItem';
 
 interface TimelineEditorProps {
@@ -36,13 +36,13 @@ export const TimelineEditor = ({
   const {
     items,
     selectedIcon,
-    isIconSelectorOpen,
+    iconEnabled,
     saveStatusText,
     addItem,
     removeItem,
     updateItem,
     setSelectedIcon,
-    toggleIconSelector,
+    setIconEnabled,
     handleClose,
   } = useTimelineEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
@@ -54,7 +54,7 @@ export const TimelineEditor = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
             <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-              {IconComponent && <IconComponent className="h-5 w-5 text-white" />}
+              {iconEnabled && IconComponent && <IconComponent className="h-5 w-5 text-white" />}
             </div>
             <span>编辑{title}</span>
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
@@ -64,11 +64,11 @@ export const TimelineEditor = ({
 
         <div className="space-y-6">
           {/* 图标选择区域 */}
-          <IconSelectorSection
+          <IconSelectorWithToggle
             selectedIcon={selectedIcon}
-            isOpen={isIconSelectorOpen}
-            onToggle={toggleIconSelector}
             onIconSelect={setSelectedIcon}
+            onIconToggle={setIconEnabled}
+            initialEnabled={iconEnabled}
           />
 
           {/* 时间线项目列表 */}

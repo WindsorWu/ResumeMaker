@@ -1,5 +1,5 @@
 /**
- * 多样式编辑器业务逻辑 Hook
+ * 时间线编辑器业务逻辑 Hook
  */
 import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
 import type { TimelineItem } from '@/types/resume';
@@ -8,6 +8,7 @@ import { useState } from 'react';
 interface TimelineEditorData {
   items: TimelineItem[];
   selectedIcon: string;
+  iconEnabled: boolean;
 }
 
 export const useTimelineEditor = (
@@ -22,13 +23,17 @@ export const useTimelineEditor = (
   // 使用通用的自动保存对话框 Hook
   const { data, setData, handleClose, saveStatusText } = useAutoSaveDialog<TimelineEditorData>({
     isOpen,
-    initialData: { items: initialData, selectedIcon: currentIcon },
-    onSave: (data) => onSave(data.items, data.selectedIcon),
+    initialData: {
+      items: initialData,
+      selectedIcon: currentIcon,
+      iconEnabled: !!currentIcon && currentIcon !== '',
+    },
+    onSave: (data) => onSave(data.items, data.iconEnabled ? data.selectedIcon : ''),
     onClose,
     debounceDelay: 500,
   });
 
-  const { items, selectedIcon } = data;
+  const { items, selectedIcon, iconEnabled } = data;
 
   // 设置项目列表
   const setItems = (newItems: TimelineItem[]) => {
@@ -38,6 +43,11 @@ export const useTimelineEditor = (
   // 设置选中图标
   const setSelectedIcon = (newIcon: string) => {
     setData({ ...data, selectedIcon: newIcon });
+  };
+
+  // 设置图标启用状态
+  const setIconEnabled = (enabled: boolean) => {
+    setData({ ...data, iconEnabled: enabled });
   };
 
   // 添加新项目
@@ -73,6 +83,7 @@ export const useTimelineEditor = (
     // 状态
     items,
     selectedIcon,
+    iconEnabled,
     isIconSelectorOpen,
     saveStatusText,
 
@@ -81,6 +92,7 @@ export const useTimelineEditor = (
     removeItem,
     updateItem,
     setSelectedIcon,
+    setIconEnabled,
     toggleIconSelector,
     handleClose,
   };

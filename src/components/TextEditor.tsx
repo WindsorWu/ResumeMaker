@@ -12,7 +12,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useTextEditor } from '@/hooks/components/useTextEditor';
 import type { TextContent } from '@/types/resume';
-import { IconSelector } from './IconSelector';
+import { IconSelectorWithToggle } from './IconSelectorWithToggle';
 
 interface TextEditorProps {
   isOpen: boolean;
@@ -34,10 +34,12 @@ export const TextEditor = ({
   const {
     content,
     selectedIcon,
+    iconEnabled,
     wordCount,
     lineCount,
     setContent,
     setSelectedIcon,
+    toggleIcon,
     handleSave,
     handleCancel,
   } = useTextEditor(isOpen, initialData, currentIcon, onSave, onClose);
@@ -51,10 +53,12 @@ export const TextEditor = ({
 
         <div className="space-y-6">
           {/* 模块图标选择 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">模块图标</label>
-            <IconSelector selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
-          </div>
+          <IconSelectorWithToggle
+            selectedIcon={selectedIcon}
+            onIconSelect={setSelectedIcon}
+            onIconToggle={toggleIcon}
+            initialEnabled={iconEnabled}
+          />
 
           {/* 内容编辑 */}
           <div>

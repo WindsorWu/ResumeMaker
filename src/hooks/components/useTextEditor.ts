@@ -13,11 +13,13 @@ export const useTextEditor = (
 ) => {
   const [content, setContent] = useState(initialData.content);
   const [selectedIcon, setSelectedIcon] = useState(currentIcon);
+  const [iconEnabled, setIconEnabled] = useState(!!currentIcon && currentIcon !== '');
 
   // 重置编辑器状态
   const resetEditor = () => {
     setContent(initialData.content);
     setSelectedIcon(currentIcon);
+    setIconEnabled(!!currentIcon && currentIcon !== '');
   };
 
   // 监听打开状态，重置编辑器
@@ -34,14 +36,22 @@ export const useTextEditor = (
     return { wordCount, lineCount };
   }, [content]);
 
+  // 图标开关切换
+  const toggleIcon = (enabled: boolean) => {
+    setIconEnabled(enabled);
+  };
+
   // 保存
   const handleSave = () => {
-    onSave({ content }, selectedIcon);
+    onSave({ content }, iconEnabled ? selectedIcon : '');
   };
 
   // 取消
   const handleCancel = () => {
-    const hasChanges = content !== initialData.content || selectedIcon !== currentIcon;
+    const hasChanges =
+      content !== initialData.content ||
+      selectedIcon !== currentIcon ||
+      iconEnabled !== (!!currentIcon && currentIcon !== '');
 
     if (hasChanges) {
       const confirmed = window.confirm('有未保存的更改，确定要取消吗？');
@@ -55,12 +65,14 @@ export const useTextEditor = (
     // 状态
     content,
     selectedIcon,
+    iconEnabled,
     wordCount,
     lineCount,
 
     // 操作方法
     setContent,
     setSelectedIcon,
+    toggleIcon,
     handleSave,
     handleCancel,
     resetEditor,
