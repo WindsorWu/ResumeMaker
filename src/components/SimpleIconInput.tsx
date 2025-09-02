@@ -1,6 +1,5 @@
 /**
- * 简化的图标输入组件
- * 只提供输入框和图标验证功能
+ * 提供输入框和图标验证功能
  */
 import { Input } from '@/components/ui/input';
 import { isValidIconName } from '@/lib/iconUtils';

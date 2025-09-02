@@ -1,5 +1,5 @@
 /**
- * 模块管理器 - 简洁UI版本
+ * 模块管理器
  */
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { useSectionManager } from '@/hooks/components/useSectionManager';
 import type { ResumeSection } from '@/types/resume';
 import { Plus, Settings } from 'lucide-react';
-import { SectionItem } from './SectionItem';
+import { SectionItem } from '../SectionItem';
 
 interface SectionManagerProps {
   isOpen: boolean;

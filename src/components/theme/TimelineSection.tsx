@@ -7,7 +7,7 @@ import { useTimelineSection } from '@/hooks/components/useTimelineSection';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
 import { Edit3 } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
-import { ListContent, TextContentRenderer, TimelineContent } from './ContentRenderer';
+import { ListContent, TextContentRenderer, TimelineContent } from '../ContentRenderer';
 
 interface TimelineSectionProps {
   section: ResumeSection;

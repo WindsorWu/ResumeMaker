@@ -3,10 +3,10 @@ import { ResumeDisplay } from '@/components/ResumeDisplay';
 import { useAtom, useSetAtom } from 'jotai';
 import { useState } from 'react';
 // import { LayoutSelector } from '@/components/LayoutSelector'
-import { ActionButtons } from '@/components/ActionButtons';
-import { ClearConfirmDialog } from '@/components/ClearConfirmDialog';
+import { ClearConfirmDialog } from '@/components/dialogs/ClearConfirmDialog';
+import { SectionManager } from '@/components/dialogs/TimelineManagerDialog';
+import { ActionButtons } from '@/components/layout/ActionButtons';
 import { AppFooter } from '@/components/layout/AppFooter';
-import { SectionManager } from '@/components/TimelineManagerDialog';
 import { resetResumeAtom, resumeAtom } from '@/store/resumeStore';
 import type { ResumeSection } from '@/types/resume';
 

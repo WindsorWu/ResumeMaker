@@ -1,6 +1,6 @@
-import { BasicInfoSection } from './BasicInfoSection';
-import { TimelineSection } from './TimelineSection';
-import type { Resume, BasicInfo, TimelineItem, ListItem, TextContent } from '@/types/resume';
+import type { BasicInfo, ListItem, Resume, TextContent, TimelineItem } from '@/types/resume';
+import { BasicInfoSection } from './theme/BasicInfoSection';
+import { TimelineSection } from './theme/TimelineSection';
 
 interface ResumeDisplayProps {
   resume: Resume;

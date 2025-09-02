@@ -1,8 +1,8 @@
-import { useAtomValue } from 'jotai';
 import { ResumeDisplay } from '@/components/ResumeDisplay';
-import { PrintTipBar } from '@/components/PrintTipBar';
-import { PreviewPageFooter } from '@/components/PreviewPageFooter';
+import { PreviewPageFooter } from '@/components/layout/PreviewPageFooter';
+import { PrintTipBar } from '@/components/layout/PrintTipBar';
 import { resumeAtom } from '@/store/resumeStore';
+import { useAtomValue } from 'jotai';
 
 export const PreviewPageContainer = () => {
   const resume = useAtomValue(resumeAtom);

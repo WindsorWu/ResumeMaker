@@ -12,9 +12,9 @@ import {
 import { useTimelineEditor } from '@/hooks/components/useTimelineEditor';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { DynamicIcon } from 'lucide-react/dynamic';
+import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 import { SimpleIconInput } from '../SimpleIconInput';
-import { TimelineItem } from '../TimelineItem';
+import { TimelineItem } from './TimelineItem';
 
 interface TimelineEditorProps {
   isOpen: boolean;
@@ -42,7 +42,6 @@ export const TimelineEditor = ({
     removeItem,
     updateItem,
     setSelectedIcon,
-    setIconEnabled,
     handleClose,
   } = useTimelineEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
@@ -55,7 +54,7 @@ export const TimelineEditor = ({
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
             <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
               {iconEnabled && selectedIcon && (
-                <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />
+                <DynamicIcon name={selectedIcon as IconName} className="h-5 w-5 text-white" />
               )}
             </div>
             <span>编辑{title}</span>
@@ -67,10 +66,10 @@ export const TimelineEditor = ({
         <div className="space-y-6">
           {/* 图标选择区域 */}
           <SimpleIconInput
-            selectedIcon={selectedIcon}
-            onIconSelect={setSelectedIcon}
-            onIconToggle={setIconEnabled}
-            initialEnabled={iconEnabled}
+            value={selectedIcon as IconName}
+            onChange={setSelectedIcon}
+            label="图标"
+            placeholder="输入图标名称，如 globe, link, github..."
           />
 
           {/* 时间线项目列表 */}
