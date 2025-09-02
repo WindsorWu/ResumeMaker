@@ -1,19 +1,17 @@
 /**
  * 时间线展示区域 - 简洁版本
  */
+import { DynamicIcon } from '@/components/DynamicIcon';
+import { ListEditor, TextEditor, TimelineEditor } from '@/components/editors';
 import { Button } from '@/components/ui/button';
-import { getIconByName } from '@/config/icons';
 import { useTimelineSection } from '@/hooks/components/useTimelineSection';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
 import { Edit3 } from 'lucide-react';
 import { ListContent, TextContentRenderer, TimelineContent } from './ContentRenderer';
-import { ListEditor } from './ListEditor';
-import { TextEditor } from './TextEditor';
-import { TimelineEditor } from './TimelineEditor';
 
 interface TimelineSectionProps {
   section: ResumeSection;
-  isEditable: boolean;
+  isEditable?: boolean;
   onUpdate: (data: TimelineItem[] | ListItem[] | TextContent, iconName?: string) => void;
 }
 
@@ -49,8 +47,6 @@ export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSecti
     }
   };
 
-  const IconComponent = getIconByName(section.iconName);
-
   return (
     <>
       {/* 模块内容 */}
@@ -71,17 +67,15 @@ export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSecti
         <div className="flex items-center mb-4 print:mb-3">
           <h2 className="text-xl font-bold text-gray-900 print:text-lg">{section.title}</h2>
           {/* 图标 */}
-          {section.iconName && IconComponent && (
+          {section.iconName && (
             <div className="p-2 ">
-              <IconComponent className="h-4 w-4 print:h-3 print:w-3" />
+              <DynamicIcon name={section.iconName} className="h-4 w-4 print:h-3 print:w-3" />
             </div>
           )}
         </div>
 
         {/* 内容区域 */}
-        <div className={section.iconName && IconComponent ? 'ml-6 print:ml-3' : ''}>
-          {renderContent()}
-        </div>
+        <div className={section.iconName ? 'ml-6 print:ml-3' : ''}>{renderContent()}</div>
       </div>
 
       {/* 编辑器 */}

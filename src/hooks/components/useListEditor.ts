@@ -1,8 +1,14 @@
 /**
- * 列表编辑器业务逻辑 Hook
+ * 列表编辑器业务逻辑 Hook - 自动保存版本
  */
+import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
 import type { ListItem } from '@/types/resume';
-import { useState } from 'react';
+
+interface ListEditorData {
+  items: ListItem[];
+  selectedIcon: string;
+  iconEnabled: boolean;
+}
 
 export const useListEditor = (
   isOpen: boolean,
@@ -11,23 +17,35 @@ export const useListEditor = (
   onSave: (data: ListItem[], iconName?: string) => void,
   onClose: () => void
 ) => {
-  const [items, setItems] = useState<ListItem[]>(initialData);
-  const [selectedIcon, setSelectedIcon] = useState(currentIcon);
-  const [iconEnabled, setIconEnabled] = useState(!!currentIcon && currentIcon !== '');
+  // 使用通用的自动保存对话框 Hook
+  const { data, setData, handleClose, saveStatusText } = useAutoSaveDialog<ListEditorData>({
+    isOpen,
+    initialData: {
+      items: initialData,
+      selectedIcon: currentIcon,
+      iconEnabled: !!currentIcon && currentIcon !== '',
+    },
+    onSave: (data) => onSave(data.items, data.iconEnabled ? data.selectedIcon : ''),
+    onClose,
+    debounceDelay: 300,
+  });
 
-  // 重置编辑器状态
-  const resetEditor = () => {
-    setItems(initialData);
-    setSelectedIcon(currentIcon);
-    setIconEnabled(!!currentIcon && currentIcon !== '');
+  const { items, selectedIcon, iconEnabled } = data;
+
+  // 设置项目列表
+  const setItems = (newItems: ListItem[]) => {
+    setData({ ...data, items: newItems });
   };
 
-  // 监听打开状态，重置编辑器
-  useState(() => {
-    if (isOpen) {
-      resetEditor();
-    }
-  });
+  // 设置选中图标
+  const setSelectedIcon = (newIcon: string) => {
+    setData({ ...data, selectedIcon: newIcon });
+  };
+
+  // 设置图标启用状态
+  const setIconEnabled = (enabled: boolean) => {
+    setData({ ...data, iconEnabled: enabled });
+  };
 
   // 添加新项目
   const addItem = () => {
@@ -56,36 +74,12 @@ export const useListEditor = (
     setItems(newItems);
   };
 
-  // 图标开关切换
-  const toggleIcon = (enabled: boolean) => {
-    setIconEnabled(enabled);
-  };
-
-  // 保存
-  const handleSave = () => {
-    onSave(items, iconEnabled ? selectedIcon : '');
-  };
-
-  // 取消
-  const handleCancel = () => {
-    const hasChanges =
-      JSON.stringify(items) !== JSON.stringify(initialData) ||
-      selectedIcon !== currentIcon ||
-      iconEnabled !== (!!currentIcon && currentIcon !== '');
-
-    if (hasChanges) {
-      const confirmed = window.confirm('有未保存的更改，确定要取消吗？');
-      if (!confirmed) return;
-    }
-    resetEditor();
-    onClose();
-  };
-
   return {
     // 状态
     items,
     selectedIcon,
     iconEnabled,
+    saveStatusText,
 
     // 操作方法
     addItem,
@@ -93,9 +87,7 @@ export const useListEditor = (
     updateItem,
     moveItem,
     setSelectedIcon,
-    toggleIcon,
-    handleSave,
-    handleCancel,
-    resetEditor,
+    setIconEnabled,
+    handleClose,
   };
 };

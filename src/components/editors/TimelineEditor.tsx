@@ -1,5 +1,5 @@
 /**
- * 时间线编辑器 - 简洁版本
+ * 时间线编辑器 - 自动保存版本
  */
 import { Button } from '@/components/ui/button';
 import {
@@ -9,12 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { getIconByName } from '@/config/icons';
+import { DynamicIcon } from "@/components/DynamicIcon";
 import { useTimelineEditor } from '@/hooks/components/useTimelineEditor';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { IconSelectorWithToggle } from './IconSelectorWithToggle';
-import { TimelineItem } from './TimelineItem';
+import { IconSelectorWithToggle } from '../IconSelectorWithToggle';
+import { TimelineItem } from '../TimelineItem';
 
 interface TimelineEditorProps {
   isOpen: boolean;
@@ -46,7 +46,7 @@ export const TimelineEditor = ({
     handleClose,
   } = useTimelineEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
-  const IconComponent = getIconByName(selectedIcon);
+  // 直接使用 DynamicIcon
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -54,7 +54,7 @@ export const TimelineEditor = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
             <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
-              {iconEnabled && IconComponent && <IconComponent className="h-5 w-5 text-white" />}
+              {iconEnabled && selectedIcon && <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />}
             </div>
             <span>编辑{title}</span>
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>

@@ -21,7 +21,10 @@ export const IconSelectorWithToggle = ({
 }: IconSelectorWithToggleProps) => {
   const { isIconEnabled, toggleIconEnabled } = useIconSelector(initialEnabled);
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 阻止事件冒泡，防止意外关闭Dialog
+    e.stopPropagation();
+
     const newState = !isIconEnabled;
     toggleIconEnabled();
     onIconToggle(newState);
@@ -46,7 +49,11 @@ export const IconSelectorWithToggle = ({
           onChange={handleToggle}
           className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
         />
-        <label htmlFor="icon-toggle" className="text-sm font-medium text-gray-700 cursor-pointer">
+        <label
+          htmlFor="icon-toggle"
+          className="text-sm font-medium text-gray-700 cursor-pointer"
+          onClick={(e) => e.stopPropagation()} // 防止label点击触发Dialog关闭
+        >
           显示{label}
         </label>
       </div>

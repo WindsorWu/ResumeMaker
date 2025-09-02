@@ -1,8 +1,8 @@
 /**
  * 基本信息区域 - 简洁版本
  */
+import { BasicInfoEditor } from '@/components/editors';
 import { Button } from '@/components/ui/button';
-import { BasicInfoEditorContainer } from '@/containers/BasicInfoEditorContainer';
 import { useBasicInfoSection } from '@/hooks/components/useBasicInfoSection';
 import type { BasicInfo, ResumeSection } from '@/types/resume';
 import { Edit3, Mail, Phone, User } from 'lucide-react';
@@ -26,7 +26,7 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
     formatGenderAge,
     formatCustomFields,
     hasValue,
-  } = useBasicInfoSection(data, onUpdate);
+  } = useBasicInfoSection(onUpdate);
 
   return (
     <>
@@ -84,7 +84,7 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
 
       {/* 编辑器 */}
       {isEditing && (
-        <BasicInfoEditorContainer
+        <BasicInfoEditor
           isOpen={true}
           onClose={closeEditing}
           initialData={data}

@@ -1,27 +1,25 @@
-import { Plus } from 'lucide-react';
+/**
+ * 基础信息编辑器 - 自动保存版本
+ */
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { AvatarUpload } from '@/components/AvatarUpload';
-import { FormField } from '@/components/FormField';
-import { CustomFieldItem } from '@/components/CustomFieldItem';
 import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
-import { useState } from 'react';
 import type { BasicInfo, CustomField } from '@/types/resume';
+import { Plus } from 'lucide-react';
+import { useState } from 'react';
+import { AvatarUpload } from '../AvatarUpload';
+import { CustomFieldItem } from '../CustomFieldItem';
+import { FormField } from '../FormField';
 
-interface BasicInfoEditorContainerProps {
+interface BasicInfoEditorProps {
   isOpen: boolean;
   onClose: () => void;
   initialData: BasicInfo;
   onSave: (data: BasicInfo) => void;
 }
 
-export const BasicInfoEditorContainer = ({
-  isOpen,
-  onClose,
-  initialData,
-  onSave,
-}: BasicInfoEditorContainerProps) => {
+export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicInfoEditorProps) => {
   // 使用通用的自动保存对话框 Hook
   const {
     data: formData,
@@ -91,36 +89,42 @@ export const BasicInfoEditorContainer = ({
   };
 
   const basicFields = [
-    { id: 'name', label: '姓名', type: 'text', placeholder: '请输入姓名' },
+    { id: 'name', label: '姓名', type: 'text', placeholder: '请输入您的姓名' },
+    { id: 'title', label: '职位', type: 'text', placeholder: '如：前端开发工程师' },
+    { id: 'email', label: '邮箱', type: 'email', placeholder: 'your.email@example.com' },
+    { id: 'phone', label: '电话', type: 'tel', placeholder: '+86 138 0013 8000' },
+    { id: 'location', label: '地址', type: 'text', placeholder: '北京市朝阳区' },
+    { id: 'website', label: '个人网站', type: 'url', placeholder: 'https://yourwebsite.com' },
+    { id: 'github', label: 'GitHub', type: 'url', placeholder: 'https://github.com/username' },
     {
-      id: 'email',
-      label: '邮箱',
-      type: 'email',
-      placeholder: '请输入邮箱地址',
-    },
-    { id: 'phone', label: '电话', type: 'tel', placeholder: '请输入电话号码' },
-    {
-      id: 'location',
-      label: '地址',
-      type: 'text',
-      placeholder: '请输入所在地址',
-    },
-    {
-      id: 'website',
-      label: '网站',
+      id: 'linkedin',
+      label: 'LinkedIn',
       type: 'url',
-      placeholder: '请输入个人网站或社交媒体链接',
+      placeholder: 'https://linkedin.com/in/username',
     },
-    { id: 'gender', label: '性别', type: 'text', placeholder: '请输入性别' },
-    { id: 'age', label: '年龄', type: 'text', placeholder: '请输入年龄' },
+    { id: 'wechat', label: '微信', type: 'text', placeholder: '微信号' },
+    { id: 'qq', label: 'QQ', type: 'text', placeholder: 'QQ号码' },
+    { id: 'weibo', label: '微博', type: 'url', placeholder: 'https://weibo.com/username' },
+    {
+      id: 'personalSummary',
+      label: '个人简介',
+      type: 'textarea',
+      placeholder: '简单介绍一下您的背景和专业特长...',
+    },
   ] as const;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogTitle className="sr-only">编辑基本信息</DialogTitle>
-        <DialogDescription className="sr-only">
-          编辑个人基本信息，包括姓名、联系方式等，所有更改将自动保存。状态：{saveStatusText}
+        <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
+          <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg">
+            <span className="text-white">👤</span>
+          </div>
+          <span>编辑基本信息</span>
+          <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
+        </DialogTitle>
+        <DialogDescription>
+          编辑个人基本信息，包括姓名、联系方式等，所有更改将自动保存。
         </DialogDescription>
         <div className="space-y-6">
           {/* 头像上传 */}
@@ -147,10 +151,10 @@ export const BasicInfoEditorContainer = ({
           {/* 自定义字段 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <Label className="text-base font-medium">自定义字段</Label>
-              <Button onClick={addCustomField} size="sm" className="flex items-center space-x-2">
-                <Plus className="h-4 w-4" />
-                <span>添加字段</span>
+              <Label>自定义字段</Label>
+              <Button onClick={addCustomField} size="sm" variant="outline">
+                <Plus className="h-4 w-4 mr-1" />
+                添加字段
               </Button>
             </div>
 
@@ -161,9 +165,9 @@ export const BasicInfoEditorContainer = ({
                     key={field.id}
                     field={field}
                     isExpanded={expandedCustomField === field.id}
-                    onToggleExpansion={() => toggleCustomFieldExpansion(field.id)}
                     onUpdate={(updates) => updateCustomField(field.id, updates)}
                     onRemove={() => removeCustomField(field.id)}
+                    onToggleExpansion={() => toggleCustomFieldExpansion(field.id)}
                   />
                 ))}
               </div>

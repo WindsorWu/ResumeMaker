@@ -1,18 +1,18 @@
 /**
- * 文本编辑器 - 简洁版本
+ * 文本编辑器 - 自动保存版本
  */
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { DynamicIcon } from "@/components/DynamicIcon";
 import { useTextEditor } from '@/hooks/components/useTextEditor';
 import type { TextContent } from '@/types/resume';
-import { IconSelectorWithToggle } from './IconSelectorWithToggle';
+import { IconSelectorWithToggle } from '../IconSelectorWithToggle';
 
 interface TextEditorProps {
   isOpen: boolean;
@@ -37,18 +37,27 @@ export const TextEditor = ({
     iconEnabled,
     wordCount,
     lineCount,
+    saveStatusText,
     setContent,
     setSelectedIcon,
-    toggleIcon,
-    handleSave,
-    handleCancel,
+    setIconEnabled,
+    handleClose,
   } = useTextEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
+  // 直接使用 DynamicIcon
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleCancel}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>编辑 {title}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg">
+              {iconEnabled && selectedIcon && <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />}
+            </div>
+            <span>编辑{title}</span>
+            <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
+          </DialogTitle>
+          <DialogDescription>在此处编辑您的{title}信息，所有更改将自动保存。</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -56,7 +65,7 @@ export const TextEditor = ({
           <IconSelectorWithToggle
             selectedIcon={selectedIcon}
             onIconSelect={setSelectedIcon}
-            onIconToggle={toggleIcon}
+            onIconToggle={setIconEnabled}
             initialEnabled={iconEnabled}
           />
 
@@ -100,13 +109,6 @@ export const TextEditor = ({
             </div>
           )}
         </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>
-            取消
-          </Button>
-          <Button onClick={handleSave}>保存</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

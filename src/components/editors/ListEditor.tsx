@@ -1,19 +1,20 @@
 /**
- * 列表编辑器 - 简洁版本
+ * 列表编辑器 - 自动保存版本
  */
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { DynamicIcon } from "@/components/DynamicIcon";
 import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { IconSelectorWithToggle } from './IconSelectorWithToggle';
-import { ListItem } from './ListItem';
+import { IconSelectorWithToggle } from '../IconSelectorWithToggle';
+import { ListItem } from '../ListItem';
 
 interface ListEditorProps {
   isOpen: boolean;
@@ -36,20 +37,29 @@ export const ListEditor = ({
     items,
     selectedIcon,
     iconEnabled,
+    saveStatusText,
     addItem,
     removeItem,
     updateItem,
     setSelectedIcon,
-    toggleIcon,
-    handleSave,
-    handleCancel,
+    setIconEnabled,
+    handleClose,
   } = useListEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
+  // 直接使用 DynamicIcon
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleCancel}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>编辑 {title}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg">
+              {iconEnabled && selectedIcon && <DynamicIcon name={selectedIcon} className="h-5 w-5 text-white" />}
+            </div>
+            <span>编辑{title}</span>
+            <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
+          </DialogTitle>
+          <DialogDescription>在此处编辑您的{title}信息，所有更改将自动保存。</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -57,7 +67,7 @@ export const ListEditor = ({
           <IconSelectorWithToggle
             selectedIcon={selectedIcon}
             onIconSelect={setSelectedIcon}
-            onIconToggle={toggleIcon}
+            onIconToggle={setIconEnabled}
             initialEnabled={iconEnabled}
           />
 
@@ -101,13 +111,6 @@ export const ListEditor = ({
             </ul>
           </div>
         </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>
-            取消
-          </Button>
-          <Button onClick={handleSave}>保存</Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

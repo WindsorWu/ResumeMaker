@@ -1,8 +1,8 @@
 /**
  * 可复用的图标选择器区域组件
  */
+import { DynamicIcon } from '@/components/DynamicIcon';
 import { Label } from '@/components/ui/label';
-import { getIconByName } from '@/config/icons';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { IconSelector } from './IconSelector';
 
@@ -19,7 +19,7 @@ export const IconSelectorSection = ({
   onToggle,
   onIconSelect,
 }: IconSelectorSectionProps) => {
-  const IconComponent = getIconByName(selectedIcon);
+  // 移除 IconComponent，直接使用 DynamicIcon
 
   return (
     <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
@@ -29,7 +29,7 @@ export const IconSelectorSection = ({
       >
         <div className="flex items-center space-x-3">
           <div className="p-1.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-md">
-            {IconComponent && <IconComponent className="h-4 w-4 text-white" />}
+            {selectedIcon && <DynamicIcon name={selectedIcon} className="h-4 w-4 text-white" />}
           </div>
           <Label className="text-sm font-medium text-gray-700 cursor-pointer">
             模块图标 (当前: {selectedIcon})

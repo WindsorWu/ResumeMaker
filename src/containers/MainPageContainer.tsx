@@ -1,11 +1,11 @@
-import { AppHeader } from '@/components/AppHeader';
+import { AppHeader } from '@/components/layout/AppHeader';
 import { ResumeDisplay } from '@/components/ResumeDisplay';
 import { useAtom, useSetAtom } from 'jotai';
 import { useState } from 'react';
 // import { LayoutSelector } from '@/components/LayoutSelector'
 import { ActionButtons } from '@/components/ActionButtons';
-import { AppFooter } from '@/components/AppFooter';
 import { ClearConfirmDialog } from '@/components/ClearConfirmDialog';
+import { AppFooter } from '@/components/layout/AppFooter';
 import { SectionManager } from '@/components/TimelineManagerDialog';
 import { resetResumeAtom, resumeAtom } from '@/store/resumeStore';
 import type { ResumeSection } from '@/types/resume';

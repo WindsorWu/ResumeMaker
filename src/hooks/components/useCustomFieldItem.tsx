@@ -1,7 +1,8 @@
 /**
  * 自定义字段项业务逻辑 Hook
  */
-import { getIconByName } from '@/config/icons';
+// import { getIconByName } from '@/config/icons';
+import { DynamicIcon } from '@/components/DynamicIcon';
 import type { CustomField } from '@/types/resume';
 
 export const useCustomFieldItem = (
@@ -10,7 +11,8 @@ export const useCustomFieldItem = (
 ) => {
   // 获取图标组件
   const getIconComponent = () => {
-    return getIconByName(field.iconName);
+    // return getIconByName(field.iconName);
+    return <DynamicIcon name={field.iconName} className="h-4 w-4" />;
   };
 
   // 获取显示名称

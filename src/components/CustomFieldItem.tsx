@@ -36,9 +36,7 @@ export const CustomFieldItem = ({
     <div className="border border-gray-200 rounded-lg p-3 space-y-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="p-1 bg-indigo-100 rounded">
-            {IconComponent && <IconComponent className="h-4 w-4 text-indigo-600" />}
-          </div>
+          <div className="p-1 bg-indigo-100 rounded">{IconComponent && IconComponent}</div>
           <span className="text-sm font-medium">{displayName}</span>
         </div>
         <div className="flex items-center space-x-1">

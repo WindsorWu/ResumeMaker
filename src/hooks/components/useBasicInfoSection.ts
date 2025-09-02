@@ -5,7 +5,7 @@ import type { BasicInfo } from '@/types/resume';
 import { useState } from 'react';
 
 export const useBasicInfoSection = (
-  initialData: BasicInfo,
+  // initialData: BasicInfo,
   onUpdate: (data: BasicInfo) => void
 ) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,7 +23,6 @@ export const useBasicInfoSection = (
   // 保存数据
   const handleSave = (newData: BasicInfo) => {
     onUpdate(newData);
-    setIsEditing(false);
   };
 
   // 格式化性别和年龄显示
@@ -38,7 +37,9 @@ export const useBasicInfoSection = (
   const formatCustomFields = (customFields?: { id: string; label: string; value: string }[]) => {
     if (!customFields || customFields.length === 0) return '';
 
-    return customFields.map((field) => `${field.label} | ${field.value}`).join(' | ');
+    return customFields
+      .map((field) => `${field.label} ${field.value ? '：' : ''} ${field.value}`)
+      .join(' | ');
   };
 
   // 检查字段是否有值
@@ -47,15 +48,10 @@ export const useBasicInfoSection = (
   };
 
   return {
-    // 状态
     isEditing,
-
-    // 操作方法
     startEditing,
     closeEditing,
     handleSave,
-
-    // 格式化方法
     formatGenderAge,
     formatCustomFields,
     hasValue,

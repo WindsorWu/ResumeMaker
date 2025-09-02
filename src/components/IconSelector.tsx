@@ -1,8 +1,7 @@
 /**
- * 图标选择器组件 - 简洁版本
+ * 图标选择器组件 - 简化版本
  */
-import { Button } from '@/components/ui/button';
-import { useIconSelector } from '@/hooks/components/useIconSelector';
+import { SimpleIconInput } from './SimpleIconInput';
 
 interface IconSelectorProps {
   selectedIcon: string;
@@ -10,36 +9,11 @@ interface IconSelectorProps {
 }
 
 export const IconSelector = ({ selectedIcon, onIconSelect }: IconSelectorProps) => {
-  const { searchTerm, filteredIcons, hasResults, setSearchTerm } = useIconSelector();
-
   return (
-    <div className="space-y-4">
-      <input
-        type="text"
-        placeholder="搜索图标..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-
-      <div className="grid grid-cols-6 gap-2 max-h-60 overflow-y-auto">
-        {filteredIcons.map((iconOption) => {
-          const IconComponent = iconOption.icon;
-          return (
-            <Button
-              key={iconOption.name}
-              variant={selectedIcon === iconOption.name ? 'default' : 'outline'}
-              size="icon"
-              onClick={() => onIconSelect(iconOption.name)}
-              className="h-12 w-12"
-            >
-              <IconComponent className="h-6 w-6" />
-            </Button>
-          );
-        })}
-      </div>
-
-      {!hasResults && <p className="text-center text-gray-500 py-4">没有找到匹配的图标</p>}
-    </div>
+    <SimpleIconInput
+      value={selectedIcon}
+      onChange={onIconSelect}
+      placeholder="输入图标名称，如 heart, star, user..."
+    />
   );
 };

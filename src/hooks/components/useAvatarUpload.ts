@@ -12,18 +12,6 @@ export const useAvatarUpload = (
   const [showCropper, setShowCropper] = useState(false);
 
   const handleFileSelect = (file: File) => {
-    // 检查文件类型
-    if (!file.type.startsWith('image/')) {
-      alert('请选择图片文件');
-      return false;
-    }
-
-    // 检查文件大小 (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('图片大小不能超过 5MB');
-      return false;
-    }
-
     const reader = new FileReader();
     reader.onload = (e) => {
       const result = e.target?.result as string;

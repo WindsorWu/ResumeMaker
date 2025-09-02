@@ -28,7 +28,7 @@ export const useTimelineSection = (
   // 保存数据
   const handleSave = (data: TimelineItem[] | ListItem[] | TextContent, iconName?: string) => {
     onUpdate(data, iconName);
-    setIsEditing(false);
+    // setIsEditing(false);
   };
 
   // 获取编辑器组件的props

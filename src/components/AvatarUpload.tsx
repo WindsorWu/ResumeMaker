@@ -47,7 +47,7 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
       {/* 操作按钮 */}
       <div className="flex space-x-2">
         <FileUploadButton onFileSelect={(file) => handleFileSelect(file)}>
-          {previewUrl ? '更换头像' : '上传头像'}
+          {previewUrl ? '更换头像' : '选择头像'}
         </FileUploadButton>
 
         {previewUrl && (
@@ -64,13 +64,7 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
       </div>
 
       {/* 提示信息 */}
-      <p className="text-xs text-gray-500 text-center">
-        支持 JPG、PNG 格式
-        <br />
-        文件大小不超过 5MB
-        <br />
-        上传后可裁剪调整
-      </p>
+      <p className="text-xs text-gray-500 text-center">支持 JPG、PNG 格式 上传后可裁剪调整</p>
 
       {/* 裁剪器 */}
       {showCropper && originalImageUrl && (
