@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useBasicInfoSection } from '@/hooks/components/useBasicInfoSection';
 import type { BasicInfo, ResumeSection } from '@/types/resume';
 import { Edit3, Mail, Phone, User } from 'lucide-react';
-import { AvatarDisplay } from './AvatarDisplay';
-import { InfoItem } from './InfoItem';
+import { AvatarDisplay } from '../AvatarDisplay';
+import { InfoItem } from '../InfoItem';
 
 interface BasicInfoSectionProps {
   section: ResumeSection;
