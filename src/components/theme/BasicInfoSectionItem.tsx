@@ -1,15 +1,16 @@
-/**
- * 可复用的信息项显示组件
- */
 import type { LucideIcon } from 'lucide-react';
 
-interface InfoItemProps {
+interface BasicInfoSectionItemProps {
   icon: LucideIcon;
   children: React.ReactNode;
   className?: string;
 }
 
-export const InfoItem = ({ icon: Icon, children, className = '' }: InfoItemProps) => {
+export const BasicInfoSectionItem = ({
+  icon: Icon,
+  children,
+  className = '',
+}: BasicInfoSectionItemProps) => {
   return (
     <div className={`flex items-center space-x-1 ${className}`}>
       <Icon className="h-4 w-4 print:h-3 print:w-3" />

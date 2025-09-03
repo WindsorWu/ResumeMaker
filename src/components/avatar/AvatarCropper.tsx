@@ -30,7 +30,7 @@ export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropp
     onCropComplete,
     handleSave,
     handleCancel,
-  } = useAvatarCropper(isOpen, onSave, onClose);
+  } = useAvatarCropper(onSave, onClose);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCancel}>

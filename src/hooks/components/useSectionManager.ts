@@ -119,6 +119,54 @@ export const useSectionManager = (
     onUpdateSections(updatedSections);
   };
 
+  // 重新分配order的辅助函数
+  const reorderSections = (newManagedSections: ResumeSection[]) => {
+    // 重新分配order
+    const updatedManagedSections = newManagedSections.map((section, index) => ({
+      ...section,
+      order: index + 2, // 基本信息的order是1，所以其他模块从2开始
+    }));
+
+    // 更新完整的sections数组
+    const allSections = sections.map((section) => {
+      if (section.type !== 'basic') {
+        const updatedSection = updatedManagedSections.find((s) => s.id === section.id);
+        return updatedSection || section;
+      }
+      return section;
+    });
+
+    onUpdateSections(allSections);
+  };
+
+  // 上移模块
+  const moveUp = (sectionId: string) => {
+    const currentIndex = managedSections.findIndex((s) => s.id === sectionId);
+    if (currentIndex <= 0) return;
+
+    const newSections = [...managedSections];
+    [newSections[currentIndex - 1], newSections[currentIndex]] = [
+      newSections[currentIndex],
+      newSections[currentIndex - 1],
+    ];
+
+    reorderSections(newSections);
+  };
+
+  // 下移模块
+  const moveDown = (sectionId: string) => {
+    const currentIndex = managedSections.findIndex((s) => s.id === sectionId);
+    if (currentIndex >= managedSections.length - 1) return;
+
+    const newSections = [...managedSections];
+    [newSections[currentIndex], newSections[currentIndex + 1]] = [
+      newSections[currentIndex + 1],
+      newSections[currentIndex],
+    ];
+
+    reorderSections(newSections);
+  };
+
   // 拖拽处理
   const handleDragStart = (index: number) => {
     setDraggedIndex(index);
@@ -130,7 +178,10 @@ export const useSectionManager = (
 
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
-    if (draggedIndex === null) return;
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null);
+      return;
+    }
 
     const newSections = [...managedSections];
     const draggedSection = newSections[draggedIndex];
@@ -139,22 +190,7 @@ export const useSectionManager = (
     newSections.splice(draggedIndex, 1);
     newSections.splice(dropIndex, 0, draggedSection);
 
-    // 重新分配order
-    const updatedSections = newSections.map((section, index) => ({
-      ...section,
-      order: index + 2, // 基本信息的order是1，所以timeline从2开始
-    }));
-
-    // 更新完整的sections数组
-    const allSections = sections.map((section) => {
-      if (section.type !== 'basic') {
-        const updatedSection = updatedSections.find((s) => s.id === section.id);
-        return updatedSection || section;
-      }
-      return section;
-    });
-
-    onUpdateSections(allSections);
+    reorderSections(newSections);
     setDraggedIndex(null);
   };
 
@@ -181,6 +217,7 @@ export const useSectionManager = (
       icon: 'star',
       iconName: 'star',
       type: 'timeline',
+      editorType: 'timeline',
       visible: true,
       order: newOrder,
       data: [],
@@ -235,6 +272,8 @@ export const useSectionManager = (
     // 方法
     getEditorType,
     updateEditorType,
+    moveUp,
+    moveDown,
     handleDragStart,
     handleDragOver,
     handleDrop,

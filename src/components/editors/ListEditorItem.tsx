@@ -6,14 +6,14 @@ import { Textarea } from '@/components/ui/textarea';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { GripVertical, Trash2 } from 'lucide-react';
 
-interface ListItemProps {
+interface ListEditorItemProps {
   item: ListItemType;
   index: number;
   onUpdate: (id: string, content: string) => void;
   onRemove: (id: string) => void;
 }
 
-export const ListItem = ({ item, index, onUpdate, onRemove }: ListItemProps) => {
+export const ListEditorItem = ({ item, index, onUpdate, onRemove }: ListEditorItemProps) => {
   return (
     <div className="flex items-start space-x-2 group">
       {/* 拖拽手柄和序号 */}

@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-interface FormFieldProps {
+interface BasicInfoFieldItemProps {
   id: string;
   label: string;
   type?: string;
@@ -10,14 +10,14 @@ interface FormFieldProps {
   onChange: (value: string) => void;
 }
 
-export const FormField = ({
+export const BasicInfoFieldItem = ({
   id,
   label,
   type = 'text',
   value,
   placeholder,
   onChange,
-}: FormFieldProps) => {
+}: BasicInfoFieldItemProps) => {
   return (
     <div className="space-y-2">
       <Label htmlFor={id}>{label}</Label>

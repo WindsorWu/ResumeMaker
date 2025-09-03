@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useBasicInfoSection } from '@/hooks/components/useBasicInfoSection';
 import type { BasicInfo, ResumeSection } from '@/types/resume';
 import { Edit3, Mail, Phone, User } from 'lucide-react';
-import { AvatarDisplay } from '../AvatarDisplay';
-import { InfoItem } from '../InfoItem';
+import { AvatarDisplay } from '../avatar/AvatarDisplay';
+import { BasicInfoSectionItem } from './BasicInfoSectionItem';
 
 interface BasicInfoSectionProps {
   section: ResumeSection;
@@ -57,14 +57,20 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 print:text-xs print:gap-x-4">
               {/* 性别和年龄 */}
               {(data.gender || data.age) && (
-                <InfoItem icon={User}>{formatGenderAge(data.gender, data.age)}</InfoItem>
+                <BasicInfoSectionItem icon={User}>
+                  {formatGenderAge(data.gender, data.age)}
+                </BasicInfoSectionItem>
               )}
 
               {/* 电话 */}
-              {hasValue(data.phone) && <InfoItem icon={Phone}>{data.phone}</InfoItem>}
+              {hasValue(data.phone) && (
+                <BasicInfoSectionItem icon={Phone}>{data.phone}</BasicInfoSectionItem>
+              )}
 
               {/* 邮箱 */}
-              {hasValue(data.email) && <InfoItem icon={Mail}>{data.email}</InfoItem>}
+              {hasValue(data.email) && (
+                <BasicInfoSectionItem icon={Mail}>{data.email}</BasicInfoSectionItem>
+              )}
             </div>
 
             {/* 第二行：自定义字段 */}
