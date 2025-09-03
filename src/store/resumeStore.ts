@@ -28,8 +28,8 @@ const initialResume: Resume = {
         customFields: [
           {
             id: '1',
-            label: '16年工作经验',
-            value: '求职意向: Web前端开发',
+            label: '26年工作经验',
+            value: '',
             iconName: 'briefcase',
           },
           {
