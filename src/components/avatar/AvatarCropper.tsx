@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -37,6 +38,7 @@ export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropp
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>裁剪头像</DialogTitle>
+          <DialogDescription>调整裁剪框以选择合适的头像区域，推荐使用 3:4 比例。</DialogDescription>
         </DialogHeader>
 
         <div className="flex justify-center p-4">
