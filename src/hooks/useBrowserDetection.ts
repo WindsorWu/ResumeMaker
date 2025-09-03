@@ -21,7 +21,7 @@ export const useBrowserDetection = () => {
   }, []);
 
   const getPrintTip = () => {
-    const { isSafari, isChrome, isFirefox, isMobile } = browserInfo;
+    const { isChrome, isMobile } = browserInfo;
 
     if (isMobile) {
       return {
@@ -30,23 +30,9 @@ export const useBrowserDetection = () => {
       };
     }
 
-    if (isSafari) {
-      return {
-        tip: '💡 Safari用户：点击打印按钮，在打印对话框中选择"另存为PDF"',
-        shortcut: 'Cmd+P',
-      };
-    }
-
     if (isChrome) {
       return {
         tip: '💡 Chrome用户：点击打印按钮，目标打印机选择"另存为PDF"',
-        shortcut: 'Ctrl+P (Cmd+P)',
-      };
-    }
-
-    if (isFirefox) {
-      return {
-        tip: '💡 Firefox用户：点击打印按钮，在打印对话框底部选择"保存为PDF"',
         shortcut: 'Ctrl+P (Cmd+P)',
       };
     }

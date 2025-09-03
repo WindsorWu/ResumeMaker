@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useDebounceCallback } from '@/lib/utils';
+import { useDebounceCallback } from '@/hooks/useDebounce';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseAutoSaveDialogOptions<T> {
   /**
@@ -48,6 +48,7 @@ export const useAutoSaveDialog = <T>({
 }: UseAutoSaveDialogOptions<T>) => {
   const [data, setData] = useState<T>(initialData);
   const [isSaving, setIsSaving] = useState(false);
+
   const isInitialized = useRef(false);
   const latestDataRef = useRef(data);
   const lastSavedDataRef = useRef(initialData);
