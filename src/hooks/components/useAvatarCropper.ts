@@ -45,7 +45,6 @@ async function getCroppedImg(image: HTMLImageElement, crop: Crop): Promise<strin
 }
 
 export const useAvatarCropper = (
-  isOpen: boolean,
   onSave: (croppedImageUrl: string) => void,
   onClose: () => void
 ) => {
@@ -77,7 +76,7 @@ export const useAvatarCropper = (
   }, []);
 
   // 裁剪区域改变
-  const onCropChange = (pixelCrop: Crop, percentCrop: Crop) => {
+  const onCropChange = (_pixelCrop: Crop, percentCrop: Crop) => {
     setCrop(percentCrop);
   };
 

@@ -8,15 +8,19 @@ import type { CustomField } from '@/types/resume';
 import { Trash2 } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
-import { SimpleIconInput } from './SimpleIconInput';
+import { SimpleIconInput } from '../SimpleIconInput';
 
-interface CustomFieldItemProps {
+interface BasicInfoCustomFieldItemProps {
   field: CustomField;
   onUpdate: (fieldId: string, updates: Partial<CustomField>) => void;
   onDelete: (fieldId: string) => void;
 }
 
-export const CustomFieldItem = ({ field, onUpdate, onDelete }: CustomFieldItemProps) => {
+export const BasicInfoCustomFieldItem = ({
+  field,
+  onUpdate,
+  onDelete,
+}: BasicInfoCustomFieldItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editingLabel, setEditingLabel] = useState(field.label);
   const [editingValue, setEditingValue] = useState(field.value);

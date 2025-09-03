@@ -8,14 +8,19 @@ import { Textarea } from '@/components/ui/textarea';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Trash2 } from 'lucide-react';
 
-interface TimelineItemProps {
+interface TimelineEditorItemProps {
   item: TimelineItemType;
   index: number;
   onUpdate: (id: string, field: keyof TimelineItemType, value: string) => void;
   onRemove: (id: string) => void;
 }
 
-export const TimelineItem = ({ item, index, onUpdate, onRemove }: TimelineItemProps) => {
+export const TimelineEditorItem = ({
+  item,
+  index,
+  onUpdate,
+  onRemove,
+}: TimelineEditorItemProps) => {
   return (
     <div className="border rounded-lg p-4 space-y-4 bg-white shadow-sm">
       <div className="flex justify-between items-center">

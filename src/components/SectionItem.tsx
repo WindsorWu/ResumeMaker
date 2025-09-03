@@ -2,6 +2,7 @@
  * 简历模块项组件 - 简化版本
  */
 import { Button } from '@/components/ui/button';
+import { asIconName } from '@/types/icon';
 import type { ResumeSection } from '@/types/resume';
 import { ChevronDown, ChevronUp, Edit, Plus, Trash2 } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
@@ -43,7 +44,10 @@ export const SectionItem = memo(
             {/* 图标 */}
             {section.iconName && (
               <div className="flex items-center justify-center w-8 h-8 bg-white rounded-full shadow-sm">
-                <DynamicIcon name={section.iconName} className="h-4 w-4 text-gray-600" />
+                <DynamicIcon
+                  name={asIconName(section.iconName)}
+                  className="h-4 w-4 text-gray-600"
+                />
               </div>
             )}
 

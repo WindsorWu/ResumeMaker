@@ -1,13 +1,21 @@
 /**
- * 时间线展示区域 - 简洁版本
+ * 时间线组件 - 简历模块显示
  */
-import { ListEditor, TextEditor, TimelineEditor } from '@/components/editors';
+import { ListEditor } from '@/components/editors/ListEditor';
+import { TextEditor } from '@/components/editors/TextEditor';
+import { TimelineEditor } from '@/components/editors/TimelineEditor';
+import {
+  ListContent,
+  TextContentRenderer,
+  TimelineContent,
+} from '@/components/theme/TimelineContentRenderer';
 import { Button } from '@/components/ui/button';
 import { useTimelineSection } from '@/hooks/components/useTimelineSection';
+import { asIconName } from '@/types/icon';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
 import { Edit3 } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
-import { ListContent, TextContentRenderer, TimelineContent } from '../ContentRenderer';
+import React from 'react';
 
 interface TimelineSectionProps {
   section: ResumeSection;
@@ -15,7 +23,11 @@ interface TimelineSectionProps {
   onUpdate: (data: TimelineItem[] | ListItem[] | TextContent, iconName?: string) => void;
 }
 
-export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSectionProps) => {
+export const TimelineSection: React.FC<TimelineSectionProps> = ({
+  section,
+  isEditable,
+  onUpdate,
+}) => {
   const { isEditing, editorType, startEditing, getEditorProps } = useTimelineSection(
     section,
     onUpdate
@@ -32,18 +44,32 @@ export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSecti
     }
   };
 
-  // 渲染编辑器
+  // 根据编辑器类型渲染对应的编辑器
   const renderEditor = () => {
+    if (!isEditing) return null;
+
     const editorProps = getEditorProps();
 
-    if (editorType === 'list') {
-      return <ListEditor {...editorProps} initialData={editorProps.initialData as ListItem[]} />;
-    } else if (editorType === 'text') {
-      return <TextEditor {...editorProps} initialData={editorProps.initialData as TextContent} />;
-    } else {
-      return (
-        <TimelineEditor {...editorProps} initialData={editorProps.initialData as TimelineItem[]} />
-      );
+    switch (editorType) {
+      case 'text':
+        return (
+          <TextEditor
+            {...editorProps}
+            initialData={editorProps.initialData as TextContent}
+            selectedIcon={section.iconName || 'briefcase'}
+            iconEnabled={true}
+          />
+        );
+      case 'list':
+        return <ListEditor {...editorProps} initialData={editorProps.initialData as ListItem[]} />;
+      case 'timeline':
+      default:
+        return (
+          <TimelineEditor
+            {...editorProps}
+            initialData={editorProps.initialData as TimelineItem[]}
+          />
+        );
     }
   };
 
@@ -63,23 +89,28 @@ export const TimelineSection = ({ section, isEditable, onUpdate }: TimelineSecti
           </Button>
         )}
 
-        {/* 模块标题 */}
-        <div className="flex items-center mb-4 print:mb-3">
-          <h2 className="text-xl font-bold text-gray-900 print:text-lg">{section.title}</h2>
-          {/* 图标 */}
-          {section.iconName && (
-            <div className="p-2 ">
-              <DynamicIcon name={section.iconName} className="h-4 w-4 print:h-3 print:w-3" />
-            </div>
-          )}
-        </div>
+        <div className="mb-8 print:mb-6">
+          {/* 模块标题 */}
+          <div className="flex items-center mb-4 print:mb-3">
+            <h2 className="text-xl font-bold text-gray-900 print:text-lg">{section.title}</h2>
+            {/* 图标 */}
+            {section.iconName && (
+              <div className="p-2 ">
+                <DynamicIcon
+                  name={asIconName(section.iconName)}
+                  className="h-4 w-4 print:h-3 print:w-3"
+                />
+              </div>
+            )}
+          </div>
 
-        {/* 内容区域 */}
-        <div className={section.iconName ? 'ml-6 print:ml-3' : ''}>{renderContent()}</div>
+          {/* 内容区域 */}
+          <div className={section.iconName ? 'ml-6 print:ml-3' : ''}>{renderContent()}</div>
+        </div>
       </div>
 
       {/* 编辑器 */}
-      {isEditing && renderEditor()}
+      {renderEditor()}
     </>
   );
 };

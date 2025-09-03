@@ -9,7 +9,6 @@ export const AppHeader = ({ children }: AppHeaderProps) => {
     <header className="bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-200 sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo和标题 */}
           <div className="flex items-center space-x-3">
             <div className="relative">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center shadow-md">

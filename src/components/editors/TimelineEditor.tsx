@@ -14,7 +14,7 @@ import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 import { SimpleIconInput } from '../SimpleIconInput';
-import { TimelineItem } from './TimelineItem';
+import { TimelineEditorItem } from './TimelineEditorItem';
 
 interface TimelineEditorProps {
   isOpen: boolean;
@@ -74,7 +74,7 @@ export const TimelineEditor = ({
 
           {/* 时间线项目列表 */}
           {items.map((item, index) => (
-            <TimelineItem
+            <TimelineEditorItem
               key={item.id}
               item={item}
               index={index}

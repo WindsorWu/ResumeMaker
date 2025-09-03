@@ -13,8 +13,8 @@ import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
-import { ListItem } from '../ListItem';
 import { SimpleIconInput } from '../SimpleIconInput';
+import { ListEditorItem } from './ListEditorItem';
 
 interface ListEditorProps {
   isOpen: boolean;
@@ -84,7 +84,7 @@ export const ListEditor = ({
 
             <div className="space-y-3">
               {items.map((item, index) => (
-                <ListItem
+                <ListEditorItem
                   key={item.id}
                   item={item}
                   index={index}

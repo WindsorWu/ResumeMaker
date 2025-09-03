@@ -2,6 +2,7 @@
  * 自定义字段项业务逻辑 Hook
  */
 // import { getIconByName } from '@/config/icons';
+import { asIconName } from '@/types/icon';
 import type { CustomField } from '@/types/resume';
 import { DynamicIcon } from 'lucide-react/dynamic';
 
@@ -12,7 +13,7 @@ export const useCustomFieldItem = (
   // 获取图标组件
   const getIconComponent = () => {
     // return getIconByName(field.iconName);
-    return <DynamicIcon name={field.iconName} className="h-4 w-4" />;
+    return <DynamicIcon name={asIconName(field.iconName)} className="h-4 w-4" />;
   };
 
   // 获取显示名称

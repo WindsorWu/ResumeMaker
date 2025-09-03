@@ -8,9 +8,9 @@ import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
 import type { BasicInfo, CustomField } from '@/types/resume';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { AvatarUpload } from '../AvatarUpload';
-import { CustomFieldItem } from '../CustomFieldItem';
-import { FormField } from '../FormField';
+import { AvatarUpload } from '../avatar/AvatarUpload';
+import { BasicInfoCustomFieldItem } from './BasicInfoCustomFieldItem';
+import { BasicInfoFieldItem } from './BasicInfoFieldItem';
 
 interface BasicInfoEditorProps {
   isOpen: boolean;
@@ -84,10 +84,6 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
     }
   };
 
-  const toggleCustomFieldExpansion = (id: string) => {
-    setExpandedCustomField(expandedCustomField === id ? null : id);
-  };
-
   const basicFields = [
     { id: 'name', label: '姓名', type: 'text', placeholder: '请输入您的姓名' },
     { id: 'title', label: '职位', type: 'text', placeholder: '如：前端开发工程师' },
@@ -136,7 +132,7 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
           {/* 基本信息表单 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {basicFields.map((field) => (
-              <FormField
+              <BasicInfoFieldItem
                 key={field.id}
                 id={field.id}
                 label={field.label}
@@ -161,13 +157,11 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
             {formData.customFields && formData.customFields.length > 0 && (
               <div className="space-y-3">
                 {formData.customFields.map((field) => (
-                  <CustomFieldItem
+                  <BasicInfoCustomFieldItem
                     key={field.id}
                     field={field}
-                    isExpanded={expandedCustomField === field.id}
-                    onUpdate={(updates) => updateCustomField(field.id, updates)}
-                    onRemove={() => removeCustomField(field.id)}
-                    onToggleExpansion={() => toggleCustomFieldExpansion(field.id)}
+                    onUpdate={(fieldId, updates) => updateCustomField(fieldId, updates)}
+                    onDelete={(fieldId) => removeCustomField(fieldId)}
                   />
                 ))}
               </div>

@@ -1,9 +1,12 @@
-import { LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { LayoutGrid } from 'lucide-react';
 
 interface LayoutSelectorProps {
   onLayoutChange: (layout: 'side-by-side' | 'top-bottom') => void;
 }
+/**
+ *  todo: 未来可能支持其他布局
+ */
 
 export const LayoutSelector = ({ onLayoutChange }: LayoutSelectorProps) => {
   return (

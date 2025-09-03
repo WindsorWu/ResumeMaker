@@ -1,13 +1,13 @@
-import { Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
+import { Trash2 } from 'lucide-react';
 
 interface ClearConfirmDialogProps {
   isOpen: boolean;
@@ -29,15 +29,8 @@ export const ClearConfirmDialog = ({ isOpen, onClose, onConfirm }: ClearConfirmD
 
         <div className="py-4">
           <p className="text-gray-700 mb-4">
-            确定要清空所有简历内容吗？此操作将删除所有已保存的数据，包括：
+            确定要清空所有简历内容吗？此操作将删除所有已保存的数据，并恢复初始状态
           </p>
-          <ul className="text-sm text-gray-600 space-y-1 ml-4">
-            <li>• 基本信息（包括头像）</li>
-            <li>• 教育经历</li>
-            <li>• 工作经历</li>
-            <li>• 项目经历</li>
-            <li>• 其他所有自定义内容</li>
-          </ul>
           <p className="text-red-600 text-sm mt-4 font-medium">⚠️ 此操作无法撤销，请谨慎操作！</p>
         </div>
 
