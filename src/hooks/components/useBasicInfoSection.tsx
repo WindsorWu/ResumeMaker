@@ -1,7 +1,9 @@
 /**
  * 基本信息组件业务逻辑 Hook
  */
+import { asIconName } from '@/types/icon';
 import type { BasicInfo } from '@/types/resume';
+import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
 
 export const useBasicInfoSection = (
@@ -34,12 +36,22 @@ export const useBasicInfoSection = (
   };
 
   // 格式化自定义字段显示
-  const formatCustomFields = (customFields?: { id: string; label: string; value: string }[]) => {
+  const formatCustomFields = (
+    customFields?: {
+      id: string;
+      label: string;
+      value: string;
+      iconName?: string;
+    }[]
+  ) => {
     if (!customFields || customFields.length === 0) return '';
 
-    return customFields
-      .map((field) => `${field.label} ${field.value ? '：' : ''} ${field.value}`)
-      .join(' | ');
+    return customFields.map((field) => (
+      <span className="flex items-center gap-1" key={field.id}>
+        {field.iconName && <DynamicIcon name={asIconName(field.iconName)} className="w-4 h-4" />}
+        {field.label} {field.value}
+      </span>
+    ));
   };
 
   // 检查字段是否有值

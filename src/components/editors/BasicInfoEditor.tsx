@@ -86,36 +86,16 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
 
   const basicFields = [
     { id: 'name', label: '姓名', type: 'text', placeholder: '请输入您的姓名' },
-    { id: 'title', label: '职位', type: 'text', placeholder: '如：前端开发工程师' },
-    { id: 'email', label: '邮箱', type: 'email', placeholder: 'your.email@example.com' },
+    { id: 'gender', label: '性别', type: 'text', placeholder: '请输入您的性别' },
+    { id: 'age', label: '年龄', type: 'text', placeholder: '请输入您的年龄' },
     { id: 'phone', label: '电话', type: 'tel', placeholder: '+86 138 0013 8000' },
-    { id: 'location', label: '地址', type: 'text', placeholder: '北京市朝阳区' },
-    { id: 'website', label: '个人网站', type: 'url', placeholder: 'https://yourwebsite.com' },
-    { id: 'github', label: 'GitHub', type: 'url', placeholder: 'https://github.com/username' },
-    {
-      id: 'linkedin',
-      label: 'LinkedIn',
-      type: 'url',
-      placeholder: 'https://linkedin.com/in/username',
-    },
-    { id: 'wechat', label: '微信', type: 'text', placeholder: '微信号' },
-    { id: 'qq', label: 'QQ', type: 'text', placeholder: 'QQ号码' },
-    { id: 'weibo', label: '微博', type: 'url', placeholder: 'https://weibo.com/username' },
-    {
-      id: 'personalSummary',
-      label: '个人简介',
-      type: 'textarea',
-      placeholder: '简单介绍一下您的背景和专业特长...',
-    },
+    { id: 'email', label: '邮箱', type: 'email', placeholder: 'your.email@example.com' },
   ] as const;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
-          <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg">
-            <span className="text-white">👤</span>
-          </div>
           <span>编辑基本信息</span>
           <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
         </DialogTitle>
@@ -123,7 +103,6 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
           编辑个人基本信息，包括姓名、联系方式等，所有更改将自动保存。
         </DialogDescription>
         <div className="space-y-6">
-          {/* 头像上传 */}
           <div className="space-y-2">
             <Label>头像</Label>
             <AvatarUpload currentAvatar={formData.avatar} onAvatarChange={handleAvatarChange} />
