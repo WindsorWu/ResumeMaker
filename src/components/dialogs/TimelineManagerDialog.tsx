@@ -9,28 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select } from '@/components/ui/select';
 import { useSectionManager } from '@/hooks/components/useSectionManager';
-import { isValidIconName } from '@/lib/iconUtils';
-import { asIconName } from '@/types/icon';
 import type { ResumeSection } from '@/types/resume';
-import {
-  Calendar,
-  Check,
-  Edit,
-  GripVertical,
-  List,
-  Plus,
-  Settings,
-  Star,
-  Trash2,
-  Type,
-  X,
-} from 'lucide-react';
-import { DynamicIcon } from 'lucide-react/dynamic';
-import React, { useState } from 'react';
+import { GripVertical, Plus, Settings, Star } from 'lucide-react';
+import { DraggableSectionItem } from './DraggableSectionItem';
 
 interface SectionManagerProps {
   isOpen: boolean;
@@ -38,201 +21,6 @@ interface SectionManagerProps {
   sections: ResumeSection[];
   onUpdateSections: (sections: ResumeSection[]) => void;
 }
-
-// 编辑器类型选项
-const EDITOR_TYPE_OPTIONS = [
-  {
-    value: 'timeline',
-    label: '时间线编辑器',
-    description: '适合工作经历、教育背景等时序信息',
-    icon: Calendar,
-  },
-  {
-    value: 'list',
-    label: '列表编辑器',
-    description: '适合技能清单、证书列表等',
-    icon: List,
-  },
-  {
-    value: 'text',
-    label: '文本编辑器',
-    description: '适合自我介绍、备注等自由文本',
-    icon: Type,
-  },
-];
-
-// 可拖拽的模块项组件
-interface DraggableSectionItemProps {
-  section: ResumeSection;
-  index: number;
-  isEditing: boolean;
-  editingTitle: string;
-  onStartEditing: () => void;
-  onSaveEditing: () => void;
-  onCancelEditing: () => void;
-  onTitleChange: (title: string) => void;
-  onIconChange: (iconName: string) => void;
-  onEditorTypeChange: (editorType: 'timeline' | 'list' | 'text') => void;
-  onDelete: () => void;
-  onDragStart: (index: number) => void;
-  onDragOver: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent, index: number) => void;
-  getEditorType: (section: ResumeSection) => 'timeline' | 'list' | 'text';
-}
-
-const DraggableSectionItem: React.FC<DraggableSectionItemProps> = ({
-  section,
-  index,
-  isEditing,
-  editingTitle,
-  onStartEditing,
-  onSaveEditing,
-  onCancelEditing,
-  onTitleChange,
-  onIconChange,
-  onEditorTypeChange,
-  onDelete,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  getEditorType,
-}) => {
-  const [iconInput, setIconInput] = useState(section.iconName || '');
-  const currentEditorType = getEditorType(section);
-  const currentOption = EDITOR_TYPE_OPTIONS.find((opt) => opt.value === currentEditorType);
-
-  const handleEditorTypeChange = (value: string) => {
-    const editorType = value as 'timeline' | 'list' | 'text';
-    onEditorTypeChange(editorType);
-  };
-
-  return (
-    <div
-      draggable
-      onDragStart={() => onDragStart(index)}
-      onDragOver={onDragOver}
-      onDrop={(e) => onDrop(e, index)}
-      className="group border border-gray-200 rounded-lg bg-white shadow-sm hover:shadow-md transition-all duration-200 cursor-move"
-    >
-      <div className="flex items-center gap-3 p-4">
-        {/* 拖拽手柄 */}
-        <div className="text-gray-400 group-hover:text-gray-600">
-          <GripVertical className="h-5 w-5" />
-        </div>
-
-        {/* 模块图标 */}
-        <div className="flex items-center justify-center w-10 h-10 bg-gray-50 rounded-full">
-          {section.iconName && isValidIconName(section.iconName) ? (
-            <DynamicIcon name={asIconName(section.iconName)} className="h-5 w-5 text-gray-600" />
-          ) : (
-            <Star className="h-5 w-5 text-gray-400" />
-          )}
-        </div>
-
-        {/* 模块信息 */}
-        <div className="flex-1 min-w-0">
-          {isEditing ? (
-            <div className="space-y-3">
-              {/* 标题编辑 */}
-              <Input
-                value={editingTitle}
-                onChange={(e) => onTitleChange(e.target.value)}
-                placeholder="模块标题"
-                className="text-sm"
-              />
-
-              {/* 图标编辑 */}
-              <div className="flex items-center gap-2">
-                <Input
-                  value={iconInput}
-                  onChange={(e) => setIconInput(e.target.value)}
-                  placeholder="图标名称 (如: star, heart, user)"
-                  className="text-sm flex-1"
-                />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onIconChange(iconInput)}
-                  disabled={!iconInput || !isValidIconName(iconInput)}
-                  className="px-3"
-                >
-                  应用
-                </Button>
-              </div>
-
-              {/* 编辑器类型选择 */}
-              <div className="space-y-2">
-                <Label className="text-xs text-gray-600">编辑器类型</Label>
-                <Select
-                  value={currentEditorType}
-                  onValueChange={handleEditorTypeChange}
-                  options={EDITOR_TYPE_OPTIONS}
-                  className="text-sm"
-                />
-                <div className="text-xs text-gray-500">{currentOption?.description}</div>
-              </div>
-
-              {/* 编辑操作按钮 */}
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" size="sm" onClick={onCancelEditing}>
-                  <X className="h-4 w-4 mr-1" />
-                  取消
-                </Button>
-                <Button size="sm" onClick={onSaveEditing} disabled={!editingTitle.trim()}>
-                  <Check className="h-4 w-4 mr-1" />
-                  保存
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-medium text-gray-900 truncate">{section.title}</h3>
-                {section.data && Array.isArray(section.data) && (
-                  <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-600 rounded-full">
-                    {section.data.length}项
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                {currentOption && (
-                  <>
-                    <currentOption.icon className="h-4 w-4" />
-                    <span>{currentOption.label}</span>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 操作按钮 */}
-        {!isEditing && (
-          <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onStartEditing}
-              className="h-8 w-8 p-0"
-              title="编辑模块"
-            >
-              <Edit className="h-4 w-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onDelete}
-              className="h-8 w-8 p-0 text-red-500 hover:text-red-700"
-              title="删除模块"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 export const SectionManager = ({
   isOpen,
@@ -328,25 +116,6 @@ export const SectionManager = ({
               <Plus className="h-5 w-5 mr-2" />
               添加自定义模块
             </Button>
-          </div>
-
-          {/* 编辑器类型说明 */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
-            <h4 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
-              <Star className="h-4 w-4 text-blue-500" />
-              编辑器类型说明
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-              {EDITOR_TYPE_OPTIONS.map((option) => (
-                <div key={option.value} className="flex items-start gap-2">
-                  <option.icon className="h-4 w-4 mt-0.5 text-gray-600 flex-shrink-0" />
-                  <div>
-                    <div className="font-medium text-gray-800">{option.label}</div>
-                    <div className="text-gray-600 text-xs">{option.description}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* 使用提示 */}
