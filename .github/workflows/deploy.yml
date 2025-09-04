@@ -76,7 +76,7 @@ jobs:
             docker run -d \
               --name resumaker-app \
               --restart unless-stopped \
-              -p 3000:80 \
+              -p 9000:80 \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
             # 验证部署状态
