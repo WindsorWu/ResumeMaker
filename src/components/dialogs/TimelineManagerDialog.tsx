@@ -1,5 +1,5 @@
 /**
- * 模块管理器 - 增强版本，支持拖拽、编辑器类型选择
+ * 模块管理对话框 - 使用 @dnd-kit 库（懒加载组件）
  */
 import { Button } from '@/components/ui/button';
 import {
@@ -11,23 +11,17 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useSectionManager } from '@/hooks/components/useSectionManager';
-import type { ResumeSection } from '@/types/resume';
+import { DndContext } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
 import { GripVertical, Plus, Settings, Star } from 'lucide-react';
 import { DraggableSectionItem } from './DraggableSectionItem';
 
 interface SectionManagerProps {
   isOpen: boolean;
   onClose: () => void;
-  sections: ResumeSection[];
-  onUpdateSections: (sections: ResumeSection[]) => void;
 }
 
-export const SectionManager = ({
-  isOpen,
-  onClose,
-  sections,
-  onUpdateSections,
-}: SectionManagerProps) => {
+export const SectionManager = ({ isOpen, onClose }: SectionManagerProps) => {
   const {
     managedSections,
     editingId,
@@ -41,27 +35,25 @@ export const SectionManager = ({
     updateSectionIcon,
     getEditorType,
     updateEditorType,
-    handleDragStart,
-    handleDragOver,
-    handleDrop,
-  } = useSectionManager(sections, onUpdateSections);
+    dragConfig,
+  } = useSectionManager();
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center gap-3">
+          <DialogTitle className="flex items-center gap-3 text-xl font-semibold text-gray-900">
             <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg">
               <Settings className="h-6 w-6 text-white" />
             </div>
             <span>模块管理</span>
           </DialogTitle>
           <DialogDescription>
-            拖拽调整模块顺序，选择合适的编辑器类型，自定义模块标题和图标。
+            管理简历中的各个模块，包括显示顺序、编辑器类型和图标设置。拖拽调整顺序，所有更改将自动保存。
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-6 flex-1 overflow-y-auto">
           {/* 现有模块列表 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -74,28 +66,28 @@ export const SectionManager = ({
               </div>
             </div>
 
-            <div className="space-y-3">
-              {managedSections.map((section, index) => (
-                <DraggableSectionItem
-                  key={section.id}
-                  section={section}
-                  index={index}
-                  isEditing={editingId === section.id}
-                  editingTitle={editingTitle}
-                  onStartEditing={() => startEditing(section)}
-                  onSaveEditing={saveEditing}
-                  onCancelEditing={cancelEditing}
-                  onTitleChange={setEditingTitle}
-                  onIconChange={(iconName) => updateSectionIcon(section.id, iconName)}
-                  onEditorTypeChange={(editorType) => updateEditorType(section.id, editorType)}
-                  onDelete={() => deleteSection(section.id)}
-                  onDragStart={handleDragStart}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  getEditorType={getEditorType}
-                />
-              ))}
-            </div>
+            <DndContext sensors={dragConfig.sensors} onDragEnd={dragConfig.onDragEnd}>
+              <SortableContext items={dragConfig.sortableItems} strategy={dragConfig.strategy}>
+                <div className="space-y-3">
+                  {managedSections.map((section) => (
+                    <DraggableSectionItem
+                      key={section.id}
+                      section={section}
+                      isEditing={editingId === section.id}
+                      editingTitle={editingTitle}
+                      onStartEditing={() => startEditing(section)}
+                      onSaveEditing={saveEditing}
+                      onCancelEditing={cancelEditing}
+                      onTitleChange={setEditingTitle}
+                      onIconChange={(iconName) => updateSectionIcon(section.id, iconName)}
+                      onEditorTypeChange={(editorType) => updateEditorType(section.id, editorType)}
+                      onDelete={() => deleteSection(section.id)}
+                      getEditorType={getEditorType}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
 
             {managedSections.length === 0 && (
               <div className="text-center py-8 text-gray-500">
@@ -108,30 +100,26 @@ export const SectionManager = ({
 
           {/* 添加新模块 */}
           <div className="border-t pt-6">
-            <Button
-              onClick={addCustomSection}
-              variant="outline"
-              className="w-full border-dashed border-2 h-12 hover:bg-blue-50 hover:border-blue-300 transition-colors"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              添加自定义模块
-            </Button>
-          </div>
-
-          {/* 使用提示 */}
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-            <div className="text-sm text-amber-800">
-              <p className="font-medium mb-2">💡 使用提示：</p>
-              <ul className="space-y-1 text-xs">
-                <li>• 拖拽模块可以调整在简历中的显示顺序</li>
-                <li>• 不同编辑器类型适合不同的内容，选择后数据会自动转换</li>
-                <li>• 图标名称请使用 Lucide Icons 的名称，如：star、heart、user 等</li>
-                <li>• 删除模块会永久移除该模块及其所有数据，请谨慎操作</li>
-              </ul>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium text-gray-700">添加新模块</Label>
+              <Button
+                onClick={addCustomSection}
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                添加模块
+              </Button>
             </div>
+            <p className="text-xs text-gray-500 mt-2">
+              新添加的模块将显示在模块列表的最后，你可以通过拖拽调整位置。
+            </p>
           </div>
         </div>
       </DialogContent>
     </Dialog>
   );
 };
+
+// 默认导出用于懒加载
+export default SectionManager;

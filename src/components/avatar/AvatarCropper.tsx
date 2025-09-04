@@ -1,12 +1,11 @@
 /**
- * 头像裁剪组件 - 简洁版本
+ * 头像裁剪组件 - 使用 react-image-crop 库（懒加载组件）
  */
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -17,57 +16,66 @@ import 'react-image-crop/dist/ReactCrop.css';
 interface AvatarCropperProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (croppedImageUrl: string) => void;
-  imageUrl: string;
+  imageSrc: string;
+  onCropComplete: (croppedImageUrl: string) => void;
 }
 
-export const AvatarCropper = ({ isOpen, onClose, onSave, imageUrl }: AvatarCropperProps) => {
+export const AvatarCropper = ({
+  isOpen,
+  onClose,
+  imageSrc,
+  onCropComplete,
+}: AvatarCropperProps) => {
   const {
     crop,
     completedCrop,
     imgRef,
     onImageLoad,
     onCropChange,
-    onCropComplete,
+    onCropComplete: onCropCompleteCallback,
     handleSave,
     handleCancel,
-  } = useAvatarCropper(onSave, onClose);
+  } = useAvatarCropper(onCropComplete, onClose);
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleCancel}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>裁剪头像</DialogTitle>
-          <DialogDescription>调整裁剪框以选择合适的头像区域，推荐使用 3:4 比例。</DialogDescription>
+          <DialogDescription>拖拽调整裁剪区域，点击保存完成头像设置。</DialogDescription>
         </DialogHeader>
 
-        <div className="flex justify-center p-4">
-          <ReactCrop
-            crop={crop}
-            onChange={onCropChange}
-            onComplete={onCropComplete}
-            aspect={3 / 4} // 3:4比例
-            className="max-w-full max-h-96"
-          >
-            <img
-              ref={imgRef}
-              alt="裁剪预览"
-              src={imageUrl}
-              style={{ maxWidth: '100%', maxHeight: '400px' }}
-              onLoad={onImageLoad}
-            />
-          </ReactCrop>
-        </div>
+        <div className="space-y-4">
+          <div className="flex justify-center">
+            <ReactCrop
+              crop={crop}
+              onChange={onCropChange}
+              onComplete={onCropCompleteCallback}
+              aspect={3 / 4}
+            >
+              <img
+                ref={imgRef}
+                src={imageSrc}
+                alt="裁剪头像"
+                onLoad={onImageLoad}
+                className="max-h-96"
+              />
+            </ReactCrop>
+          </div>
 
-        <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>
-            取消
-          </Button>
-          <Button onClick={handleSave} disabled={!completedCrop}>
-            确定
-          </Button>
-        </DialogFooter>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={handleCancel}>
+              取消
+            </Button>
+            <Button onClick={handleSave} disabled={!completedCrop}>
+              保存
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
 };
+
+// 默认导出用于懒加载
+export default AvatarCropper;

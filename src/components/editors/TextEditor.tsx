@@ -1,7 +1,7 @@
 /**
  * 文本编辑器组件
  */
-import { SimpleIconInput } from '@/components/SimpleIconInput';
+import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,15 +12,14 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useTextEditor } from '@/hooks/components/useTextEditor';
-import type { TextContent } from '@/types/resume';
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 
 interface TextEditorProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  initialData: TextContent;
-  onSave: (data: TextContent, iconName?: string) => void;
+  initialData: { content: string };
+  onSave: (data: { content: string }, iconName?: string) => void;
   selectedIcon: string;
   iconEnabled: boolean;
 }
@@ -86,11 +85,7 @@ export const TextEditor = ({
 
             {iconEnabled && (
               <div className="pl-6 border-l-2 border-blue-100">
-                <SimpleIconInput
-                  value={selectedIcon}
-                  onChange={setSelectedIcon}
-                  placeholder="输入图标名称，如 file-text, edit, document..."
-                />
+                <IconPicker value={selectedIcon} onChange={setSelectedIcon} label="图标" />
               </div>
             )}
           </div>

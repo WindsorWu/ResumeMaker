@@ -1,16 +1,16 @@
 /**
- * 基本信息组件业务逻辑 Hook
+ * 基本信息组件业务逻辑 Hook - 优化版本
+ * 直接使用状态管理，无需层层传递回调函数
  */
+import { useResumeEditor } from '@/hooks/components/useResumeEditor';
 import { asIconName } from '@/types/icon';
 import type { BasicInfo } from '@/types/resume';
 import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
 
-export const useBasicInfoSection = (
-  // initialData: BasicInfo,
-  onUpdate: (data: BasicInfo) => void
-) => {
+export const useBasicInfoSection = (sectionId: string) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { handleBasicInfoSave } = useResumeEditor(sectionId);
 
   // 开始编辑
   const startEditing = () => {
@@ -22,9 +22,9 @@ export const useBasicInfoSection = (
     setIsEditing(false);
   };
 
-  // 保存数据
+  // 保存数据 - 直接调用状态管理
   const handleSave = (newData: BasicInfo) => {
-    onUpdate(newData);
+    handleBasicInfoSave(newData);
   };
 
   // 格式化性别和年龄显示

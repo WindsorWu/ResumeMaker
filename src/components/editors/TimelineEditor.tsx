@@ -1,6 +1,7 @@
 /**
  * 时间线编辑器 - 自动保存版本
  */
+import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,7 +14,6 @@ import { useTimelineEditor } from '@/hooks/components/useTimelineEditor';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
-import { SimpleIconInput } from '../SimpleIconInput';
 import { TimelineEditorItem } from './TimelineEditorItem';
 
 interface TimelineEditorProps {
@@ -65,12 +65,7 @@ export const TimelineEditor = ({
 
         <div className="space-y-6">
           {/* 图标选择区域 */}
-          <SimpleIconInput
-            value={selectedIcon as IconName}
-            onChange={setSelectedIcon}
-            label="图标"
-            placeholder="输入图标名称，如 globe, link, github..."
-          />
+          <IconPicker value={selectedIcon as IconName} onChange={setSelectedIcon} label="图标" />
 
           {/* 时间线项目列表 */}
           {items.map((item, index) => (
