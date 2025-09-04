@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-export default defineConfig({
+export default defineConfig(() => ({
   plugins: [react()],
   resolve: {
     alias: {
@@ -23,11 +23,6 @@ export default defineConfig({
           // icon
           if (id.includes('lucide-react')) {
             return 'lucide-react';
-          }
-
-          // React相关
-          if (id.includes('react') || id.includes('react-dom')) {
-            return 'react-vendor';
           }
 
           // 路由相关
@@ -68,4 +63,4 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 800
   }
-})
+}))
