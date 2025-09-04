@@ -14,7 +14,9 @@ export const ListContent = ({ data }: ListContentProps) => (
         <span className="text-sm font-medium text-blue-600 print:text-xs mt-0.5 shrink-0">
           {index + 1}.
         </span>
-        <div className="text-sm text-gray-700 leading-relaxed print:text-xs">{item.content}</div>
+        <div className="text-sm text-gray-700 leading-relaxed print:text-xs">
+          <pre>{item.content}</pre>
+        </div>
       </div>
     ))}
   </div>
@@ -31,13 +33,13 @@ export const TimelineContent = ({ data }: TimelineContentProps) => (
         <div className="flex justify-between items-start mb-2 print:mb-1">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-1 print:mb-0.5">
-              <h3 className="text-base font-semibold text-gray-900 print:text-sm">
-                {item.secondarySubtitle}
-              </h3>
+              <h3 className="text-base font-semibold text-gray-900 print:text-sm">{item.title}</h3>
               <span className="text-sm text-gray-600 print:text-xs">{item.subtitle}</span>
             </div>
-            {item.title && (
-              <div className="text-sm text-gray-700 print:text-xs font-medium">{item.title}</div>
+            {item.secondarySubtitle && (
+              <div className="text-sm text-gray-700 print:text-xs font-medium">
+                {item.secondarySubtitle}
+              </div>
             )}
           </div>
           {(item.startDate || item.endDate) && (

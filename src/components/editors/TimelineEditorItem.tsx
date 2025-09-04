@@ -41,7 +41,7 @@ export const TimelineEditorItem = ({
           <Input
             value={item.title}
             onChange={(e) => onUpdate(item.id, 'title', e.target.value)}
-            placeholder="例：软件工程师"
+            placeholder="例：项目名称、公司名称"
             className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -81,7 +81,7 @@ export const TimelineEditorItem = ({
           <Input
             value={item.secondarySubtitle || ''}
             onChange={(e) => onUpdate(item.id, 'secondarySubtitle', e.target.value)}
-            placeholder="例：公司名称、学校名称"
+            placeholder=""
             className="transition-all duration-200 focus:ring-2 focus:ring-blue-500"
           />
         </div>
