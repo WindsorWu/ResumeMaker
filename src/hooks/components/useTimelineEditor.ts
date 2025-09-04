@@ -3,6 +3,9 @@
  */
 import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
 import type { TimelineItem } from '@/types/resume';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useState } from 'react';
 
 interface TimelineEditorData {
@@ -19,6 +22,15 @@ export const useTimelineEditor = (
   onClose: () => void
 ) => {
   const [isIconSelectorOpen, setIsIconSelectorOpen] = useState(false);
+
+  // 配置拖拽传感器
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 移动8px才开始拖拽，避免误触
+      },
+    })
+  );
 
   // 使用通用的自动保存对话框 Hook
   const { data, setData, handleClose, saveStatusText } = useAutoSaveDialog<TimelineEditorData>({
@@ -74,6 +86,23 @@ export const useTimelineEditor = (
     setItems(items.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
 
+  // 拖拽结束处理
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = items.findIndex((item) => item.id === active.id);
+    const newIndex = items.findIndex((item) => item.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newItems = arrayMove(items, oldIndex, newIndex);
+      setItems(newItems);
+    }
+  };
+
   // 切换图标选择器
   const toggleIconSelector = () => {
     setIsIconSelectorOpen(!isIconSelectorOpen);
@@ -86,6 +115,14 @@ export const useTimelineEditor = (
     iconEnabled,
     isIconSelectorOpen,
     saveStatusText,
+
+    // 拖拽配置
+    dragConfig: {
+      sensors,
+      onDragEnd: handleDragEnd,
+      sortableItems: items.map((item) => item.id),
+      strategy: verticalListSortingStrategy,
+    },
 
     // 操作方法
     addItem,

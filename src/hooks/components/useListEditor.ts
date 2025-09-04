@@ -3,6 +3,9 @@
  */
 import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
 import type { ListItem } from '@/types/resume';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 interface ListEditorData {
   items: ListItem[];
@@ -16,6 +19,15 @@ export const useListEditor = (
   onSave: (data: ListItem[], iconName?: string) => void,
   onClose: () => void
 ) => {
+  // 配置拖拽传感器
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 移动8px才开始拖拽，避免误触
+      },
+    })
+  );
+
   // 使用通用的自动保存对话框 Hook
   const { data, setData, handleClose, saveStatusText } = useAutoSaveDialog<ListEditorData>({
     isOpen,
@@ -59,7 +71,24 @@ export const useListEditor = (
     setItems(items.map((item) => (item.id === id ? { ...item, content } : item)));
   };
 
-  // 移动项目位置 (拖拽排序)
+  // 拖拽结束处理
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = items.findIndex((item) => item.id === active.id);
+    const newIndex = items.findIndex((item) => item.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newItems = arrayMove(items, oldIndex, newIndex);
+      setItems(newItems);
+    }
+  };
+
+  // 移动项目位置 (拖拽排序) - 保留为兼容性方法
   const moveItem = (fromIndex: number, toIndex: number) => {
     const newItems = [...items];
     const [moved] = newItems.splice(fromIndex, 1);
@@ -72,6 +101,14 @@ export const useListEditor = (
     items,
     selectedIcon,
     saveStatusText,
+
+    // 拖拽配置
+    dragConfig: {
+      sensors,
+      onDragEnd: handleDragEnd,
+      sortableItems: items.map((item) => item.id),
+      strategy: verticalListSortingStrategy,
+    },
 
     // 操作方法
     addItem,

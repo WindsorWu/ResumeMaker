@@ -1,12 +1,11 @@
-/**
- * 自定义字段项组件
- */
 import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { CustomField } from '@/types/resume';
-import { Trash2 } from 'lucide-react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { GripVertical, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface BasicInfoCustomFieldItemProps {
@@ -24,6 +23,17 @@ export const BasicInfoCustomFieldItem = ({
   const [editingLabel, setEditingLabel] = useState(field.label);
   const [editingValue, setEditingValue] = useState(field.value);
   const [editingIcon, setEditingIcon] = useState(field.iconName);
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: field.id,
+    disabled: isEditing,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
 
   const handleSave = () => {
     onUpdate(field.id, {
@@ -43,7 +53,11 @@ export const BasicInfoCustomFieldItem = ({
 
   if (isEditing) {
     return (
-      <div className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+      <div
+        ref={setNodeRef}
+        style={style}
+        className="space-y-4 p-4 bg-gray-50 rounded-lg border border-gray-200"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label htmlFor={`label-${field.id}`}>字段名称</Label>
@@ -83,8 +97,20 @@ export const BasicInfoCustomFieldItem = ({
   }
 
   return (
-    <div className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group"
+    >
       <div className="flex items-center space-x-3">
+        {/* 拖拽手柄 */}
+        <div
+          {...attributes}
+          {...listeners}
+          className="cursor-move opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <GripVertical className="h-4 w-4 text-gray-400" />
+        </div>
         <div>
           <span className="text-sm font-medium text-gray-900">{field.label}</span>
           <span className="text-sm text-gray-600 ml-2">{field.value}</span>

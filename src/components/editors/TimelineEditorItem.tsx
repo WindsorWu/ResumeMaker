@@ -6,7 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
-import { Trash2 } from 'lucide-react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { GripVertical, Trash2 } from 'lucide-react';
 
 interface TimelineEditorItemProps {
   item: TimelineItemType;
@@ -21,10 +23,35 @@ export const TimelineEditorItem = ({
   onUpdate,
   onRemove,
 }: TimelineEditorItemProps) => {
+  // 使用 useSortable hook
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: item.id,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
-    <div className="border rounded-lg p-4 space-y-4 bg-white shadow-sm">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="border rounded-lg p-4 space-y-4 bg-white shadow-sm group"
+    >
       <div className="flex justify-between items-center">
-        <h4 className="font-medium text-gray-800">第 {index + 1} 项</h4>
+        <div className="flex items-center space-x-2">
+          {/* 拖拽手柄 */}
+          <div
+            {...attributes}
+            {...listeners}
+            className="cursor-move opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <GripVertical className="h-4 w-4 text-gray-400" />
+          </div>
+          <h4 className="font-medium text-gray-800">第 {index + 1} 项</h4>
+        </div>
         <Button
           variant="outline"
           size="sm"

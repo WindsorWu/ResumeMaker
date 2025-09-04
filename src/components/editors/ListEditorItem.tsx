@@ -4,6 +4,8 @@
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import type { ListItem as ListItemType } from '@/types/resume';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Trash2 } from 'lucide-react';
 
 interface ListEditorItemProps {
@@ -14,11 +16,24 @@ interface ListEditorItemProps {
 }
 
 export const ListEditorItem = ({ item, index, onUpdate, onRemove }: ListEditorItemProps) => {
+  // 使用 useSortable hook
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: item.id,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
-    <div className="flex items-start space-x-2 group">
+    <div ref={setNodeRef} style={style} className="flex items-start space-x-2 group">
       {/* 拖拽手柄和序号 */}
       <div className="flex flex-col items-center mt-2">
-        <GripVertical className="h-4 w-4 text-gray-400 cursor-move" />
+        <div {...attributes} {...listeners} className="cursor-move">
+          <GripVertical className="h-4 w-4 text-gray-400" />
+        </div>
         <span className="text-xs text-gray-500 mt-1">{index + 1}</span>
       </div>
 

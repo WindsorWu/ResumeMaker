@@ -1,6 +1,3 @@
-/**
- * 模块管理对话框 - 使用 @dnd-kit 库（懒加载组件）
- */
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

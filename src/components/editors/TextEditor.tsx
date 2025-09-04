@@ -1,6 +1,3 @@
-/**
- * 文本编辑器组件
- */
 import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import {

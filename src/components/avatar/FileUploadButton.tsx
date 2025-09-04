@@ -1,5 +1,5 @@
 /**
- * 可复用的文件上传按钮组件
+ * 文件上传按钮
  */
 import { Button } from '@/components/ui/button';
 import { useRef } from 'react';
