@@ -12,7 +12,9 @@ import {
 } from '@/components/ui/dialog';
 import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
-import { Plus } from 'lucide-react';
+import { DndContext } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
+import { GripVertical, Plus } from 'lucide-react';
 import { ListEditorItem } from './ListEditorItem';
 
 interface ListEditorProps {
@@ -36,6 +38,7 @@ export const ListEditor = ({
     items,
     selectedIcon,
     saveStatusText,
+    dragConfig,
     addItem,
     removeItem,
     updateItem,
@@ -68,23 +71,33 @@ export const ListEditor = ({
               </Button>
             </div>
 
-            <div className="space-y-3">
-              {items.map((item, index) => (
-                <ListEditorItem
-                  key={item.id}
-                  item={item}
-                  index={index}
-                  onUpdate={updateItem}
-                  onRemove={removeItem}
-                />
-              ))}
-
-              {items.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  <p>暂无内容，点击"添加项目"开始创建</p>
+            {items.length > 0 ? (
+              <div className="space-y-3">
+                <div className="text-xs text-gray-500 flex items-center gap-1">
+                  <GripVertical className="h-3 w-3" />
+                  拖拽调整项目顺序
                 </div>
-              )}
-            </div>
+                <DndContext sensors={dragConfig.sensors} onDragEnd={dragConfig.onDragEnd}>
+                  <SortableContext items={dragConfig.sortableItems} strategy={dragConfig.strategy}>
+                    <div className="space-y-3">
+                      {items.map((item, index) => (
+                        <ListEditorItem
+                          key={item.id}
+                          item={item}
+                          index={index}
+                          onUpdate={updateItem}
+                          onRemove={removeItem}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <p>暂无内容，点击"添加项目"开始创建</p>
+              </div>
+            )}
           </div>
 
           {/* 使用提示 */}

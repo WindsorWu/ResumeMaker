@@ -23,7 +23,7 @@ const initialResume: Resume = {
       visible: true,
       order: 1,
       data: {
-        name: '白玩儿',
+        name: '白玩',
         email: 'example@gmail.com',
         phone: '12345678901',
         gender: '男',
@@ -54,6 +54,12 @@ const initialResume: Resume = {
             label: 'b站账号',
             value: 'https://space.bilibili.com/107889531',
             iconName: 'tv',
+          },
+          {
+            id: '5',
+            label: '清华大学',
+            value: '',
+            iconName: 'graduation-cap',
           },
         ],
       },
@@ -123,26 +129,6 @@ const initialResume: Resume = {
         {
           id: '2',
           title: '字节跳动',
-          subtitle: '2000.01 - 2000.06',
-          secondarySubtitle: '',
-          startDate: '',
-          endDate: '',
-          description: '',
-        },
-      ],
-    },
-    {
-      id: 'education',
-      title: '教育经历',
-      iconName: 'book',
-      type: 'timeline',
-      editorType: 'timeline',
-      visible: true,
-      order: 5,
-      data: [
-        {
-          id: '1',
-          title: '清华大学',
           subtitle: '2000.01 - 2000.06',
           secondarySubtitle: '',
           startDate: '',

@@ -1,6 +1,3 @@
-/**
- * 可拖拽的模块项组件 - 使用 @dnd-kit 库
- */
 import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

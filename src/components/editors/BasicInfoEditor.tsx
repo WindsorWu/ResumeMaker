@@ -6,7 +6,9 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/compone
 import { Label } from '@/components/ui/label';
 import { useAutoSaveDialog } from '@/hooks/useAutoSaveDialog';
 import type { BasicInfo, CustomField } from '@/types/resume';
-import { Plus } from 'lucide-react';
+import { DndContext, PointerSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { GripVertical, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { AvatarUpload } from '../avatar/AvatarUpload';
 import { BasicInfoCustomFieldItem } from './BasicInfoCustomFieldItem';
@@ -20,6 +22,15 @@ interface BasicInfoEditorProps {
 }
 
 export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicInfoEditorProps) => {
+  // 配置拖拽传感器
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 移动8px才开始拖拽，避免误触
+      },
+    })
+  );
+
   // 使用通用的自动保存对话框 Hook
   const {
     data: formData,
@@ -84,6 +95,26 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
     }
   };
 
+  // 拖拽结束处理
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id || !formData.customFields) {
+      return;
+    }
+
+    const oldIndex = formData.customFields.findIndex((field) => field.id === active.id);
+    const newIndex = formData.customFields.findIndex((field) => field.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newCustomFields = arrayMove(formData.customFields, oldIndex, newIndex);
+      setFormData((prev) => ({
+        ...prev,
+        customFields: newCustomFields,
+      }));
+    }
+  };
+
   const basicFields = [
     { id: 'name', label: '姓名', type: 'text', placeholder: '请输入您的姓名' },
     { id: 'gender', label: '性别', type: 'text', placeholder: '请输入您的性别' },
@@ -135,14 +166,27 @@ export const BasicInfoEditor = ({ isOpen, onClose, initialData, onSave }: BasicI
 
             {formData.customFields && formData.customFields.length > 0 && (
               <div className="space-y-3">
-                {formData.customFields.map((field) => (
-                  <BasicInfoCustomFieldItem
-                    key={field.id}
-                    field={field}
-                    onUpdate={(fieldId, updates) => updateCustomField(fieldId, updates)}
-                    onDelete={(fieldId) => removeCustomField(fieldId)}
-                  />
-                ))}
+                <div className="text-xs text-gray-500 flex items-center gap-1">
+                  <GripVertical className="h-3 w-3" />
+                  拖拽调整字段顺序
+                </div>
+                <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+                  <SortableContext
+                    items={formData.customFields.map((field) => field.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <div className="space-y-3">
+                      {formData.customFields.map((field) => (
+                        <BasicInfoCustomFieldItem
+                          key={field.id}
+                          field={field}
+                          onUpdate={(fieldId, updates) => updateCustomField(fieldId, updates)}
+                          onDelete={(fieldId) => removeCustomField(fieldId)}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
               </div>
             )}
           </div>

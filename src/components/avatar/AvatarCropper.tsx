@@ -1,5 +1,5 @@
 /**
- * 头像裁剪组件 - 使用 react-image-crop 库（懒加载组件）
+ * 头像裁剪组件
  */
 import { Button } from '@/components/ui/button';
 import {

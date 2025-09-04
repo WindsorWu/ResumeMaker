@@ -12,7 +12,9 @@ import {
 } from '@/components/ui/dialog';
 import { useTimelineEditor } from '@/hooks/components/useTimelineEditor';
 import type { TimelineItem as TimelineItemType } from '@/types/resume';
-import { Plus } from 'lucide-react';
+import { DndContext } from '@dnd-kit/core';
+import { SortableContext } from '@dnd-kit/sortable';
+import { GripVertical, Plus } from 'lucide-react';
 import { TimelineEditorItem } from './TimelineEditorItem';
 
 interface TimelineEditorProps {
@@ -36,6 +38,7 @@ export const TimelineEditor = ({
     items,
     selectedIcon,
     saveStatusText,
+    dragConfig,
     addItem,
     removeItem,
     updateItem,
@@ -59,15 +62,29 @@ export const TimelineEditor = ({
           <IconPicker value={selectedIcon} onChange={setSelectedIcon} label="图标" />
 
           {/* 时间线项目列表 */}
-          {items.map((item, index) => (
-            <TimelineEditorItem
-              key={item.id}
-              item={item}
-              index={index}
-              onUpdate={updateItem}
-              onRemove={removeItem}
-            />
-          ))}
+          {items.length > 0 && (
+            <div className="space-y-4">
+              <div className="text-xs text-gray-500 flex items-center gap-1">
+                <GripVertical className="h-3 w-3" />
+                拖拽调整项目顺序
+              </div>
+              <DndContext sensors={dragConfig.sensors} onDragEnd={dragConfig.onDragEnd}>
+                <SortableContext items={dragConfig.sortableItems} strategy={dragConfig.strategy}>
+                  <div className="space-y-4">
+                    {items.map((item, index) => (
+                      <TimelineEditorItem
+                        key={item.id}
+                        item={item}
+                        index={index}
+                        onUpdate={updateItem}
+                        onRemove={removeItem}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
+          )}
 
           {/* 添加新项目按钮 */}
           <Button

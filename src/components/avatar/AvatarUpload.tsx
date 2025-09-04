@@ -1,5 +1,5 @@
 /**
- * 头像上传组件 - 支持懒加载裁剪组件
+ * 头像上传组件
  */
 import { Button } from '@/components/ui/button';
 import { useAvatarUpload } from '@/hooks/components/useAvatarUpload';
