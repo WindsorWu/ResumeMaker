@@ -1,6 +1,7 @@
 /**
  * 自定义字段项组件
  */
+import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,7 +9,6 @@ import type { CustomField } from '@/types/resume';
 import { Trash2 } from 'lucide-react';
 import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
-import { SimpleIconInput } from '../SimpleIconInput';
 
 interface BasicInfoCustomFieldItemProps {
   field: CustomField;
@@ -68,12 +68,7 @@ export const BasicInfoCustomFieldItem = ({
 
         {/* 图标选择 */}
         <div>
-          <SimpleIconInput
-            value={editingIcon}
-            onChange={setEditingIcon}
-            label="图标"
-            placeholder="输入图标名称，如 globe, link, github..."
-          />
+          <IconPicker value={editingIcon} onChange={setEditingIcon} label="图标" />
         </div>
 
         <div className="flex justify-end space-x-2">

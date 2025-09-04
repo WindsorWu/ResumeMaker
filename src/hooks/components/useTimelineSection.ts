@@ -1,14 +1,14 @@
 /**
- * 时间线展示组件业务逻辑 Hook
+ * 时间线展示组件业务逻辑 Hook - 优化版本
+ * 直接使用状态管理，无需层层传递回调函数
  */
+import { useResumeEditor } from '@/hooks/components/useResumeEditor';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
 import { useState } from 'react';
 
-export const useTimelineSection = (
-  section: ResumeSection,
-  onUpdate: (data: TimelineItem[] | ListItem[] | TextContent, iconName?: string) => void
-) => {
+export const useTimelineSection = (section: ResumeSection) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { handleTimelineSave, handleListSave, handleTextSave } = useResumeEditor(section.id);
 
   // 获取编辑器类型
   const getEditorType = (): 'timeline' | 'list' | 'text' => {
@@ -25,10 +25,18 @@ export const useTimelineSection = (
     setIsEditing(false);
   };
 
-  // 保存数据
+  // 保存数据 - 根据编辑器类型调用对应的保存方法
   const handleSave = (data: TimelineItem[] | ListItem[] | TextContent, iconName?: string) => {
-    onUpdate(data, iconName);
-    // setIsEditing(false);
+    const editorType = getEditorType();
+
+    if (editorType === 'timeline') {
+      handleTimelineSave(data as TimelineItem[], iconName);
+    } else if (editorType === 'list') {
+      handleListSave(data as ListItem[], iconName);
+    } else {
+      handleTextSave(data as TextContent, iconName);
+    }
+    // setIsEditing(false); // 可以选择保存后是否关闭编辑器
   };
 
   // 获取编辑器组件的props

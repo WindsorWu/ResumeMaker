@@ -1,6 +1,7 @@
 /**
  * 列表编辑器 - 自动保存版本
  */
+import { IconPicker } from '@/components/IconPicker';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,7 +14,6 @@ import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
-import { SimpleIconInput } from '../SimpleIconInput';
 import { ListEditorItem } from './ListEditorItem';
 
 interface ListEditorProps {
@@ -36,7 +36,6 @@ export const ListEditor = ({
   const {
     items,
     selectedIcon,
-    iconEnabled,
     saveStatusText,
     addItem,
     removeItem,
@@ -53,7 +52,7 @@ export const ListEditor = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
             <div className="p-2 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg">
-              {iconEnabled && selectedIcon && (
+              {selectedIcon && (
                 <DynamicIcon name={selectedIcon as IconName} className="h-5 w-5 text-white" />
               )}
             </div>
@@ -65,12 +64,7 @@ export const ListEditor = ({
 
         <div className="space-y-6">
           {/* 模块图标选择 */}
-          <SimpleIconInput
-            value={selectedIcon as IconName}
-            onChange={setSelectedIcon}
-            label="图标"
-            placeholder="输入图标名称，如 globe, link, github..."
-          />
+          <IconPicker value={selectedIcon as IconName} onChange={setSelectedIcon} label="图标" />
 
           {/* 列表内容 */}
           <div>

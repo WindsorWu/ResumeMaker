@@ -7,7 +7,6 @@ import type { ListItem } from '@/types/resume';
 interface ListEditorData {
   items: ListItem[];
   selectedIcon: string;
-  iconEnabled: boolean;
 }
 
 export const useListEditor = (
@@ -23,14 +22,13 @@ export const useListEditor = (
     initialData: {
       items: initialData,
       selectedIcon: currentIcon,
-      iconEnabled: !!currentIcon && currentIcon !== '',
     },
-    onSave: (data) => onSave(data.items, data.iconEnabled ? data.selectedIcon : ''),
+    onSave: (data) => onSave(data.items, data.selectedIcon),
     onClose,
     debounceDelay: 300,
   });
 
-  const { items, selectedIcon, iconEnabled } = data;
+  const { items, selectedIcon } = data;
 
   // 设置项目列表
   const setItems = (newItems: ListItem[]) => {
@@ -40,11 +38,6 @@ export const useListEditor = (
   // 设置选中图标
   const setSelectedIcon = (newIcon: string) => {
     setData({ ...data, selectedIcon: newIcon });
-  };
-
-  // 设置图标启用状态
-  const setIconEnabled = (enabled: boolean) => {
-    setData({ ...data, iconEnabled: enabled });
   };
 
   // 添加新项目
@@ -78,7 +71,6 @@ export const useListEditor = (
     // 状态
     items,
     selectedIcon,
-    iconEnabled,
     saveStatusText,
 
     // 操作方法
@@ -87,7 +79,6 @@ export const useListEditor = (
     updateItem,
     moveItem,
     setSelectedIcon,
-    setIconEnabled,
     handleClose,
   };
 };

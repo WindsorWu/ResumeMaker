@@ -1,7 +1,12 @@
 import { Provider } from 'jotai';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { MainPage } from './pages/MainPage';
-import { PreviewPage } from './pages/PreviewPage';
+
+// 懒加载预览页面（无loading，包太小会一闪而过）
+const PreviewPage = React.lazy(() =>
+  import('./pages/PreviewPage').then((module) => ({ default: module.PreviewPage }))
+);
 
 function App() {
   return (
@@ -9,7 +14,14 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/preview" element={<PreviewPage />} />
+          <Route
+            path="/preview"
+            element={
+              <Suspense fallback={null}>
+                <PreviewPage />
+              </Suspense>
+            }
+          />
         </Routes>
       </Router>
     </Provider>

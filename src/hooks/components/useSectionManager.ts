@@ -1,102 +1,132 @@
 /**
- * SectionManager 业务逻辑 Hook
+ * SectionManager 业务逻辑 Hook - 使用 @dnd-kit 库重构版本
+ * 使用新的状态管理，不再需要层层传递回调
  */
+import { useResumeActions } from '@/hooks/useResumeActions';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useState } from 'react';
 
-export const useSectionManager = (
-  sections: ResumeSection[],
-  onUpdateSections: (sections: ResumeSection[]) => void
-) => {
-  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+export const useSectionManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState('');
   const [showIconSelector, setShowIconSelector] = useState<string | null>(null);
 
-  // 只显示非basic类型的sections，按order排序
-  const managedSections = sections
-    .filter((section) => section.type !== 'basic')
-    .sort((a, b) => a.order - b.order);
+  // 配置传感器
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // 移动8px才开始拖拽，避免误触
+      },
+    })
+  );
+
+  // 使用新的状态管理
+  const {
+    getNonBasicSections,
+    updateSectionsOrder,
+    updateSection,
+    updateSectionTitle,
+    updateSectionIcon,
+    updateSectionEditorType,
+    toggleSectionVisibility,
+    deleteSection: deleteSectionFromStore,
+    addSection,
+    getSection,
+  } = useResumeActions();
+
+  // 获取管理的模块列表
+  const managedSections = getNonBasicSections;
 
   // 获取模块的编辑器类型
   const getEditorType = (section: ResumeSection): 'timeline' | 'list' | 'text' => {
     return section.editorType || 'timeline';
   };
 
-  // 转换数据结构
+  // 转换数据结构（保持原有逻辑）
   const convertDataForEditorType = (
-    currentData: TimelineItem[] | ListItem[] | TextContent,
-    currentType: string,
-    newType: string
+    data: TimelineItem[] | ListItem[] | TextContent,
+    fromType: 'timeline' | 'list' | 'text',
+    toType: 'timeline' | 'list' | 'text'
   ): TimelineItem[] | ListItem[] | TextContent => {
-    if (currentType === newType) {
-      return currentData;
+    if (fromType === toType) return data;
+
+    // Timeline -> List
+    if (fromType === 'timeline' && toType === 'list') {
+      const timelineData = data as TimelineItem[];
+      return timelineData.map((item) => ({
+        id: item.id,
+        content: `${item.title}${item.subtitle ? ` - ${item.subtitle}` : ''}${
+          item.description ? `: ${item.description}` : ''
+        }`,
+      }));
     }
 
-    if (newType === 'timeline') {
-      if (currentType === 'list') {
-        // 列表转时间线
-        return (currentData as ListItem[]).map((item) => ({
-          id: item.id,
-          title: item.content,
-          subtitle: '',
-          secondarySubtitle: '',
-          startDate: '',
-          endDate: '',
-          description: '',
-        }));
-      } else if (currentType === 'text') {
-        // 文本转时间线
+    // List -> Timeline
+    if (fromType === 'list' && toType === 'timeline') {
+      const listData = data as ListItem[];
+      return listData.map((item) => ({
+        id: item.id,
+        title: item.content.slice(0, 50) + (item.content.length > 50 ? '...' : ''),
+        subtitle: '',
+        secondarySubtitle: '',
+        startDate: '',
+        endDate: '',
+        description: item.content,
+      }));
+    }
+
+    // Timeline/List -> Text
+    if (toType === 'text') {
+      if (fromType === 'timeline') {
+        const timelineData = data as TimelineItem[];
+        return {
+          content: timelineData
+            .map((item) => `${item.title}\n${item.subtitle}\n${item.description}`)
+            .join('\n\n'),
+        } as TextContent;
+      }
+      if (fromType === 'list') {
+        const listData = data as ListItem[];
+        return {
+          content: listData.map((item) => item.content).join('\n'),
+        } as TextContent;
+      }
+    }
+
+    // Text -> Timeline/List
+    if (fromType === 'text') {
+      const textData = data as TextContent;
+      const content = textData.content || '';
+      if (toType === 'timeline') {
         return [
           {
-            id: '1',
-            title: (currentData as TextContent).content,
+            id: Date.now().toString(),
+            title: '标题',
             subtitle: '',
             secondarySubtitle: '',
             startDate: '',
             endDate: '',
-            description: '',
+            description: content,
           },
         ];
       }
-    } else if (newType === 'list') {
-      if (currentType === 'timeline') {
-        // 时间线转列表
-        return (currentData as TimelineItem[]).map((item) => ({
-          id: item.id,
-          content: item.title || item.description || '',
+      if (toType === 'list') {
+        return content.split('\n').map((line, index) => ({
+          id: (Date.now() + index).toString(),
+          content: line,
         }));
-      } else if (currentType === 'text') {
-        // 文本转列表
-        const content = (currentData as TextContent).content;
-        const lines = content.split('\n').filter((line) => line.trim());
-        return lines.map((line, index) => ({
-          id: (index + 1).toString(),
-          content: line.trim(),
-        }));
-      }
-    } else if (newType === 'text') {
-      if (currentType === 'timeline') {
-        // 时间线转文本
-        const items = currentData as TimelineItem[];
-        const text = items
-          .map((item) => [item.title, item.description].filter(Boolean).join('\n'))
-          .join('\n\n');
-        return { content: text };
-      } else if (currentType === 'list') {
-        // 列表转文本
-        const items = currentData as ListItem[];
-        const text = items.map((item) => item.content).join('\n');
-        return { content: text };
       }
     }
 
-    return currentData;
+    return data;
   };
 
-  // 更新模块的编辑器类型
+  // 更新编辑器类型并转换数据
   const updateEditorType = (sectionId: string, newEditorType: 'timeline' | 'list' | 'text') => {
-    const section = sections.find((s) => s.id === sectionId);
+    const section = getSection(sectionId);
     if (!section) return;
 
     const currentEditorType = getEditorType(section);
@@ -106,17 +136,11 @@ export const useSectionManager = (
       newEditorType
     );
 
-    const updatedSections = sections.map((s) =>
-      s.id === sectionId
-        ? {
-            ...s,
-            editorType: newEditorType,
-            type: newEditorType as ResumeSection['type'],
-            data: convertedData,
-          }
-        : s
-    );
-    onUpdateSections(updatedSections);
+    // 先更新编辑器类型
+    updateSectionEditorType(sectionId, newEditorType);
+
+    // 再更新转换后的数据
+    updateSection(sectionId, convertedData);
   };
 
   // 重新分配order的辅助函数
@@ -127,16 +151,7 @@ export const useSectionManager = (
       order: index + 2, // 基本信息的order是1，所以其他模块从2开始
     }));
 
-    // 更新完整的sections数组
-    const allSections = sections.map((section) => {
-      if (section.type !== 'basic') {
-        const updatedSection = updatedManagedSections.find((s) => s.id === section.id);
-        return updatedSection || section;
-      }
-      return section;
-    });
-
-    onUpdateSections(allSections);
+    updateSectionsOrder(updatedManagedSections);
   };
 
   // 上移模块
@@ -167,80 +182,45 @@ export const useSectionManager = (
     reorderSections(newSections);
   };
 
-  // 拖拽处理
-  const handleDragStart = (index: number) => {
-    setDraggedIndex(index);
-  };
+  // 拖拽结束处理
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
-    e.preventDefault();
-    if (draggedIndex === null || draggedIndex === dropIndex) {
-      setDraggedIndex(null);
+    if (!over || active.id === over.id) {
       return;
     }
 
-    const newSections = [...managedSections];
-    const draggedSection = newSections[draggedIndex];
+    const oldIndex = managedSections.findIndex((section) => section.id === active.id);
+    const newIndex = managedSections.findIndex((section) => section.id === over.id);
 
-    // 移除被拖拽的元素并插入到新位置
-    newSections.splice(draggedIndex, 1);
-    newSections.splice(dropIndex, 0, draggedSection);
-
-    reorderSections(newSections);
-    setDraggedIndex(null);
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const newSections = arrayMove(managedSections, oldIndex, newIndex);
+      reorderSections(newSections);
+    }
   };
 
-  // 切换可见性
+  // 切换可见性 - 直接调用状态管理
   const toggleVisibility = (sectionId: string) => {
-    const updatedSections = sections.map((section) =>
-      section.id === sectionId ? { ...section, visible: !section.visible } : section
-    );
-    onUpdateSections(updatedSections);
+    toggleSectionVisibility(sectionId);
   };
 
-  // 删除模块
+  // 删除模块 - 直接调用状态管理
   const deleteSection = (sectionId: string) => {
-    const updatedSections = sections.filter((section) => section.id !== sectionId);
-    onUpdateSections(updatedSections);
+    deleteSectionFromStore(sectionId);
   };
 
-  // 添加自定义模块
-  const addCustomSection = () => {
-    const newOrder = Math.max(...managedSections.map((s) => s.order), 1) + 1;
-    const newSection: ResumeSection = {
-      id: `custom-${Date.now()}`,
-      title: '自定义模块',
-      icon: 'star',
-      iconName: 'star',
-      type: 'timeline',
-      editorType: 'timeline',
-      visible: true,
-      order: newOrder,
-      data: [],
-    };
-
-    onUpdateSections([...sections, newSection]);
-  };
-
-  // 编辑标题
+  // 编辑相关函数
   const startEditing = (section: ResumeSection) => {
     setEditingId(section.id);
     setEditingTitle(section.title);
   };
 
   const saveEditing = () => {
-    if (!editingId || !editingTitle.trim()) return;
-
-    const updatedSections = sections.map((section) =>
-      section.id === editingId ? { ...section, title: editingTitle.trim() } : section
-    );
-    onUpdateSections(updatedSections);
-    setEditingId(null);
-    setEditingTitle('');
+    if (editingId && editingTitle.trim()) {
+      updateSectionTitle(editingId, editingTitle.trim());
+      setEditingId(null);
+      setEditingTitle('');
+    }
   };
 
   const cancelEditing = () => {
@@ -248,41 +228,61 @@ export const useSectionManager = (
     setEditingTitle('');
   };
 
-  // 更新图标
-  const updateSectionIcon = (sectionId: string, iconName: string) => {
-    const updatedSections = sections.map((section) =>
-      section.id === sectionId ? { ...section, iconName, icon: iconName } : section
-    );
-    onUpdateSections(updatedSections);
-    setShowIconSelector(null);
+  const handleUpdateSectionIcon = (sectionId: string, iconName: string) => {
+    updateSectionIcon(sectionId, iconName);
+  };
+
+  // 添加自定义模块
+  const addCustomSection = () => {
+    const newSection: ResumeSection = {
+      id: `custom-${Date.now()}`,
+      title: '新模块',
+      iconName: 'star',
+      type: 'timeline',
+      editorType: 'timeline',
+      visible: true,
+      order: managedSections.length + 2, // 基本信息order为1
+      data: [],
+    };
+
+    addSection(newSection);
+    startEditing(newSection);
+  };
+
+  // 拖拽上下文配置
+  const dragConfig = {
+    sensors,
+    onDragEnd: handleDragEnd,
+    sortableItems: managedSections.map((s) => s.id),
+    strategy: verticalListSortingStrategy,
   };
 
   return {
-    // 状态
+    // 数据
     managedSections,
-    draggedIndex,
     editingId,
     editingTitle,
     showIconSelector,
 
-    // 状态设置
+    // 编辑状态更新
     setEditingTitle,
     setShowIconSelector,
 
-    // 方法
-    getEditorType,
-    updateEditorType,
-    moveUp,
-    moveDown,
-    handleDragStart,
-    handleDragOver,
-    handleDrop,
-    toggleVisibility,
+    // 业务操作
     deleteSection,
     addCustomSection,
     startEditing,
     saveEditing,
     cancelEditing,
-    updateSectionIcon,
+    updateSectionIcon: handleUpdateSectionIcon,
+    getEditorType,
+    updateEditorType,
+    toggleVisibility,
+    moveUp,
+    moveDown,
+
+    // 拖拽相关
+    dragConfig,
+    handleDragEnd,
   };
 };

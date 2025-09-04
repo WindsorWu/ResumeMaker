@@ -20,18 +20,10 @@ import React from 'react';
 interface TimelineSectionProps {
   section: ResumeSection;
   isEditable?: boolean;
-  onUpdate: (data: TimelineItem[] | ListItem[] | TextContent, iconName?: string) => void;
 }
 
-export const TimelineSection: React.FC<TimelineSectionProps> = ({
-  section,
-  isEditable,
-  onUpdate,
-}) => {
-  const { isEditing, editorType, startEditing, getEditorProps } = useTimelineSection(
-    section,
-    onUpdate
-  );
+export const TimelineSection: React.FC<TimelineSectionProps> = ({ section, isEditable }) => {
+  const { isEditing, editorType, startEditing, getEditorProps } = useTimelineSection(section);
 
   // 渲染内容
   const renderContent = () => {

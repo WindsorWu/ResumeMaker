@@ -12,10 +12,9 @@ import { BasicInfoSectionItem } from './BasicInfoSectionItem';
 interface BasicInfoSectionProps {
   section: ResumeSection;
   isEditable: boolean;
-  onUpdate: (data: BasicInfo) => void;
 }
 
-export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSectionProps) => {
+export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps) => {
   const data = section.data as BasicInfo;
 
   const {
@@ -26,7 +25,7 @@ export const BasicInfoSection = ({ section, isEditable, onUpdate }: BasicInfoSec
     formatGenderAge,
     formatCustomFields,
     hasValue,
-  } = useBasicInfoSection(onUpdate);
+  } = useBasicInfoSection(section.id);
 
   return (
     <>

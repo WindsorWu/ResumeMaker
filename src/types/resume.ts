@@ -44,10 +44,9 @@ export interface TextContent {
 export interface ResumeSection {
   id: string;
   title: string;
-  icon: string;
   iconName: string;
   type: 'basic' | 'timeline' | 'list' | 'text' | 'custom';
-  editorType?: 'timeline' | 'list' | 'text'; // 新增：编辑器类型
+  editorType?: 'timeline' | 'list' | 'text';
   visible: boolean;
   order: number;
   data: BasicInfo | TimelineItem[] | ListItem[] | TextContent | Record<string, unknown>;
