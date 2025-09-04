@@ -4,6 +4,7 @@
 import { ListEditor } from '@/components/editors/ListEditor';
 import { TextEditor } from '@/components/editors/TextEditor';
 import { TimelineEditor } from '@/components/editors/TimelineEditor';
+import { IconRenderer } from '@/components/IconPicker';
 import {
   ListContent,
   TextContentRenderer,
@@ -11,10 +12,8 @@ import {
 } from '@/components/theme/TimelineContentRenderer';
 import { Button } from '@/components/ui/button';
 import { useTimelineSection } from '@/hooks/components/useTimelineSection';
-import { asIconName } from '@/types/icon';
 import type { ListItem, ResumeSection, TextContent, TimelineItem } from '@/types/resume';
 import { Edit3 } from 'lucide-react';
-import { DynamicIcon } from 'lucide-react/dynamic';
 import React from 'react';
 
 interface TimelineSectionProps {
@@ -88,20 +87,14 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ section, isEdi
             {/* 图标 */}
             {section.iconName && (
               <div className="p-2 ">
-                <DynamicIcon
-                  name={asIconName(section.iconName)}
-                  className="h-4 w-4 print:h-3 print:w-3"
-                />
+                <IconRenderer iconName={section.iconName} className="h-4 w-4 print:h-3 print:w-3" />
               </div>
             )}
           </div>
 
-          {/* 内容区域 */}
           <div className={section.iconName ? 'ml-6 print:ml-3' : ''}>{renderContent()}</div>
         </div>
       </div>
-
-      {/* 编辑器 */}
       {renderEditor()}
     </>
   );

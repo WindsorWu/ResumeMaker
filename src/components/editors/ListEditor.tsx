@@ -13,7 +13,6 @@ import {
 import { useListEditor } from '@/hooks/components/useListEditor';
 import type { ListItem as ListItemType } from '@/types/resume';
 import { Plus } from 'lucide-react';
-import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 import { ListEditorItem } from './ListEditorItem';
 
 interface ListEditorProps {
@@ -44,18 +43,11 @@ export const ListEditor = ({
     handleClose,
   } = useListEditor(isOpen, initialData, currentIcon, onSave, onClose);
 
-  // 直接使用 DynamicIcon
-
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gray-800 flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg">
-              {selectedIcon && (
-                <DynamicIcon name={selectedIcon as IconName} className="h-5 w-5 text-white" />
-              )}
-            </div>
             <span>编辑{title}</span>
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
           </DialogTitle>
@@ -64,7 +56,7 @@ export const ListEditor = ({
 
         <div className="space-y-6">
           {/* 模块图标选择 */}
-          <IconPicker value={selectedIcon as IconName} onChange={setSelectedIcon} label="图标" />
+          <IconPicker value={selectedIcon} onChange={setSelectedIcon} label="图标" />
 
           {/* 列表内容 */}
           <div>
