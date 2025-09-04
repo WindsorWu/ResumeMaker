@@ -2,10 +2,9 @@
  * 基本信息组件业务逻辑 Hook - 优化版本
  * 直接使用状态管理，无需层层传递回调函数
  */
+import { IconRenderer } from '@/components/IconPicker';
 import { useResumeEditor } from '@/hooks/components/useResumeEditor';
-import { asIconName } from '@/types/icon';
 import type { BasicInfo } from '@/types/resume';
-import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
 
 export const useBasicInfoSection = (sectionId: string) => {
@@ -48,7 +47,7 @@ export const useBasicInfoSection = (sectionId: string) => {
 
     return customFields.map((field) => (
       <span className="flex items-center gap-1" key={field.id}>
-        {field.iconName && <DynamicIcon name={asIconName(field.iconName)} className="w-4 h-4" />}
+        {field.iconName && <IconRenderer iconName={field.iconName} className="w-4 h-4" />}
         {field.label} {field.value}
       </span>
     ));

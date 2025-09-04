@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { CustomField } from '@/types/resume';
 import { Trash2 } from 'lucide-react';
-import { DynamicIcon } from 'lucide-react/dynamic';
 import { useState } from 'react';
 
 interface BasicInfoCustomFieldItemProps {
@@ -86,12 +85,6 @@ export const BasicInfoCustomFieldItem = ({
   return (
     <div className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
       <div className="flex items-center space-x-3">
-        {field.iconName && (
-          <DynamicIcon
-            name={field.iconName as 'heart' | 'star' | 'user'}
-            className="h-4 w-4 text-indigo-600"
-          />
-        )}
         <div>
           <span className="text-sm font-medium text-gray-900">{field.label}</span>
           <span className="text-sm text-gray-600 ml-2">{field.value}</span>

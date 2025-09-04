@@ -5,7 +5,6 @@ import { defineConfig } from 'vite'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -14,52 +13,59 @@ export default defineConfig({
     },
   },
   server: {
-    host: '127.0.0.1', // 强制使用 IPv4
+    host: '127.0.0.1',
     port: 5173
   },
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
+        manualChunks: (id) => {
+          // icon
+          if (id.includes('lucide-react')) {
+            return 'lucide-react';
+          }
+
           // React相关
-          'react-vendor': ['react', 'react-dom'],
+          if (id.includes('react') || id.includes('react-dom')) {
+            return 'react-vendor';
+          }
 
           // 路由相关
-          'router': ['react-router-dom'],
+          if (id.includes('react-router')) {
+            return 'router';
+          }
 
           // 状态管理
-          'state': ['jotai'],
+          if (id.includes('jotai')) {
+            return 'state';
+          }
 
           // UI组件库
-          'ui-vendor': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-label',
-            '@radix-ui/react-slot'
-          ],
+          if (id.includes('@radix-ui')) {
+            return 'ui-vendor';
+          }
 
-          // 拖拽相关 (按需加载)
-          'dnd-kit': [
-            '@dnd-kit/core',
-            '@dnd-kit/sortable',
-            '@dnd-kit/utilities'
-          ],
+          // 拖拽相关
+          if (id.includes('@dnd-kit')) {
+            return 'dnd-kit';
+          }
 
-
-
-          // 图片裁剪 (按需加载)
-          'image-crop': ['react-image-crop'],
+          // 图片裁剪
+          if (id.includes('react-image-crop')) {
+            return 'image-crop';
+          }
 
           // 工具库
-          'utils': [
-            'clsx',
-            'tailwind-merge',
-            'class-variance-authority',
-            'lodash.debounce'
-          ]
+          if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority') || id.includes('lodash.debounce')) {
+            return 'utils';
+          }
+
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
         }
       }
     },
-    // 增大chunk大小警告阈值，因为我们已经进行了代码分割
     chunkSizeWarningLimit: 800
   }
 })

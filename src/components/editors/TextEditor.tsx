@@ -12,7 +12,6 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useTextEditor } from '@/hooks/components/useTextEditor';
-import { DynamicIcon, type IconName } from 'lucide-react/dynamic';
 
 interface TextEditorProps {
   isOpen: boolean;
@@ -55,9 +54,6 @@ export const TextEditor = ({
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center">
-            {iconEnabled && selectedIcon && (
-              <DynamicIcon name={selectedIcon as IconName} className="h-5 w-5 text-white" />
-            )}
             编辑 {title}
             <span className="text-sm font-normal text-gray-500 ml-auto">{saveStatusText}</span>
           </DialogTitle>
