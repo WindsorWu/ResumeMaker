@@ -61,7 +61,6 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
         )}
       </div>
 
-      {/* 懒加载裁剪器 - 用户主动触发，保留简单loading */}
       {showCropper && originalImageUrl && (
         <Suspense fallback={<CropperLoading />}>
           <AvatarCropper

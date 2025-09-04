@@ -74,7 +74,7 @@ export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps)
 
             {/* 第二行：自定义字段 */}
             {data.customFields && data.customFields.length > 0 && (
-              <div className="flex flex-wrap gap-6 text-sm text-gray-600 mt-2 print:text-xs print:mt-1">
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600 mt-2 print:text-xs print:mt-1">
                 {formatCustomFields(data.customFields)}
               </div>
             )}
