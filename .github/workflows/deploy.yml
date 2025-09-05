@@ -76,6 +76,7 @@ jobs:
             docker run -d \
               --name resumaker-app \
               --restart unless-stopped \
+              --network my-nginx
               -p 9000:80 \
               ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
