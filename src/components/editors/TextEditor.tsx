@@ -1,5 +1,4 @@
 import { IconPicker } from '@/components/IconPicker';
-import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -40,11 +39,6 @@ export const TextEditor = ({
     setIconEnabled,
     handleClose,
   } = useTextEditor(isOpen, initialData, initialIcon, onSave, onClose);
-
-  const handleSave = () => {
-    onSave({ content }, iconEnabled ? selectedIcon : '');
-    onClose();
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -97,14 +91,6 @@ export const TextEditor = ({
               placeholder="请输入内容..."
               className="min-h-[200px] resize-y"
             />
-          </div>
-
-          {/* 操作按钮 */}
-          <div className="flex justify-end space-x-3 pt-4 border-t">
-            <Button variant="outline" onClick={handleClose}>
-              取消
-            </Button>
-            <Button onClick={handleSave}>保存</Button>
           </div>
         </div>
       </DialogContent>

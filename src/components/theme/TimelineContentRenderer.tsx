@@ -11,11 +11,9 @@ export const ListContent = ({ data }: ListContentProps) => (
   <div className="space-y-3 print:space-y-2">
     {data.map((item, index) => (
       <div key={item.id} className="flex items-start space-x-3">
-        <span className="text-sm font-medium text-blue-600 print:text-xs mt-0.5 shrink-0">
-          {index + 1}.
-        </span>
-        <div className="text-sm text-gray-700 leading-relaxed print:text-xs">
-          <pre>{item.content}</pre>
+        <span className="text-sm font-medium text-blue-600 mt-0.5 shrink-0">{index + 1}.</span>
+        <div className="text-sm text-gray-700 leading-relaxed">
+          <pre className="text-wrap">{item.content}</pre>
         </div>
       </div>
     ))}
@@ -34,23 +32,21 @@ export const TimelineContent = ({ data }: TimelineContentProps) => (
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-1 print:mb-0.5">
               <h3 className="text-base font-semibold text-gray-900 print:text-sm">{item.title}</h3>
-              <span className="text-sm text-gray-600 print:text-xs">{item.subtitle}</span>
+              <span className="text-sm text-gray-600">{item.subtitle}</span>
             </div>
             {item.secondarySubtitle && (
-              <div className="text-sm text-gray-700 print:text-xs font-medium">
-                {item.secondarySubtitle}
-              </div>
+              <div className="text-sm text-gray-700 font-medium">{item.secondarySubtitle}</div>
             )}
           </div>
           {(item.startDate || item.endDate) && (
-            <div className="text-sm text-gray-600 print:text-xs ml-4 shrink-0">
+            <div className="text-sm text-gray-600 ml-4 shrink-0">
               {item.startDate} {item.startDate && item.endDate && '-'} {item.endDate}
             </div>
           )}
         </div>
 
         {item.description && (
-          <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line pl-0 print:text-xs mt-2 print:mt-1">
+          <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line pl-0 mt-2 print:mt-1">
             {item.description}
           </div>
         )}
@@ -64,7 +60,5 @@ interface TextContentRendererProps {
 }
 
 export const TextContentRenderer = ({ data }: TextContentRendererProps) => (
-  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line print:text-xs">
-    {data.content}
-  </div>
+  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{data.content}</div>
 );

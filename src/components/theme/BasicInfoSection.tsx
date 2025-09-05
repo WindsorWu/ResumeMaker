@@ -46,14 +46,14 @@ export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps)
         {/* 头部布局：左侧信息 + 右侧头像 */}
         <div className="flex items-start justify-between">
           {/* 左侧：姓名和基本信息 */}
-          <div className="flex-1 pr-6">
+          <div className="flex-1 pr-6 flex flex-col items-center px-[5rem]">
             {/* 姓名 */}
-            <h1 className="text-4xl font-bold text-gray-900 mb-3 print:text-3xl print:mb-2">
+            <h1 className="text-4xl font-bold text-gray-900 mb-3 print:mb-2">
               {data.name || '姓名'}
             </h1>
 
             {/* 基本信息行 */}
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 print:text-xs print:gap-x-4">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-600 print:gap-x-4">
               {/* 性别和年龄 */}
               {(data.gender || data.age) && (
                 <BasicInfoSectionItem icon={User}>
@@ -74,7 +74,7 @@ export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps)
 
             {/* 第二行：自定义字段 */}
             {data.customFields && data.customFields.length > 0 && (
-              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600 mt-2 print:text-xs print:mt-1">
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-600 mt-2 print:mt-1">
                 {formatCustomFields(data.customFields)}
               </div>
             )}

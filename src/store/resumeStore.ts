@@ -23,6 +23,7 @@ const initialResume: Resume = {
       visible: true,
       order: 1,
       data: {
+        avatar: 'https://phzdoc.oss-cn-beijing.aliyuncs.com/uPic/avatar.JPG',
         name: '白玩',
         email: 'example@gmail.com',
         phone: '12345678901',
@@ -51,7 +52,7 @@ const initialResume: Resume = {
           },
           {
             id: '4',
-            label: 'b站账号',
+            label: 'b站',
             value: 'https://space.bilibili.com/107889531',
             iconName: 'tv',
           },
@@ -69,42 +70,42 @@ const initialResume: Resume = {
       title: '个人优势',
       iconName: 'star',
       type: 'list',
-      editorType: 'list',
+      editorType: 'text',
       visible: true,
       order: 2,
-      data: [
-        {
-          id: '1',
-          content: '精通HTML、CSS、JavaScript技术，能够独立完成前端页面的开发及优化。',
-        },
-        {
-          id: '2',
-          content: '对于Web前端技术非常广泛，拥有熟练掌握jQuery、Bootstrap等前端框架的经验。',
-        },
-        {
-          id: '3',
-          content: '能够独立解决前端开发中遇到的问题，具备良好的学习能力和团队合作精神。',
-        },
-      ],
+      data: {
+        content:
+          '1. 熟练使用 html5 + css3 技术\n2. 熟练掌握 javascript (es6+) 和 Vue  技术栈,并深入了解其原理。\n3. 丰富的大型网站开发经验，对前端工程化，性能优化有丰富的实战经验。\n4. 熟练掌握 Typescript，SCSS 。\n5. 擅长 webpack  配置与前端架构设计。\n6. 熟悉 node.js ，包括 express/koa  等服务端框架',
+      },
     },
     {
       id: 'projects',
       title: '项目经历',
-      iconName: 'folder-open',
+      iconName: 'settings',
       type: 'timeline',
       editorType: 'timeline',
       visible: true,
       order: 3,
       data: [
         {
-          id: '1',
-          title: '项目内容：',
-          subtitle: 'Web前端开发',
-          secondarySubtitle: '杀命名项目',
-          startDate: '2000.01',
-          endDate: '2000.06',
           description:
-            '1.响应式网站开发：使用HTML、CSS、JavaScript等技术开发了一个响应式网站，实现了适应不同尺寸的设备，提高了用户体验。\n\n2.页面性能优化：对公司官网进行了性能优化，通过压缩图片、减少HTTP请求等方式，将页面加载速度提升了7X%。\n\n3.前端组件开发：开发了一些通用的前端组件，提高了团队工作效率，同时保证了代码的可重用性。\n\n4.跨平台应用开发：使用React Native技术开发了一个教育平台的移动端应用，同时兼容iOS和Android系统，提高了应用的覆盖面和用户满意度。\n\n项目业绩：\n1.响应式网站开发：将网站的跳出率降低了7X%，提高了用户留存时间。\n2.页面性能优化：将页面的平均加载时间降低了X秒，提高了用户对网站的满意度。\n3.前端组件开发：使得团队在开发过程中可以更加高效地完成工作，提高了开发效率。\n4.跨平台应用开发：应用下载达到了XX，用户评分高达X分，用户反馈良好',
+            '一个基于 React 19 构建的现代化在线简历编辑器，提供所见即所得的编辑体验。\n- 组件库为了更轻量、更容易定制，选择了Shadcn/UI \n- 构建工具选择了 Vite 并优化了首屏加载性能，总资源小于1MB\n- 基于 Docker + GithubAction 实现全自动 CI/CD\n- 这份项目是开源的，地址 https://github.com/WhiteP1ay/resumaker\n- 这份简历就是通过这个编辑工具制作出来的',
+          endDate: '',
+          id: '1756977218779',
+          secondarySubtitle: 'resume.whitemeta.cn',
+          startDate: '',
+          subtitle: '全栈',
+          title: '简历编辑器',
+        },
+        {
+          id: '1757064171447',
+          title: '个人网站',
+          subtitle: '全栈',
+          secondarySubtitle: 'whitemeta.cn',
+          startDate: '',
+          endDate: '',
+          description:
+            '一个基于 Next 15 构建的博客网站\n- 良好的SEO，Google搜索"whitemeta"，本站排名第一\n- 基于TailwindCSS 实现 PC & H5 双端适配\n- 谷歌Lighthouse性能评分99分\n- 当然博客网站最重要的还是内容，希望您能通过博文来更全面了解我',
         },
       ],
     },

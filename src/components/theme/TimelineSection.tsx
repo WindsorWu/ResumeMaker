@@ -73,26 +73,26 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ section, isEdi
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 h-8 w-8 print:hidden z-10"
+            className="absolute top-[.5rem] right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-gray-100 h-8 w-8 print:hidden z-10"
             onClick={startEditing}
           >
             <Edit3 className="h-4 w-4 text-gray-600" />
           </Button>
         )}
 
-        <div className="mb-8 print:mb-6">
+        <div className="mb-6 print:mb-6">
           {/* 模块标题 */}
-          <div className="flex items-center mb-4 print:mb-3">
-            <h2 className="text-xl font-bold text-gray-900 print:text-lg">{section.title}</h2>
+          <div className="flex items-center pb-[.5rem] border-b-gray-400 border-b-[1px]">
+            <h2 className="text-2xl font-bold text-gray-900">{section.title}</h2>
             {/* 图标 */}
             {section.iconName && (
-              <div className="p-2 ">
+              <div className="p-2">
                 <IconRenderer iconName={section.iconName} className="h-4 w-4 print:h-3 print:w-3" />
               </div>
             )}
           </div>
 
-          <div className={section.iconName ? 'ml-6 print:ml-3' : ''}>{renderContent()}</div>
+          <div className="mt-[.5rem]">{renderContent()}</div>
         </div>
       </div>
       {renderEditor()}

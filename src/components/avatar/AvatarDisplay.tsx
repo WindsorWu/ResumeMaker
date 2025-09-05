@@ -25,14 +25,16 @@ export const AvatarDisplay = ({
 }: AvatarDisplayProps) => {
   return (
     <>
-      <div
-        className={clsx(
-          `${sizeClasses[size]} rounded-lg overflow-hidden ${className}`,
-          src ? ' bg-gray-200 border border-gray-300' : ''
-        )}
-      >
-        {src ? <img src={src} alt={alt} className="w-full h-full object-cover" /> : <></>}
-      </div>
+      {src && (
+        <div
+          className={clsx(
+            `${sizeClasses[size]} rounded-lg overflow-hidden ${className}`,
+            'bg-gray-200 border border-gray-300'
+          )}
+        >
+          <img src={src} alt={alt} className="w-full h-full object-cover" />
+        </div>
+      )}
     </>
   );
 };
