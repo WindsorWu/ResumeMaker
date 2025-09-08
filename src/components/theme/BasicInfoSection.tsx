@@ -46,7 +46,7 @@ export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps)
         {/* 头部布局：左侧信息 + 右侧头像 */}
         <div className="flex items-start justify-between">
           {/* 左侧：姓名和基本信息 */}
-          <div className="flex-1 pr-6 flex flex-col items-center px-[5rem]">
+          <div className="flex-1 pr-6 flex flex-col items-center px-[3rem]">
             {/* 姓名 */}
             <h1 className="text-4xl font-bold text-gray-900 mb-3 print:mb-2">
               {data.name || '姓名'}
@@ -81,7 +81,7 @@ export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps)
           </div>
 
           {/* 右侧：头像 */}
-          <div className="shrink-0">
+          <div className="shrink-0 hidden md:block">
             <AvatarDisplay src={data.avatar} alt={data.name || '头像'} size="md" />
           </div>
         </div>

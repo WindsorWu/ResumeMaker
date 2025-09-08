@@ -89,7 +89,7 @@ const initialResume: Resume = {
       data: [
         {
           description:
-            '一个基于 React 19 构建的现代化在线简历编辑器，提供所见即所得的编辑体验。\n- 组件库为了更轻量、更容易定制，选择了Shadcn/UI \n- 构建工具选择了 Vite 并优化了首屏加载性能，总资源小于1MB\n- 基于 Docker + GithubAction 实现全自动 CI/CD\n- 这份项目是开源的，地址 https://github.com/WhiteP1ay/resumaker\n- 这份简历就是通过这个编辑工具制作出来的',
+            '一个基于 React 19 构建的现代化在线简历编辑器，提供所见即所得的编辑体验。\n- 为了更轻量、更容易定制，组件库选择了Shadcn/UI \n- 构建工具选择了 Vite 并优化了首屏加载性能，总资源小于1MB\n- 基于 Docker + GithubAction 实现全自动 CI/CD\n- 这份项目是开源的，地址 https://github.com/WhiteP1ay/resumaker\n- 这份简历就是通过这个编辑工具制作出来的',
           endDate: '',
           id: '1756977218779',
           secondarySubtitle: 'resume.whitemeta.cn',
@@ -105,7 +105,7 @@ const initialResume: Resume = {
           startDate: '',
           endDate: '',
           description:
-            '一个基于 Next 15 构建的博客网站\n- 良好的SEO，Google搜索"whitemeta"，本站排名第一\n- 基于TailwindCSS 实现 PC & H5 双端适配\n- 谷歌Lighthouse性能评分99分\n- 当然博客网站最重要的还是内容，希望您能通过博文来更全面了解我',
+            '一个基于 Next 15 构建的博客网站\n- 良好的SEO，Google搜索"whitemeta"，本站排名第一\n- 基于TailwindCSS 实现 PC & H5 双端适配\n- 基于Google Analytics 实现全站流量统计\n- 当然博客网站最重要的还是内容，希望您能通过博文来更全面了解我',
         },
       ],
     },
