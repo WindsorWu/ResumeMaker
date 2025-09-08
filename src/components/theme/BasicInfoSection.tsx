@@ -81,7 +81,7 @@ export const BasicInfoSection = ({ section, isEditable }: BasicInfoSectionProps)
           </div>
 
           {/* 右侧：头像 */}
-          <div className="shrink-0 hidden md:block">
+          <div className="shrink-0 hidden md:block print:block">
             <AvatarDisplay src={data.avatar} alt={data.name || '头像'} size="md" />
           </div>
         </div>
