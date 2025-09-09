@@ -4,17 +4,8 @@
 import { useCallback, useRef, useState } from 'react';
 import { type Crop, centerCrop, makeAspectCrop } from 'react-image-crop';
 
-// 辅助函数：将canvas转换为blob
-function canvasToBlob(canvas: HTMLCanvasElement): Promise<Blob> {
-  return new Promise((resolve) => {
-    canvas.toBlob(
-      (blob) => {
-        resolve(blob!);
-      },
-      'image/jpeg',
-      0.9
-    );
-  });
+function canvasToBase64(canvas: HTMLCanvasElement): string {
+  return canvas.toDataURL('image/jpeg', 0.9);
 }
 
 // 辅助函数：获取裁剪后的图片
@@ -40,8 +31,7 @@ async function getCroppedImg(image: HTMLImageElement, crop: Crop): Promise<strin
     crop.height * scaleY
   );
 
-  const blob = await canvasToBlob(canvas);
-  return URL.createObjectURL(blob);
+  return canvasToBase64(canvas);
 }
 
 export const useAvatarCropper = (
