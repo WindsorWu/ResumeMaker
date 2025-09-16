@@ -87,7 +87,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({ section, isEdi
             {/* 图标 */}
             {section.iconName && (
               <div className="p-2">
-                <IconRenderer iconName={section.iconName} className="h-4 w-4 print:h-3 print:w-3" />
+                <IconRenderer iconName={section.iconName} className="h-4 w-4" />
               </div>
             )}
           </div>
