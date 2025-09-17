@@ -49,6 +49,7 @@ export interface ResumeSection {
   editorType?: 'timeline' | 'list' | 'text';
   visible: boolean;
   order: number;
+  pageNumber?: number; // 新增：指定该模块在第几页显示 (1 或 2)
   data: BasicInfo | TimelineItem[] | ListItem[] | TextContent | Record<string, unknown>;
 }
 
@@ -57,7 +58,11 @@ export interface Resume {
   title: string;
   sections: ResumeSection[];
   template: string;
-  layout: 'side-by-side' | 'top-bottom'; // 新增布局类型
+  layout: 'side-by-side' | 'top-bottom';
+  pageSettings?: {
+    enableMultiPage: boolean; // 是否启用多页模式
+    totalPages: number; // 总页数，目前支持1-2页
+  };
 }
 
 export interface IconOption {

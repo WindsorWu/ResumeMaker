@@ -6,21 +6,21 @@ import { Eye, FileJson, Settings, Trash2 } from 'lucide-react';
 interface ActionButtonsProps {
   onPreview: () => void;
   onClear: () => void;
-  onManageTimeline: () => void;
+  onManageResume: () => void;
 }
 
-export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionButtonsProps) => {
+export const ActionButtons = ({ onPreview, onClear, onManageResume }: ActionButtonsProps) => {
   const { handleImportJson } = useJson();
   return (
     <>
       <Button
-        onClick={onManageTimeline}
+        onClick={onManageResume}
         variant="outline"
         size="sm"
         className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
       >
         <Settings className="h-4 w-4" />
-        <span className="hidden sm:inline">管理模块</span>
+        <span className="hidden sm:inline">简历设置</span>
       </Button>
 
       <Button
@@ -44,7 +44,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionBu
         className="hidden"
       />
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <Button
             variant="outline"
             onClick={() => {

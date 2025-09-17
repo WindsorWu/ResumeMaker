@@ -14,6 +14,10 @@ const initialResume: Resume = {
   title: '我的简历',
   template: 'default',
   layout: 'top-bottom', // 布局没用，以后可能改成theme，即多主题
+  pageSettings: {
+    enableMultiPage: false,
+    totalPages: 1,
+  },
   sections: [
     {
       id: 'basic-info',
@@ -253,4 +257,47 @@ export const getNonBasicSectionsAtom = atom((get) => {
 export const getBasicSectionAtom = atom((get) => {
   const resume = get(resumeAtom);
   return resume.sections.find((section) => section.type === 'basic');
+});
+
+/**
+ * 更新页面设置
+ */
+export const updatePageSettingsAtom = atom(
+  null,
+  (get, set, pageSettings: { enableMultiPage: boolean; totalPages: number }) => {
+    const resume = get(resumeAtom);
+    set(resumeAtom, { ...resume, pageSettings });
+  }
+);
+
+/**
+ * 批量更新多个模块的页面分配
+ */
+export const updateMultipleSectionsPageAtom = atom(
+  null,
+  (get, set, updates: Array<{ sectionId: string; pageNumber: number }>) => {
+    const resume = get(resumeAtom);
+    const updatedSections = resume.sections.map((section) => {
+      const update = updates.find((u) => u.sectionId === section.id);
+      if (update) {
+        return { ...section, pageNumber: update.pageNumber };
+      }
+      return section;
+    });
+    set(resumeAtom, { ...resume, sections: updatedSections });
+  }
+);
+
+/**
+ * 获取指定页面的模块列表
+ */
+export const getSectionsByPageAtom = atom((get) => {
+  return (pageNumber: number) => {
+    const resume = get(resumeAtom);
+    return resume.sections
+      .filter((section) => section.type !== 'basic')
+      .filter((section) => (section.pageNumber || 1) === pageNumber)
+      .filter((section) => section.visible)
+      .sort((a, b) => a.order - b.order);
+  };
 });

@@ -139,6 +139,11 @@ export const DraggableSectionItem: React.FC<DraggableSectionItemProps> = ({
               <h4 className="font-medium text-gray-900 text-sm truncate">{section.title}</h4>
               <p className="text-xs text-gray-500 mt-1">
                 {currentOption?.label} • {section.visible ? '显示中' : '已隐藏'}
+                {section.pageNumber && (
+                  <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                    第{section.pageNumber}页
+                  </span>
+                )}
               </p>
             </div>
           )}

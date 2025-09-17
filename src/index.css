@@ -63,12 +63,35 @@
     margin: 1cm;
     size: A4 portrait;
   }
+
+  /* 避免在这些元素内部分页 */
   .section,
   table,
   ul {
     page-break-inside: avoid;
   }
+
+  /* 标题后不分页 */
   h1 {
     page-break-after: avoid;
+  }
+
+  /* 多页模式下的分页控制 */
+  .print\:page-break-after-always {
+    page-break-after: always;
+  }
+
+  .print\:page-break-inside-avoid {
+    page-break-inside: avoid;
+  }
+
+  /* 每页最小高度 */
+  .print\:min-h-page {
+    min-height: 25cm;
+  }
+
+  /* 确保页面内容不会溢出 */
+  .print-container {
+    overflow: visible;
   }
 }

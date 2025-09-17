@@ -21,7 +21,7 @@ export const PrintTipBar = ({ onPrint, onExportPdf }: PrintTipBarProps) => {
         <div className="flex items-center space-x-2">
           <span className="text-sm">缩放比例</span>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <CircleQuestionMark className="w-4 h-4 text-blue-200"></CircleQuestionMark>
             </TooltipTrigger>
             <TooltipContent>
@@ -43,7 +43,7 @@ export const PrintTipBar = ({ onPrint, onExportPdf }: PrintTipBarProps) => {
         </div>
         <div className="flex items-center space-x-4">
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 onClick={onPrint}
                 variant="outline"
@@ -60,7 +60,7 @@ export const PrintTipBar = ({ onPrint, onExportPdf }: PrintTipBarProps) => {
           </Tooltip>
 
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 onClick={onExportPdf}
                 variant="outline"

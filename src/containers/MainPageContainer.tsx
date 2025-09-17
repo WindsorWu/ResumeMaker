@@ -1,49 +1,40 @@
-import { AppHeader } from '@/components/layout/AppHeader';
-import { ResumeDisplay } from '@/components/ResumeDisplay';
-import { useAtomValue, useSetAtom } from 'jotai';
-import React, { Suspense, useState } from 'react';
-// import { LayoutSelector } from '@/components/LayoutSelector'
 import { ClearConfirmDialog } from '@/components/dialogs/ClearConfirmDialog';
+import { ResumeSettingsDialog } from '@/components/dialogs/ResumeSettingsDialog';
 import { ActionButtons } from '@/components/layout/ActionButtons';
 import { AppFooter } from '@/components/layout/AppFooter';
-import { resetResumeAtom, resumeAtom } from '@/store/resumeStore';
-
-// 懒加载模块管理器（无loading，包很小会一闪而过）
-const SectionManager = React.lazy(() => import('@/components/dialogs/TimelineManagerDialog'));
+import { AppHeader } from '@/components/layout/AppHeader';
+import { ResumeDisplay } from '@/components/ResumeDisplay';
+import { useResumeActions } from '@/hooks/useResumeActions';
+import { resumeAtom } from '@/store/resumeStore';
+import { useAtomValue } from 'jotai';
+import { useState } from 'react';
 
 export const MainPageContainer = () => {
   const resume = useAtomValue(resumeAtom);
-  const resetResume = useSetAtom(resetResumeAtom);
+  const { clearResume } = useResumeActions();
   const [showClearDialog, setShowClearDialog] = useState(false);
-  const [showTimelineManager, setShowTimelineManager] = useState(false);
+  const [showResumeSettings, setShowResumeSettings] = useState(false);
 
   const handlePreview = () => {
     window.open('/preview', '_blank');
   };
 
   const handleClear = () => {
-    resetResume();
+    clearResume();
     setShowClearDialog(false);
   };
 
-  // const handleLayoutChange = (layout: 'side-by-side' | 'top-bottom') => {
-  //   setResume({ ...resume, layout })
-  // }
-
-  const handleManageTimeline = () => {
-    setShowTimelineManager(true);
+  const handleManageResume = () => {
+    setShowResumeSettings(true);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50">
       <AppHeader>
-        {/* <LayoutSelector
-          onLayoutChange={handleLayoutChange}
-        /> */}
         <ActionButtons
           onPreview={handlePreview}
           onClear={() => setShowClearDialog(true)}
-          onManageTimeline={handleManageTimeline}
+          onManageResume={handleManageResume}
         />
       </AppHeader>
 
@@ -57,15 +48,10 @@ export const MainPageContainer = () => {
         onConfirm={handleClear}
       />
 
-      {/* 懒加载模块管理器（无loading避免闪烁） */}
-      {showTimelineManager && (
-        <Suspense fallback={null}>
-          <SectionManager
-            isOpen={showTimelineManager}
-            onClose={() => setShowTimelineManager(false)}
-          />
-        </Suspense>
-      )}
+      <ResumeSettingsDialog
+        isOpen={showResumeSettings}
+        onClose={() => setShowResumeSettings(false)}
+      />
 
       <AppFooter />
     </div>

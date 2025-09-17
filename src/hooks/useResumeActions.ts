@@ -8,6 +8,10 @@ import {
   getBasicSectionAtom,
   getNonBasicSectionsAtom,
   getSectionAtom,
+  getSectionsByPageAtom,
+  resetResumeAtom,
+  updateMultipleSectionsPageAtom,
+  updatePageSettingsAtom,
   updateSectionDataAtom,
   updateSectionPropsAtom,
   updateSectionsOrderAtom,
@@ -25,11 +29,15 @@ export const useResumeActions = () => {
   const updateSectionsOrder = useSetAtom(updateSectionsOrderAtom);
   const addSection = useSetAtom(addSectionAtom);
   const deleteSection = useSetAtom(deleteSectionAtom);
+  const updatePageSettings = useSetAtom(updatePageSettingsAtom);
+  const updateMultipleSectionsPage = useSetAtom(updateMultipleSectionsPageAtom);
+  const resetResume = useSetAtom(resetResumeAtom);
 
   // 获取函数
   const getSection = useAtomValue(getSectionAtom);
   const getNonBasicSections = useAtomValue(getNonBasicSectionsAtom);
   const getBasicSection = useAtomValue(getBasicSectionAtom);
+  const getSectionsByPage = useAtomValue(getSectionsByPageAtom);
 
   /**
    * 更新模块数据（这是最常用的操作）
@@ -85,6 +93,27 @@ export const useResumeActions = () => {
     });
   };
 
+  /**
+   * 启用或禁用多页模式
+   */
+  const toggleMultiPageMode = (enabled: boolean, totalPages: number = 2) => {
+    updatePageSettings({ enableMultiPage: enabled, totalPages });
+  };
+
+  /**
+   * 批量设置多个模块的页面分配
+   */
+  const batchSetSectionsPage = (updates: Array<{ sectionId: string; pageNumber: number }>) => {
+    updateMultipleSectionsPage(updates);
+  };
+
+  /**
+   * 重置简历到初始状态
+   */
+  const clearResume = () => {
+    resetResume();
+  };
+
   return {
     // 核心操作
     updateSection,
@@ -92,6 +121,10 @@ export const useResumeActions = () => {
     updateSectionTitle,
     updateSectionEditorType,
     toggleSectionVisibility,
+
+    // 页面相关操作
+    toggleMultiPageMode,
+    batchSetSectionsPage,
 
     // 批量操作
     updateSectionsOrder,
@@ -102,5 +135,9 @@ export const useResumeActions = () => {
     getSection,
     getNonBasicSections,
     getBasicSection,
+    getSectionsByPage,
+
+    // 清空操作
+    clearResume,
   };
 };
