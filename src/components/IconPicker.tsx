@@ -183,7 +183,15 @@ export const IconPicker: React.FC<IconPickerProps> = ({ value, onChange, label =
   );
 };
 
-export const IconRenderer = ({ iconName, className }: { iconName: string; className?: string }) => {
+export const IconRenderer = ({
+  iconName,
+  className,
+  onClick,
+}: {
+  iconName: string;
+  className?: string;
+  onClick?: () => void;
+}) => {
   const IconComponent = PRESET_ICONS.find((item) => item.name === iconName)?.icon;
-  return IconComponent ? <IconComponent className={className} /> : null;
+  return IconComponent ? <IconComponent className={className} onClick={onClick} /> : null;
 };
