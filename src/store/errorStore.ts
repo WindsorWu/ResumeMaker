@@ -39,6 +39,6 @@ export const removeErrorMessageAtom = atom(null, (get, set, messageId: string) =
 });
 
 // 清除所有错误消息的 atom
-export const clearAllErrorMessagesAtom = atom(null, (get, set) => {
+export const clearAllErrorMessagesAtom = atom(null, (_get, set) => {
   set(errorMessagesAtom, []);
 });
