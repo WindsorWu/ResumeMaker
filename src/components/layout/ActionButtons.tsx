@@ -1,5 +1,7 @@
-import { Eye, Trash2, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useJson } from '@/hooks/useJson';
+import { Eye, FileJson, Settings, Trash2 } from 'lucide-react';
 
 interface ActionButtonsProps {
   onPreview: () => void;
@@ -8,6 +10,7 @@ interface ActionButtonsProps {
 }
 
 export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionButtonsProps) => {
+  const { handleImportJson } = useJson();
   return (
     <>
       <Button
@@ -27,8 +30,38 @@ export const ActionButtons = ({ onPreview, onClear, onManageTimeline }: ActionBu
         className="flex items-center space-x-2"
       >
         <Eye className="h-4 w-4" />
-        <span className="hidden sm:inline">预览 & 导出</span>
+        <span className="hidden sm:inline">预览导出</span>
       </Button>
+
+      {/* input type=file */}
+      <input
+        type="file"
+        id="import-json-input"
+        accept="application/json"
+        onChange={(e) => {
+          handleImportJson(e.target?.files?.[0] as File);
+        }}
+        className="hidden"
+      />
+      <Tooltip>
+        <TooltipTrigger>
+          <Button
+            variant="outline"
+            onClick={() => {
+              const input = document.getElementById('import-json-input');
+              if (input) {
+                (input as HTMLInputElement).click();
+              }
+            }}
+          >
+            <FileJson className="h-4 w-4" />
+            <span className="hidden sm:inline">导入JSON</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>仅支持本工具导出的JSON文件，导入后会覆盖当前简历</p>
+        </TooltipContent>
+      </Tooltip>
 
       <Button
         onClick={onClear}
