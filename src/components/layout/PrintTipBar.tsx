@@ -25,11 +25,7 @@ export const PrintTipBar = ({ onPrint, onExportPdf }: PrintTipBarProps) => {
               <CircleQuestionMark className="w-4 h-4 text-blue-200"></CircleQuestionMark>
             </TooltipTrigger>
             <TooltipContent>
-              <p>
-                推荐把简历内容精简到一页纸，
-                <br />
-                通过修改缩放比例，可以控制简历内容的显示大小。
-              </p>
+              <p>通过修改缩放比例，可以控制每页简历内容的显示大小。</p>
             </TooltipContent>
           </Tooltip>
           <Slider

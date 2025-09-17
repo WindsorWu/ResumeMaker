@@ -15,8 +15,8 @@ const initialResume: Resume = {
   template: 'default',
   layout: 'top-bottom', // 布局没用，以后可能改成theme，即多主题
   pageSettings: {
-    enableMultiPage: false,
-    totalPages: 1,
+    enableMultiPage: true,
+    totalPages: 2,
   },
   sections: [
     {
@@ -59,12 +59,6 @@ const initialResume: Resume = {
             label: 'b站',
             value: 'https://space.bilibili.com/107889531',
             iconName: 'tv',
-          },
-          {
-            id: '5',
-            label: '清华大学',
-            value: '',
-            iconName: 'graduation-cap',
           },
         ],
       },
@@ -114,9 +108,9 @@ const initialResume: Resume = {
       ],
     },
     {
-      id: 'experience',
-      title: '工作经历',
-      iconName: 'briefcase',
+      id: 'education',
+      title: '教育背景',
+      iconName: 'graduation-cap',
       type: 'timeline',
       editorType: 'timeline',
       visible: true,
@@ -124,23 +118,55 @@ const initialResume: Resume = {
       data: [
         {
           id: '1',
-          title: '阿里巴巴',
-          subtitle: '2000.01 - 2000.06',
-          secondarySubtitle: '',
-          startDate: '',
-          endDate: '',
+          title: '清华大学',
+          subtitle: '计算机科学与技术硕士',
+          secondarySubtitle: '2016.09 - 2018.06',
+          startDate: '2016.09',
+          endDate: '2018.06',
           description: '',
         },
         {
           id: '2',
-          title: '字节跳动',
-          subtitle: '2000.01 - 2000.06',
-          secondarySubtitle: '',
-          startDate: '',
-          endDate: '',
+          title: '北京理工大学',
+          subtitle: '软件工程学士',
+          secondarySubtitle: '2012.09 - 2016.06',
+          startDate: '2012.09',
+          endDate: '2016.06',
           description: '',
         },
       ],
+    },
+    {
+      id: 'experience',
+      title: '工作经历',
+      iconName: 'briefcase',
+      type: 'timeline',
+      editorType: 'timeline',
+      visible: true,
+      order: 5,
+      data: [
+        {
+          id: '1',
+          title: '阿里巴巴集团',
+          subtitle: '高级前端工程师',
+          secondarySubtitle: '2021.03 - 2024.06',
+          startDate: '2021.03',
+          endDate: '2024.06',
+          description:
+            '负责淘宝商家平台前端开发与架构设计工作\n\n【主要职责】\n• 负责商家后台核心业务模块的前端开发，包括商品管理、订单处理、数据分析等\n• 参与前端架构设计，建立组件库和开发规范，提升团队开发效率\n• 优化页面性能，首屏加载时间从3.2s优化至1.1s，用户体验显著提升\n• 负责移动端H5页面开发，实现PC端和移动端的响应式适配\n\n【核心业绩】\n• 主导开发的商品管理系统日均处理订单量超过50万单\n• 建立的前端组件库被团队10+项目复用，开发效率提升40%\n• 优化的数据可视化方案，页面渲染性能提升60%\n• 获得年度优秀员工奖，技术创新奖等荣誉',
+        },
+        {
+          id: '2',
+          title: '字节跳动',
+          subtitle: '前端工程师',
+          secondarySubtitle: '2019.07 - 2021.02',
+          startDate: '2019.07',
+          endDate: '2021.02',
+          description:
+            '参与抖音创作者平台和企业服务相关产品的前端开发\n\n【主要职责】\n• 负责抖音创作者中心数据看板的前端开发和维护\n• 参与企业级SaaS产品的前端架构设计和开发\n• 配合产品和设计团队，实现高质量的用户界面和交互体验\n• 参与前端工程化建设，搭建自动化测试和部署流程\n\n【核心业绩】\n• 开发的创作者数据大屏支持千万级DAU的实时数据展示\n• 参与的企业服务平台服务客户数超过10万家\n• 建立的前端监控体系，线上bug数量减少70%\n• 主导的代码重构项目，代码质量和可维护性显著提升',
+        },
+      ],
+      pageNumber: 2,
     },
   ],
 };
