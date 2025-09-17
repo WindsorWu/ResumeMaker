@@ -48,11 +48,7 @@ export const MainPageContainer = () => {
       </AppHeader>
 
       <main className="max-w-6xl mx-auto p-4">
-        <ResumeDisplay
-          resume={resume}
-          isEditable={true}
-          className="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen"
-        />
+        <ResumeDisplay resume={resume} isEditable={true} className="min-h-screen" />
       </main>
 
       <ClearConfirmDialog
