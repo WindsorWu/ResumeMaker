@@ -113,7 +113,7 @@ export const BasicInfoCustomFieldItem = ({
         </div>
         <div>
           <span className="text-sm font-medium text-gray-900">{field.label}</span>
-          <span className="text-sm text-gray-600 ml-2">{field.value}</span>
+          <span className="text-sm font-medium text-gray-900">{field.value}</span>
         </div>
       </div>
       <div className="flex items-center space-x-2">
