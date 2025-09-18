@@ -20,7 +20,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageResume }: ActionButt
         className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
       >
         <Settings className="h-4 w-4" />
-        <span className="hidden sm:inline">简历设置</span>
+        <span className="hidden md:inline">简历设置</span>
       </Button>
 
       <Button
@@ -30,7 +30,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageResume }: ActionButt
         className="flex items-center space-x-2"
       >
         <Eye className="h-4 w-4" />
-        <span className="hidden sm:inline">预览导出</span>
+        <span className="hidden md:inline">预览导出</span>
       </Button>
 
       {/* input type=file */}
@@ -55,7 +55,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageResume }: ActionButt
             }}
           >
             <FileJson className="h-4 w-4" />
-            <span className="hidden sm:inline">导入JSON</span>
+            <span className="hidden md:inline">导入JSON</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -70,7 +70,7 @@ export const ActionButtons = ({ onPreview, onClear, onManageResume }: ActionButt
         className="flex items-center space-x-2 text-red-600 hover:text-red-700 hover:bg-red-50"
       >
         <Trash2 className="h-4 w-4" />
-        <span className="hidden sm:inline">清空</span>
+        <span className="hidden md:inline">清空</span>
       </Button>
 
       <div className="hidden lg:block text-xs text-gray-500">💡 点击模块右上角编辑按钮修改内容</div>
