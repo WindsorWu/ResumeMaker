@@ -31,22 +31,26 @@ export const TimelineContent = ({ data }: TimelineContentProps) => (
         <div className="flex justify-between items-start mb-2 print:mb-1">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-1 print:mb-0.5">
-              <h3 className="text-base font-semibold text-gray-900 print:text-sm">{item.title}</h3>
-              <span className="text-sm text-gray-600">{item.subtitle}</span>
+              <h3 className="text-base font-semibold text-gray-900 print:text-sm whitespace-pre">
+                {item.title}
+              </h3>
+              <span className="text-sm text-gray-600 whitespace-pre">{item.subtitle}</span>
             </div>
             {item.secondarySubtitle && (
-              <div className="text-sm text-gray-700 font-medium">{item.secondarySubtitle}</div>
+              <div className="text-sm text-gray-700 font-medium whitespace-pre">
+                {item.secondarySubtitle}
+              </div>
             )}
           </div>
           {(item.startDate || item.endDate) && (
-            <div className="text-sm text-gray-600 ml-4 shrink-0">
+            <div className="text-sm text-gray-600 ml-4 shrink-0 whitespace-pre">
               {item.startDate} {item.startDate && item.endDate && '-'} {item.endDate}
             </div>
           )}
         </div>
 
         {item.description && (
-          <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line pl-0 mt-2 print:mt-1">
+          <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap pl-0 mt-2 print:mt-1">
             {item.description}
           </div>
         )}
@@ -60,5 +64,5 @@ interface TextContentRendererProps {
 }
 
 export const TextContentRenderer = ({ data }: TextContentRendererProps) => (
-  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{data.content}</div>
+  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{data.content}</div>
 );
