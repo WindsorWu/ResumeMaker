@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
+  <meta http-equiv="refresh" content="0; url=/ResumeMaker/" />
+  <script>
+    (function () {
+      // 将非哈希路由的直链（/ResumeMaker/xxx）重定向为哈希路由（/ResumeMaker/#/xxx）
+      var base = '/ResumeMaker/';
+      var path = window.location.pathname;
+      if (path.startsWith(base)) {
+        var rest = path.slice(base.length);
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        var target = base + '#/' + rest.replace(/^\//, '') + search + hash;
+        window.location.replace(target);
+      } else {
+        window.location.replace(base);
+      }
+    })();
+  </script>
+</head>
+<body>Redirecting...</body>
+</html>
+

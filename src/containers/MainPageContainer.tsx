@@ -16,7 +16,7 @@ export const MainPageContainer = () => {
   const [showResumeSettings, setShowResumeSettings] = useState(false);
 
   const handlePreview = () => {
-    window.open('/preview', '_blank');
+    window.open('./preview', '_blank'); // 使用完整路径
   };
 
   const handleClear = () => {

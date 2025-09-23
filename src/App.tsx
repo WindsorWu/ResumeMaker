@@ -1,6 +1,6 @@
 import { Provider } from 'jotai';
 import React, { Suspense } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, HashRouter as Router, Routes } from 'react-router-dom';
 import { GlobalErrorProvider } from './components/ui/GlobalErrorProvider';
 import { MainPage } from './pages/MainPage';
 
@@ -13,6 +13,7 @@ function App() {
   return (
     <Provider>
       <GlobalErrorProvider>
+        {/* 使用 HashRouter，避免 GitHub Pages 对子路径返回 404 */}
         <Router>
           <Routes>
             <Route path="/" element={<MainPage />} />
