@@ -2,7 +2,7 @@
   "name": "resumaker",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://blog.nekolin.top/ResumeMaker/",
+  "homepage": "https://resumemaker.nekolin.top/",
   "type": "module",
   "scripts": {
     "dev": "vite",

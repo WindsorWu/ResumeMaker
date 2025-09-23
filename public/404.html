@@ -4,24 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0; url=/ResumeMaker/" />
+  <meta http-equiv="refresh" content="0; url=/" />
   <script>
     (function () {
-      // 将非哈希路由的直链（/ResumeMaker/xxx）重定向为哈希路由（/ResumeMaker/#/xxx）
-      var base = '/ResumeMaker/';
+      // 将非哈希路由的直链（/xxx）重定向为哈希路由（/#/xxx），用于 GitHub Pages 刷新兼容
+      var base = '/';
       var path = window.location.pathname;
-      if (path.startsWith(base)) {
-        var rest = path.slice(base.length);
-        var search = window.location.search || '';
-        var hash = window.location.hash || '';
-        var target = base + '#/' + rest.replace(/^\//, '') + search + hash;
-        window.location.replace(target);
-      } else {
-        window.location.replace(base);
-      }
+      var rest = path.slice(base.length); // 去掉开头的 '/'
+      var search = window.location.search || '';
+      var hash = window.location.hash || '';
+      var target = base + '#/' + rest.replace(/^\//, '') + search + hash;
+      window.location.replace(target);
     })();
   </script>
 </head>
 <body>Redirecting...</body>
 </html>
-

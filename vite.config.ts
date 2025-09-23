@@ -12,6 +12,8 @@ export default defineConfig(() => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // 使用自定义域名时，资源基础路径应为根路径
+  base: '/',
   server: {
     host: '127.0.0.1',
     port: 5173
