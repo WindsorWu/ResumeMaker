@@ -35,7 +35,7 @@ export const AppHeader = ({ children }: AppHeaderProps) => {
                       iconName="github"
                       className="h-4 w-4 text-gray-600 hover:text-gray-800 transition-colors duration-200"
                       onClick={() => {
-                        window.open('https://github.com/WhiteP1ay/resumaker', '_blank');
+                        window.open('https://github.com/WindsorWu/ResumeMaker', '_blank');
                       }}
                     />
                   </div>
