@@ -123,7 +123,7 @@ const initialResume: Resume = {
           description:
             '【项目概述】HyperOS EU用户可通过使用此项目，同时获取HyperOS EU的功能和HyperOS 大陆版的功能。\n【系统架构】包含 Xposed 模块以 Hook 系统及 HyperOS 相关包来修改系统属性，同时提供设备状态查看（如 Root、Magisk/Xposed 模块状态）和多种需 Root 权限的系统操作（如权限管理、日志处理等），支持多语言。\n',
           endDate: '',
-          id: '1758469873123',
+          id: '1758463559412',
           secondarySubtitle: 'blog.nekolin.top/2025/01/24/HyperOSEULocalization/',
           startDate: '2025.01-至今',
           subtitle: '开发维护',

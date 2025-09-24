@@ -4,19 +4,9 @@
 import { Button } from '@/components/ui/button';
 import { useAvatarUpload } from '@/hooks/components/useAvatarUpload';
 import { Crop } from 'lucide-react';
-import React, { Suspense } from 'react';
 import { AvatarDisplay } from './AvatarDisplay';
 import { FileUploadButton } from './FileUploadButton';
-
-// 懒加载头像裁剪组件
-const AvatarCropper = React.lazy(() => import('./AvatarCropper'));
-
-// 简单的内联loading
-const CropperLoading = () => (
-  <div className="flex items-center justify-center py-4">
-    <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-  </div>
-);
+import { AvatarCropper } from './AvatarCropper';
 
 interface AvatarUploadProps {
   currentAvatar?: string;
@@ -62,14 +52,12 @@ export const AvatarUpload = ({ currentAvatar, onAvatarChange }: AvatarUploadProp
       </div>
 
       {showCropper && originalImageUrl && (
-        <Suspense fallback={<CropperLoading />}>
-          <AvatarCropper
-            isOpen={showCropper}
-            onClose={() => setShowCropper(false)}
-            imageSrc={originalImageUrl}
-            onCropComplete={handleCropSave}
-          />
-        </Suspense>
+        <AvatarCropper
+          isOpen={showCropper}
+          onClose={() => setShowCropper(false)}
+          imageSrc={originalImageUrl}
+          onCropComplete={handleCropSave}
+        />
       )}
     </div>
   );
