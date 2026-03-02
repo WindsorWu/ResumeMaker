@@ -16,7 +16,7 @@ const initialResume: Resume = {
   layout: 'top-bottom', // 布局没用，以后可能改成theme，即多主题
   pageSettings: {
     enableMultiPage: true,
-    totalPages: 2,
+    totalPages: 1,
   },
   sections: [
     {
@@ -30,20 +30,26 @@ const initialResume: Resume = {
         avatar: 'https://imgs.aixifan.com/o_1eemg57nh11nd4d01p9d17i31vi67.gif',
         name: '温莎',
         email: 'wenzhewu2@163.com',
-        phone: '12345678901',
+        phone: '',
         gender: '男',
-        age: '22',
+        age: '23',
         location: '上海',
         website: '',
         customFields: [
           {
             id: '1',
+            label: '微信号',
+            value: 'a92750139',
+            iconName: 'star',
+          },
+          {
+            id: '2',
             label: '期望城市',
             value: '上海',
             iconName: 'map-pin',
           },
           {
-            id: '2',
+            id: '3',
             label: '个人网站',
             value: 'https://nekolin.top',
             iconName: 'globe',
@@ -63,17 +69,17 @@ const initialResume: Resume = {
         {
           id: '1',
           title: '上海杉达学院',
-          subtitle: '软件工程学士',
-          secondarySubtitle: '2024.09 - 2026.06',
+          subtitle: '软件工程',
+          secondarySubtitle: '',
           startDate: '2024.09',
           endDate: '2026.06',
-          description: '【主修课程】计算机组成原理、计算机网络、操作系统、数据结构、数据库原理及技术、软件需求工程、软件测试、Java Web开发n【绩点成绩】3.31/4.0\n【在校荣誉】校计算机设计大赛三等奖\n【证书】计算机三级（Java）',
+          description: '【主修课程】计算机组成原理、计算机网络、操作系统、数据结构、数据库原理及技术、软件需求工程、软件测试、Java Web开发\n【绩点成绩】3.31/4.0\n【在校荣誉】校计算机设计大赛三等奖\n【证书】上海市人工智能推介官三级（高级）、计算机三级（Java、人工智能）',
         },
         {
           id: '2',
           title: '上海电子信息职业技术学院',
-          subtitle: '人工智能应用技术大专',
-          secondarySubtitle: '2021.09 - 2024.06',
+          subtitle: '人工智能应用技术',
+          secondarySubtitle: '',
           startDate: '2021.09',
           endDate: '2024.06',
           description: '【主修课程】Linux操作系统、Python程序设计、机器视觉技术、机器学习、深度学习、嵌入式技术应用\n【绩点成绩】4.13/5.0\n【专业排名】3/80\n【在校荣誉】2022年华为ICT大赛上海市云赛道三等奖，上海市优秀毕业生，宝山区优秀志愿者，校级二等奖学金*1、三等奖学金*1，校级三好学生、优秀志愿者\n【证书】CET4、驾驶证',
@@ -172,7 +178,7 @@ const initialResume: Resume = {
       order: 5,
       data: {
         content:
-          '后端开发：熟练掌握 Java 编程语言,熟悉 Spring Boot 框架，能够使用 MyBatis-Plus 进行数据库持久化操作。\n前端开发：熟悉 HTML、CSS、JavaScript 等前端基础技术，能够进行简单的页面开发和交互设计。了解 Vue 框架，能够快速搭建前端应用架构。\n数据库管理 :熟练掌握 MySQL 数据库，熟悉数据库设计原则和SQL语言，能够进行数据库建模、优化查询语句，具备数据库性能调优的基本能力。\n算法与数据结构：掌握基本数据结构(如数组、链表、树、图)和算法(如排序、搜索)，具备一定的算法设计与分析能力，能够运用算法知识解决实际问题。\n开发工具与版本控制：熟练使用 Intel IDEA 等开发工具,提高开发效率。掌握 Git 版本控制系统的常用操作能够进行代码管理与团队协作。会运用 Docker 容器快速地建立、测试和部署应用程序。',
+          '个人优势：本人工作态度认真负责，具备良好的学习能力与执行力，能够快速适应新环境与新任务。做事踏实细心，注重效率与结果，有较强的团队协作意识和沟通能力。对待工作积极主动，责任心强，愿意持续提升专业能力，为团队创造价值。\n文件处理：熟练使用 Excel 和 Word 编写表格和文档，会运用简单函数。\n设备维护：熟练掌握 Windows 系统配置与各软件、硬件安装，配置计算机网络 IP，会使用任务管理器监测电脑性能和运行软件的信息，能够运用知识解决实际问题。\n后端开发：掌握 Java 和 Python 编程语言，熟悉 Spring Boot 和 Django 框架，能够独立开发后端应用。\n前端开发：熟悉 HTML、CSS、JavaScript 等前端基础技术，能够进行简单的页面开发和交互设计。了解 Vue 框架，能够快速搭建前端应用架构。\n开发工具与版本控制：熟练使用 AI Agent 配合 Intel IDEA 等开发工具,提高开发效率。掌握 Git 版本控制系统的常用操作能够进行代码管理与团队协作。会运用 Docker 容器快速地建立、测试和部署应用程序。',
       },
     },
   ],
