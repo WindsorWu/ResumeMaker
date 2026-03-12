@@ -119,7 +119,7 @@ const initialResume: Resume = {
           description:
             '【项目概述】基于Spring Boot和Vue框架的商城系统。系统主要功能包括：商品的上架、删除、查询、浏览，用户的注册、登录、密码修改，购物车管理，订单生成与管理等。\n【技术实现】前端使用 Vue 框架开发，后端使用 Spring Boot，项目采用Maven 进行依赖管理，数据持久化采用MySQL数据库。在Docker容器中部署，使用Redis 服务器、RabbitMQ 消息队列和ElasticSearch 搜索结果搜索引擎作为中间服务。',
           endDate: '',
-          id: '1758469873123',
+          id: '1758477735523',
           secondarySubtitle: '',
           startDate: '2025.03-2025.06',
           subtitle: '全栈开发',
@@ -144,6 +144,16 @@ const initialResume: Resume = {
           endDate: '',
           description:
             '一个基于 Hexo 构建的博客网站\n- Google搜索"nekolin blog"，本站排名第一\n- 基于Upptime & Baidu Analytics 实现全站流量统计与监控\n- 基于GitHub Actions实现自动化部署',
+        },
+        {
+          description:
+            '【项目概述】本项目是一个功能完整的体育赛事管理与报名系统，支持前台展示、在线报名、赛事成绩查询、后台管理以及多种互动功能。采用前后端分离架构开发。用户功能集成赛事列表、赛事详情、公告动态、在线报名、个人中心、成绩查询、点赞/收藏/评论和大模型智能客服。管理端集成数据大屏（包含实时评论词云）、用户管理、赛事管理、报名审核、成绩录入导入和导出、公告管理、轮播图及反馈管理。\n【技术实现】后端采用Django、JWT、WebSocket和MaxKB，前端使用Vue、Element Plus、Echarts和Axios。\n',
+          endDate: '',
+          id: '1758477994723',
+          secondarySubtitle: 'github.com/WindsorWu/sports-management-system',
+          startDate: '2025.10-至今',
+          subtitle: '开发维护',
+          title: '运动赛事管理与报名系统',
         },
       ],
     },
